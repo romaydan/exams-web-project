@@ -50,6 +50,17 @@ router.put('/:id', async (req, res) => {
   res.send(question);
 });
 
+router.delete('/:id', async (req, res) => {
+  const question = await Question.findByIdAndRemove(req.params.id);
+
+  if (!question)
+    return res
+      .status(404)
+      .send('The question with the given ID was not found.');
+
+  res.send(question);
+});
+
 router.get('/:id', async (req, res) => {
   const question = await Question.findById(req.params.id);
 
