@@ -13,6 +13,7 @@ const questionSchema = new mongoose.Schema({
   possibleAnswers: { type: [answerSchema] },
   answersLayout: { type: Number },
   tags: { type: [String] },
+  lastUpdate: { type: Date },
 });
 
 const Question = mongoose.model('Question', questionSchema);

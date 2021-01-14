@@ -19,6 +19,7 @@ router.post('/', async (req, res) => {
     possibleAnswers: req.body.possibleAnswers,
     answersLayout: req.body.answersLayout,
     tags: req.body.tags,
+    lastUpdate: Date.now(),
   });
   await question.save();
 
@@ -38,6 +39,7 @@ router.put('/:id', async (req, res) => {
       possibleAnswers: req.body.possibleAnswers,
       answersLayout: req.body.answersLayout,
       tags: req.body.tags,
+      lastUpdate: Date.now(),
     },
     { new: true }
   );
