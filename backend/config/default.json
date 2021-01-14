@@ -1,4 +1,3 @@
 {
-  "db": "mongodb://localhost/exams",
-  "port": "3900"
+  "db": "mongodb://localhost/exams"
 }
