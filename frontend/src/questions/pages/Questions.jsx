@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { deleteQuestion, getQuestions } from '../services/questionService';
-import QuestionsTable from './questionsTable';
+import {
+  deleteQuestion,
+  getQuestions,
+} from '../../shared/services/questionService';
+import QuestionsTable from '../components/QuestionsTable';
 
 function Questions() {
   const [questions, setQuestions] = useState([]);
