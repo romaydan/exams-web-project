@@ -16,20 +16,20 @@ router.post('/', async (req, res) => {
         language: req.body.language,
         name: req.body.name,
         header: req.body.header,
-        success: req.body.successMessage,
-        fail: req.body.failMessage,
+        success: req.body.success,
+        failure: req.body.failure,
         questions: req.body.questions
     });
-    await question.save();
+    await exam.save();
 
-    res.send(question);
+    res.send(exam);
 });
 
 router.put('/:id', async (req, res) => {
-    const { error } = validate(req.body);
+    const { error } = validate(req.body.exams);
     if (error) return res.status(400).send(error.details[0].message);
 
-    const exam = await Question.findByIdAndUpdate(
+    const exam = await Exam.findByIdAndUpdate(
         req.params.id,
         {
             language: req.body.language,
@@ -47,7 +47,7 @@ router.put('/:id', async (req, res) => {
             .status(404)
             .send('The exam with the given ID was not found.');
 
-    res.send(question);
+    res.send(exam);
 });
 
 router.delete('/:id', async (req, res) => {
