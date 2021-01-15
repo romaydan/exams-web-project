@@ -24,7 +24,7 @@ function QuestionsTable({ questions, onDelete }) {
             <td>{q.type === 0 ? 'Single' : 'Multiple'}</td>
             <td></td>
             <td>
-              <button className="btn btn-primary btn-sm mr-1">Edit</button>
+              <button className="btn btn-info btn-sm mr-4">Edit</button>
               <button
                 onClick={() => onDelete(q)}
                 className="btn btn-danger btn-sm"
