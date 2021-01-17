@@ -1,57 +1,57 @@
-import React from 'react'
-import Input from '../../components/common/FormElements/Input'
-import classes from './NewExam.modules.css'
+import React from 'react';
+import Input from '../../../shared/components/FormElements/Input';
+import classes from './NewExam.modules.css';
 const NewExam = (props) => {
-const test =[
+  const test = [
     {
-    id:'language',
-    inputType:"select",
-    options:{
-        english:0,
-        hebrew:1
-        },
-    label:"Language: "},
-    {
-        id:'name',
-        inputType:"text",
-        label:"Exam Name: ",
-        placeHolder:"EnterName",
-        maxLength:200
+      id: 'language',
+      inputType: 'select',
+      options: {
+        english: 0,
+        hebrew: 1,
+      },
+      label: 'Language: ',
     },
     {
-        id:'header',
-        inputType:"textarea",
-        label:"Header:"
+      id: 'name',
+      inputType: 'text',
+      label: 'Exam Name: ',
+      placeHolder: 'EnterName',
+      maxLength: 200,
     },
     {
-        id:'successMessage',
-        inputType:"textarea",
-        label:"Success Message:"
+      id: 'header',
+      inputType: 'textarea',
+      label: 'Header:',
     },
     {
-        id:'failMessage',
-        inputType:"textarea",
-        label:"Fail Message:"
+      id: 'successMessage',
+      inputType: 'textarea',
+      label: 'Success Message:',
     },
     {
-        id:'name',
-        inputType:"text",
-        label:"Exam Name: ",
-        placeHolder:"EnterName",
-        maxLength:200
+      id: 'failMessage',
+      inputType: 'textarea',
+      label: 'Fail Message:',
     },
-   
-];
-   const form =test.map(formElement=>{
-      return  <Input {...formElement} />
-   })
-    
-    return (
-        <div className={classes.NewExam}>
-            <h2>Exam Creation </h2>
-            {form}
-        </div>
-    )
-}
+    {
+      id: 'name',
+      inputType: 'text',
+      label: 'Exam Name: ',
+      placeHolder: 'EnterName',
+      maxLength: 200,
+    },
+  ];
+  const form = test.map((formElement) => {
+    return <Input {...formElement} />;
+  });
 
-export default NewExam
+  return (
+    <div className={classes.NewExam}>
+      <h2>Exam Creation </h2>
+      {form}
+    </div>
+  );
+};
+
+export default NewExam;

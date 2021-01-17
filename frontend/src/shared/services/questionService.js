@@ -18,6 +18,7 @@ export function saveQuestion(question) {
   if (question._id) {
     const body = { ...question };
     delete body._id;
+    body.possibleAnswers.forEach((a) => delete a._id);
     return http.put(questionUrl(question._id), body);
   }
 
