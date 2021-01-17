@@ -7,16 +7,18 @@ import NewExam from './exams/pages/NewExam/NewExam';
 
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
-
+import NewExam from './exams/pages/NewExam/NewExam.jsx'
+import Exams from './exams/pages/Exams/Exams';
 function App() {
   return (
     <Fragment>
       <ToastContainer />
       <main className="container">
         <Switch>
-          <Route path="/questions" component={Questions} />
           <Route path="/exams/new" component={NewExam} />
-          <Redirect from="/" exact to="/questions" />
+          <Route path="/exams" component={Exams} />
+          <Route path="/questions" component={Questions} />
+          <Redirect from="/" exact to="/home" />
         </Switch>
       </main>
     </Fragment>

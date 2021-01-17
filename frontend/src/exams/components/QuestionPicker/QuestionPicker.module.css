@@ -1,0 +1,9 @@
+.NotPicked {
+  background-color: rgb(233, 233, 233);
+}
+.Picked {
+  background-color: lightgreen;
+}
+.Tags {
+  color: lightblue;
+}
