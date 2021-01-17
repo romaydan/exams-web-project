@@ -7,7 +7,6 @@ import NewExam from './exams/pages/NewExam/NewExam';
 
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
-import NewExam from './exams/pages/NewExam/NewExam.jsx'
 import Exams from './exams/pages/Exams/Exams';
 function App() {
   return (
