@@ -7,6 +7,7 @@ import Questions from './questions/pages/Questions';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import NewExam from './exams/pages/NewExam/NewExam.jsx'
+import Exams from './exams/pages/Exams/Exams';
 function App() {
   return (
     <Fragment>
@@ -14,8 +15,9 @@ function App() {
       <main className="container">
         <Switch>
           <Route path="/exams/new" component={NewExam} />
+          <Route path="/exams" component={Exams} />
           <Route path="/questions" component={Questions} />
-          <Redirect from="/" exact to="/questions" />
+          <Redirect from="/" exact to="/exams" />
         </Switch>
       </main>
     </Fragment>
