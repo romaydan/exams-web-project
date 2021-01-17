@@ -1,4 +1,6 @@
-function QuestionsTable({ questions, onDelete }) {
+import { Link } from 'react-router-dom';
+
+function QuestionsTable(props) {
   return (
     <table className="table">
       <thead>
@@ -12,7 +14,7 @@ function QuestionsTable({ questions, onDelete }) {
       </thead>
 
       <tbody>
-        {questions.map((q) => (
+        {props.questions.map((q) => (
           <tr key={q._id}>
             <td>
               {q.text}
@@ -24,9 +26,14 @@ function QuestionsTable({ questions, onDelete }) {
             <td>{q.type === 0 ? 'Single' : 'Multiple'}</td>
             <td></td>
             <td>
-              <button className="btn btn-info btn-sm mr-4">Edit</button>
+              <Link
+                to={`/questions/${q._id}`}
+                className="btn btn-info btn-sm mr-4"
+              >
+                Edit
+              </Link>
               <button
-                onClick={() => onDelete(q)}
+                onClick={() => props.onDelete(q)}
                 className="btn btn-danger btn-sm"
               >
                 Delete

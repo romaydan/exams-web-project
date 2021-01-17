@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import {
   deleteQuestion,
@@ -6,7 +7,7 @@ import {
 } from '../../shared/services/questionService';
 import QuestionsTable from '../components/QuestionsTable';
 
-function Questions() {
+function Questions(props) {
   const [questions, setQuestions] = useState([]);
 
   useEffect(() => {
@@ -39,6 +40,13 @@ function Questions() {
     <div className="row">
       <div className="col">
         <QuestionsTable questions={questions} onDelete={handleDelete} />
+        <Link
+          to="/questions/new"
+          className="btn btn-primary"
+          style={{ marginBottom: 20 }}
+        >
+          New Question
+        </Link>
       </div>
     </div>
   );
