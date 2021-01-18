@@ -128,6 +128,38 @@ function QuestionForm(props) {
         </div>
 
         <div className="form-group">
+          <label htmlFor="answersLayout">Answers layout:</label>
+          <div className="form-check">
+            <input
+              value={0}
+              checked={data.answersLayout == 0}
+              type="radio"
+              name="answersLayout"
+              id="vertical"
+              className="form-check-input"
+              onChange={handleChange}
+            />
+            <label htmlFor="vertical" className="form-check-label">
+              Vertical
+            </label>
+          </div>
+          <div className="form-check">
+            <input
+              value={1}
+              checked={data.answersLayout == 1}
+              type="radio"
+              name="answersLayout"
+              id="horizontal"
+              className="form-check-input"
+              onChange={handleChange}
+            />
+            <label htmlFor="horizontal" className="form-check-label">
+              Horizontal
+            </label>
+          </div>
+        </div>
+
+        <div className="form-group">
           <label htmlFor="tags">Tags:</label>
           <input
             value={

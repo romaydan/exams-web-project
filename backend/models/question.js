@@ -14,6 +14,7 @@ const questionSchema = new mongoose.Schema({
   answersLayout: { type: Number },
   tags: { type: [String] },
   lastUpdate: { type: Date },
+  numberOfTests: { type: Number },
 });
 
 const Question = mongoose.model('Question', questionSchema);
