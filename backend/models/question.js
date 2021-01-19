@@ -23,7 +23,7 @@ function validateQuestion(question) {
   const schema = Joi.object({
     type: Joi.number().min(0).max(1).required(),
     text: Joi.string().required(),
-    textBelow: Joi.string(),
+    textBelow: Joi.string().allow(''),
     possibleAnswers: Joi.array()
       .items(
         Joi.object({

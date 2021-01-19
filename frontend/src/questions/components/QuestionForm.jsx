@@ -9,9 +9,9 @@ function QuestionForm(props) {
     type: 0,
     text: '',
     textBelow: '',
-    possibleAnswers: [],
+    possibleAnswers: [{ answer: '', isCorrect: false }],
     answersLayout: 0,
-    tags: [],
+    tags: '',
   });
   const [error, setError] = useState('');
 
@@ -40,7 +40,7 @@ function QuestionForm(props) {
       textBelow: question.textBelow,
       possibleAnswers: question.possibleAnswers,
       answersLayout: question.answersLayout,
-      tags: question.tags,
+      tags: question.tags.reduce((a, c) => a + ', ' + c),
     };
   };
 
@@ -48,20 +48,44 @@ function QuestionForm(props) {
     e.preventDefault();
 
     try {
+      data.tags = data.tags.split(', ');
       await saveQuestion(data);
     } catch (ex) {
-      if (ex.response && ex.response.status === 400) {
-        setError(ex.response.data);
-        return;
-      }
+      if (ex.response && ex.response.status === 400) setError(ex.response.data);
+      return;
     }
 
     props.history.push('/questions');
   };
 
-  const handleChange = (e) => {
+  const handleChange = ({ currentTarget }) => {
+    const { name, value } = currentTarget;
     const newData = { ...data };
-    newData[e.currentTarget.name] = e.currentTarget.value;
+
+    newData[name] = value;
+    setData(newData);
+  };
+
+  const handlePossibleAnswerChange = ({ currentTarget }) => {
+    const { id, name, value, checked } = currentTarget;
+    const newData = { ...data };
+
+    newData.possibleAnswers[id][name] = name === 'answer' ? value : checked;
+    setData(newData);
+  };
+
+  const deletePossibleAnswer = (possibleAnswer) => {
+    const newData = { ...data };
+    const index = newData.possibleAnswers.indexOf(possibleAnswer);
+
+    newData.possibleAnswers.splice(index, 1);
+    setData(newData);
+  };
+
+  const addPossibleAnswer = () => {
+    const newData = { ...data };
+
+    newData.possibleAnswers.push({ answer: '', isCorrect: false });
     setData(newData);
   };
 
@@ -112,19 +136,48 @@ function QuestionForm(props) {
         <div className="form-group">
           <label htmlFor="possibleAnswers">Possible answers:</label>
           {data.possibleAnswers.map((a) => (
-            <textarea
-              key={a._id}
-              value={a.answer}
-              name={`possibleAnswers[${data.possibleAnswers.indexOf(
-                a
-              )}].answer`}
-              id="possibleAnswers"
-              className="form-control"
-              onChange={handleChange}
-              cols="30"
-              rows="1"
-            ></textarea>
+            <div
+              className="form-group"
+              key={a._id || Date.now() * Math.random()}
+            >
+              <div className="form-inline">
+                <button
+                  type="button"
+                  className="btn btn-danger btn-sm mr-2"
+                  onClick={(a) => deletePossibleAnswer(a)}
+                >
+                  X
+                </button>
+                <textarea
+                  value={a.answer}
+                  name="answer"
+                  id={data.possibleAnswers.indexOf(a)}
+                  className="form-control mr-2"
+                  onChange={handlePossibleAnswerChange}
+                  cols="30"
+                  rows="1"
+                ></textarea>
+                <div className="form-check">
+                  <input
+                    checked={a.isCorrect}
+                    type="checkbox"
+                    name="isCorrect"
+                    id={data.possibleAnswers.indexOf(a)}
+                    className="form-check-input"
+                    onChange={handlePossibleAnswerChange}
+                  />
+                  {a.isCorrect ? 'Correct' : 'Incorrect'}
+                </div>
+              </div>
+            </div>
           ))}
+          <button
+            type="button"
+            className="btn btn-secondary btn-sm"
+            onClick={addPossibleAnswer}
+          >
+            Add an answer
+          </button>
         </div>
 
         <div className="form-group">
@@ -162,9 +215,7 @@ function QuestionForm(props) {
         <div className="form-group">
           <label htmlFor="tags">Tags:</label>
           <input
-            value={
-              data.tags.length > 0 && data.tags.reduce((a, c) => a + ', ' + c)
-            }
+            value={data.tags}
             type="text"
             name="tags"
             id="tags"
@@ -175,7 +226,9 @@ function QuestionForm(props) {
 
         {error && <div className="alert alert-danger">{error}</div>}
 
-        <button className="btn btn-primary">Save</button>
+        <button type="submit" className="btn btn-primary">
+          Save
+        </button>
       </form>
     </div>
   );
