@@ -138,7 +138,7 @@ function QuestionForm(props) {
           {data.possibleAnswers.map((a) => (
             <div
               className="form-group"
-              key={a._id || Date.now() * Math.random()}
+              key={a._id || data.possibleAnswers.indexOf(a)}
             >
               <div className="form-inline">
                 <button

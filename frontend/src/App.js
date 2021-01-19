@@ -2,7 +2,7 @@ import { Fragment } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
-import QuestionForm from './questions/components/QuestionForm';
+import QuestionForm from './questions/pages/QuestionForm';
 import Questions from './questions/pages/Questions';
 import NotFound from './shared/components/NotFound';
 import NewExam from './exams/pages/NewExam/NewExam';
@@ -10,6 +10,7 @@ import Exams from './exams/pages/Exams/Exams';
 
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
+
 function App() {
   return (
     <Fragment>
