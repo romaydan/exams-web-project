@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 function QuestionsTable(props) {
@@ -10,7 +11,10 @@ function QuestionsTable(props) {
     {
       key: 'edit',
       content: (question) => (
-        <Link to={`/questions/${question._id}`} className="btn btn-info btn-sm">
+        <Link
+          to={`/questions/${question._id}`}
+          className="btn btn-warning btn-sm"
+        >
           Edit
         </Link>
       ),
@@ -93,5 +97,12 @@ function QuestionsTable(props) {
     </table>
   );
 }
+
+QuestionsTable.propTypes = {
+  questions: PropTypes.array.isRequired,
+  sortColumn: PropTypes.object.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  onSort: PropTypes.func.isRequired,
+};
 
 export default QuestionsTable;

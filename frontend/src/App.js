@@ -6,6 +6,7 @@ import QuestionForm from './questions/pages/QuestionForm';
 import Questions from './questions/pages/Questions';
 import NotFound from './shared/components/NotFound';
 import NewExam from './exams/pages/NewExam/NewExam';
+import NavBar from './shared/components/NavBar';
 import Exams from './exams/pages/Exams/Exams';
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -15,6 +16,7 @@ function App() {
   return (
     <Fragment>
       <ToastContainer />
+      <NavBar />
       <main className="container">
         <Switch>
           <Route path="/questions/:id" component={QuestionForm} />

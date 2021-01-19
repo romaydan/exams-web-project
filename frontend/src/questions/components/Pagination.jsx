@@ -18,7 +18,7 @@ function Pagination(props) {
           >
             <button
               className="page-link"
-              onClick={() => props.onPageChanged(page)}
+              onClick={() => props.onPageChange(page)}
             >
               {page}
             </button>
@@ -33,7 +33,7 @@ Pagination.propTypes = {
   itemsCount: PropTypes.number.isRequired,
   pageSize: PropTypes.number.isRequired,
   currentPage: PropTypes.number.isRequired,
-  onPageChanged: PropTypes.func.isRequired,
+  onPageChange: PropTypes.func.isRequired,
 };
 
 export default Pagination;

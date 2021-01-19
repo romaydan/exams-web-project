@@ -44,7 +44,7 @@ function Questions(props) {
     }
   };
 
-  const handlePageChanged = (page) => {
+  const handlePageChange = (page) => {
     setCurrentPage(page);
   };
 
@@ -73,7 +73,7 @@ function Questions(props) {
           itemsCount={questions.length}
           pageSize={pageSize}
           currentPage={currentPage}
-          onPageChanged={handlePageChanged}
+          onPageChange={handlePageChange}
         />
         <Link to="/questions/new" className="btn btn-primary">
           New Question
