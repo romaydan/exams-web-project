@@ -47,8 +47,10 @@ const QuestionPicker = (props) => {
 
   return (
     <div>
-      <h3>Filter By Tags or content</h3>
-      <SearchBar changed={searchChangeHandler}></SearchBar>
+      <SearchBar
+        label='Filter By Tags or content'
+        changed={searchChangeHandler}
+      ></SearchBar>
       {questionsItems}
     </div>
   );
