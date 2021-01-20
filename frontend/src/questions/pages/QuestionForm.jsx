@@ -3,6 +3,7 @@ import {
   getQuestion,
   saveQuestion,
 } from '../../shared/services/questionService';
+import PossibleAnswerForm from '../components/PossibleAnswerForm';
 
 function QuestionForm(props) {
   const [data, setData] = useState({
@@ -66,6 +67,14 @@ function QuestionForm(props) {
     setData(newData);
   };
 
+  const handlePossibleAnswerDelete = (possibleAnswer) => {
+    const newData = { ...data };
+    const index = newData.possibleAnswers.indexOf(possibleAnswer);
+
+    newData.possibleAnswers.splice(index, 1);
+    setData(newData);
+  };
+
   const handlePossibleAnswerChange = ({ currentTarget }) => {
     const { id, name, value, checked } = currentTarget;
     const newData = { ...data };
@@ -74,15 +83,7 @@ function QuestionForm(props) {
     setData(newData);
   };
 
-  const deletePossibleAnswer = (possibleAnswer) => {
-    const newData = { ...data };
-    const index = newData.possibleAnswers.indexOf(possibleAnswer);
-
-    newData.possibleAnswers.splice(index, 1);
-    setData(newData);
-  };
-
-  const addPossibleAnswer = () => {
+  const handlePossibleAnswerAdd = () => {
     const newData = { ...data };
 
     newData.possibleAnswers.push({ answer: '', isCorrect: false });
@@ -92,15 +93,17 @@ function QuestionForm(props) {
   return (
     <div>
       <h1>Question Form</h1>
+
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="type">Question type:</label>
+
           <select
-            value={data.type}
             name="type"
             id="type"
-            className="form-control"
+            value={data.type}
             onChange={handleChange}
+            className="form-control"
           >
             <option value={0}>Single Choice Question</option>
             <option value={1}>Multiple Selection Question</option>
@@ -109,72 +112,51 @@ function QuestionForm(props) {
 
         <div className="form-group">
           <label htmlFor="text">Question text:</label>
+
           <textarea
-            value={data.text}
             name="text"
             id="text"
-            className="form-control"
-            onChange={handleChange}
-            cols="30"
             rows="2"
+            value={data.text}
+            onChange={handleChange}
+            className="form-control"
           ></textarea>
         </div>
 
         <div className="form-group">
           <label htmlFor="textBelow">Text below question:</label>
+
           <textarea
-            value={data.textBelow}
             name="textBelow"
             id="textBelow"
-            className="form-control"
-            onChange={handleChange}
-            cols="30"
             rows="4"
+            value={data.textBelow}
+            onChange={handleChange}
+            className="form-control"
           ></textarea>
         </div>
 
         <div className="form-group">
           <label htmlFor="possibleAnswers">Possible answers:</label>
-          {data.possibleAnswers.map((a) => (
-            <div
-              className="form-group"
-              key={a._id || data.possibleAnswers.indexOf(a)}
-            >
-              <div className="form-inline">
-                <button
-                  type="button"
-                  className="btn btn-danger btn-sm mr-2"
-                  onClick={(a) => deletePossibleAnswer(a)}
-                >
-                  X
-                </button>
-                <textarea
-                  value={a.answer}
-                  name="answer"
-                  id={data.possibleAnswers.indexOf(a)}
-                  className="form-control mr-2"
-                  onChange={handlePossibleAnswerChange}
-                  cols="30"
-                  rows="1"
-                ></textarea>
-                <div className="form-check">
-                  <input
-                    checked={a.isCorrect}
-                    type="checkbox"
-                    name="isCorrect"
-                    id={data.possibleAnswers.indexOf(a)}
-                    className="form-check-input"
-                    onChange={handlePossibleAnswerChange}
-                  />
-                  {a.isCorrect ? 'Correct' : 'Incorrect'}
-                </div>
-              </div>
-            </div>
-          ))}
+
+          {data.possibleAnswers.map((possibleAnswer) => {
+            const index = data.possibleAnswers.indexOf(possibleAnswer);
+
+            return (
+              <PossibleAnswerForm
+                key={possibleAnswer._id || index}
+                possibleAnswer={possibleAnswer}
+                index={index}
+                handleChange={handlePossibleAnswerChange}
+                handleDelete={handlePossibleAnswerDelete}
+              />
+            );
+          })}
+
           <button
             type="button"
-            className="btn btn-secondary btn-sm"
-            onClick={addPossibleAnswer}
+            onClick={handlePossibleAnswerAdd}
+            className="btn btn-secondary"
           >
             Add an answer
           </button>
@@ -182,30 +164,34 @@ function QuestionForm(props) {
 
         <div className="form-group">
           <label htmlFor="answersLayout">Answers layout:</label>
+
           <div className="form-check">
             <input
-              value={0}
-              checked={data.answersLayout == 0}
-              type="radio"
               name="answersLayout"
               id="vertical"
-              className="form-check-input"
+              type="radio"
+              value={0}
+              checked={data.answersLayout == 0}
               onChange={handleChange}
+              className="form-check-input"
             />
+
             <label htmlFor="vertical" className="form-check-label">
               Vertical
             </label>
           </div>
+
           <div className="form-check">
             <input
-              value={1}
-              checked={data.answersLayout == 1}
-              type="radio"
               name="answersLayout"
               id="horizontal"
-              className="form-check-input"
+              type="radio"
+              value={1}
+              checked={data.answersLayout == 1}
               onChange={handleChange}
+              className="form-check-input"
             />
+
             <label htmlFor="horizontal" className="form-check-label">
               Horizontal
             </label>
@@ -214,13 +200,14 @@ function QuestionForm(props) {
 
         <div className="form-group">
           <label htmlFor="tags">Tags:</label>
+
           <input
-            value={data.tags}
-            type="text"
             name="tags"
             id="tags"
-            className="form-control"
+            type="text"
+            value={data.tags}
             onChange={handleChange}
+            className="form-control"
           />
         </div>
 
