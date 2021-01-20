@@ -1,0 +1,12 @@
+.Exams {
+  text-align: center;
+}
+.Exam {
+  border: 1px solid black;
+  background: #53cca491;
+  width: 75%;
+  padding: 10px;
+  margin: 15px auto;
+  display: flex;
+  justify-content: space-between;
+}
