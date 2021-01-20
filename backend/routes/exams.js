@@ -18,6 +18,8 @@ router.post('/', async (req, res) => {
         header: req.body.header,
         success: req.body.success,
         failure: req.body.failure,
+        isShow: req.body.isShow,
+        passingGrade: req.body.passingGrade,
         questions: req.body.questions
     });
     await exam.save();
