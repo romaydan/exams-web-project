@@ -1,7 +1,7 @@
+import './App.css'
 import { Fragment } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { Redirect, Route, Switch } from 'react-router-dom';
-
 import QuestionForm from './questions/components/QuestionForm';
 import Questions from './questions/pages/Questions';
 import NotFound from './shared/components/NotFound';
@@ -19,6 +19,7 @@ function App() {
           <Route path="/questions/:id" component={QuestionForm} />
           <Route path="/questions" component={Questions} />
           <Route path="/exams/new" component={NewExam} />
+          <Route path="/exams/edit/:id" component={NewExam} />
           <Route path="/exams" component={Exams} />
           <Route path="/not-found" component={NotFound} />
           <Redirect from="/" exact to="/questions" />
