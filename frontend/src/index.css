@@ -19,3 +19,7 @@ code {
 .clickable {
   cursor: pointer;
 }
+
+.container {
+  margin-bottom: 30px;
+}

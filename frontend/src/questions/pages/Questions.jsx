@@ -1,19 +1,27 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import _ from 'lodash';
+
+import Pagination from '../components/Pagination';
+import QuestionsTable from '../components/QuestionsTable';
+
 import {
   deleteQuestion,
   getQuestions,
 } from '../../shared/services/questionService';
-import QuestionsTable from '../components/QuestionsTable';
+import { paginate } from '../../shared/utils/paginate';
 
 function Questions(props) {
   const [questions, setQuestions] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
+  const [sortColumn, setSortColumn] = useState({ path: 'title', order: 'asc' });
 
   useEffect(() => {
     async function populateQuestions() {
-      const { data: questions } = await getQuestions();
-      setQuestions(questions);
+      const { data } = await getQuestions();
+      setQuestions(data);
     }
 
     populateQuestions();
@@ -36,15 +44,41 @@ function Questions(props) {
     }
   };
 
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const handleSort = (sortColumn) => {
+    setSortColumn(sortColumn);
+  };
+
+  const getPagedData = () => {
+    const sorted = _.orderBy(questions, [sortColumn.path], [sortColumn.order]);
+    const newQuestions = paginate(sorted, currentPage, pageSize);
+
+    return newQuestions;
+  };
+
   return (
     <div className="row">
       <div className="col">
-        <QuestionsTable questions={questions} onDelete={handleDelete} />
-        <Link
-          to="/questions/new"
-          className="btn btn-primary"
-          style={{ marginBottom: 20 }}
-        >
+        <p>Showing {questions.length} questions in the database.</p>
+
+        <QuestionsTable
+          questions={getPagedData()}
+          sortColumn={sortColumn}
+          onDelete={handleDelete}
+          onSort={handleSort}
+        />
+
+        <Pagination
+          itemsCount={questions.length}
+          pageSize={pageSize}
+          currentPage={currentPage}
+          onPageChange={handlePageChange}
+        />
+
+        <Link to="/questions/new" className="btn btn-primary">
           New Question
         </Link>
       </div>
