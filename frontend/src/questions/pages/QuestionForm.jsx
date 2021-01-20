@@ -139,19 +139,15 @@ function QuestionForm(props) {
         <div className="form-group">
           <label htmlFor="possibleAnswers">Possible answers:</label>
 
-          {data.possibleAnswers.map((possibleAnswer) => {
-            const index = data.possibleAnswers.indexOf(possibleAnswer);
-
-            return (
-              <PossibleAnswerForm
-                key={possibleAnswer._id || index}
-                possibleAnswer={possibleAnswer}
-                index={index}
-                handleChange={handlePossibleAnswerChange}
-                handleDelete={handlePossibleAnswerDelete}
-              />
-            );
-          })}
+          {data.possibleAnswers.map((possibleAnswer, index) => (
+            <PossibleAnswerForm
+              key={possibleAnswer._id || index}
+              possibleAnswer={possibleAnswer}
+              index={index}
+              handleChange={handlePossibleAnswerChange}
+              handleDelete={handlePossibleAnswerDelete}
+            />
+          ))}
 
           <button
             type="button"
