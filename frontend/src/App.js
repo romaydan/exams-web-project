@@ -9,8 +9,8 @@ import NewExam from './exams/pages/NewExam/NewExam';
 import NavBar from './shared/components/NavBar';
 import Exams from './exams/pages/Exams/Exams';
 
-import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (

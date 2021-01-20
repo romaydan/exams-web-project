@@ -63,18 +63,21 @@ function Questions(props) {
     <div className="row">
       <div className="col">
         <p>Showing {questions.length} questions in the database.</p>
+
         <QuestionsTable
           questions={getPagedData()}
           sortColumn={sortColumn}
           onDelete={handleDelete}
           onSort={handleSort}
         />
+
         <Pagination
           itemsCount={questions.length}
           pageSize={pageSize}
           currentPage={currentPage}
           onPageChange={handlePageChange}
         />
+
         <Link to="/questions/new" className="btn btn-primary">
           New Question
         </Link>

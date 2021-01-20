@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-function NavBar(props) {
+const NavBar = (props) => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <Link className="navbar-brand" to="/">
@@ -22,6 +22,6 @@ function NavBar(props) {
       </div>
     </nav>
   );
-}
+};
 
 export default NavBar;

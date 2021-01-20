@@ -2,7 +2,9 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
-function QuestionsTable(props) {
+const QuestionsTable = (props) => {
+  const { questions, sortColumn, onDelete, onSort } = props;
+
   const columns = [
     { path: 'text', label: 'Question Text' },
     { path: 'lastUpdate', label: 'Last Update' },
@@ -23,7 +25,7 @@ function QuestionsTable(props) {
       key: 'delete',
       content: (question) => (
         <button
-          onClick={() => props.onDelete(question)}
+          onClick={() => onDelete(question)}
           className="btn btn-danger btn-sm"
         >
           Delete
@@ -33,23 +35,23 @@ function QuestionsTable(props) {
   ];
 
   const raiseSort = (path) => {
-    const sortColumn = { ...props.sortColumn };
+    const newSortColumn = { ...sortColumn };
 
-    if (sortColumn.path === path) {
-      sortColumn.order = sortColumn.order === 'asc' ? 'desc' : 'asc';
+    if (newSortColumn.path === path) {
+      newSortColumn.order = newSortColumn.order === 'asc' ? 'desc' : 'asc';
     } else {
-      sortColumn.path = path;
-      sortColumn.order = 'asc';
+      newSortColumn.path = path;
+      newSortColumn.order = 'asc';
     }
 
-    props.onSort(sortColumn);
+    onSort(newSortColumn);
   };
 
   const renderSortIcon = (column) => {
-    const { sortColumn } = props;
-
     if (column.path !== sortColumn.path) return null;
+
     if (sortColumn.order === 'asc') return <i className="fa fa-sort-asc"></i>;
+
     return <i className="fa fa-sort-desc"></i>;
   };
 
@@ -75,9 +77,9 @@ function QuestionsTable(props) {
         <tr>
           {columns.map((column) => (
             <th
-              className="clickable"
               key={column.path || column.key}
               onClick={() => raiseSort(column.path)}
+              className="clickable"
             >
               {column.label} {renderSortIcon(column)}
             </th>
@@ -86,7 +88,7 @@ function QuestionsTable(props) {
       </thead>
 
       <tbody>
-        {props.questions.map((item) => (
+        {questions.map((item) => (
           <tr key={item._id}>
             {columns.map((column) => (
               <td key={createKey(item, column)}>{renderCell(item, column)}</td>
@@ -96,7 +98,7 @@ function QuestionsTable(props) {
       </tbody>
     </table>
   );
-}
+};
 
 QuestionsTable.propTypes = {
   questions: PropTypes.array.isRequired,

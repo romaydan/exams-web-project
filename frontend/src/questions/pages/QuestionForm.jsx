@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
+
+import PossibleAnswerForm from '../components/PossibleAnswerForm';
+
 import {
   getQuestion,
   saveQuestion,
 } from '../../shared/services/questionService';
-import PossibleAnswerForm from '../components/PossibleAnswerForm';
 
 function QuestionForm(props) {
   const [data, setData] = useState({
@@ -59,8 +61,8 @@ function QuestionForm(props) {
     props.history.push('/questions');
   };
 
-  const handleChange = ({ currentTarget }) => {
-    const { name, value } = currentTarget;
+  const handleChange = (e) => {
+    const { name, value } = e.currentTarget;
     const newData = { ...data };
 
     newData[name] = value;
@@ -75,8 +77,8 @@ function QuestionForm(props) {
     setData(newData);
   };
 
-  const handlePossibleAnswerChange = ({ currentTarget }) => {
-    const { id, name, value, checked } = currentTarget;
+  const handlePossibleAnswerChange = (e) => {
+    const { id, name, value, checked } = e.currentTarget;
     const newData = { ...data };
 
     newData.possibleAnswers[id][name] = name === 'answer' ? value : checked;

@@ -1,4 +1,6 @@
-function PossibleAnswerForm(props) {
+import PropTypes from 'prop-types';
+
+const PossibleAnswerForm = (props) => {
   const { possibleAnswer, index, handleChange, handleDelete } = props;
 
   return (
@@ -7,7 +9,7 @@ function PossibleAnswerForm(props) {
         <button
           type="button"
           onClick={() => handleDelete(possibleAnswer)}
-          className="btn btn-danger btn-sm mr-2"
+          className="btn btn-danger btn-sm"
         >
           X
         </button>
@@ -18,7 +20,7 @@ function PossibleAnswerForm(props) {
           rows="1"
           value={possibleAnswer.answer}
           onChange={handleChange}
-          className="form-control mr-2"
+          className="form-control mx-2"
         ></textarea>
 
         <div className="form-check">
@@ -38,6 +40,13 @@ function PossibleAnswerForm(props) {
       </div>
     </div>
   );
-}
+};
+
+PossibleAnswerForm.propTypes = {
+  possibleAnswer: PropTypes.object.isRequired,
+  index: PropTypes.number.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  handleDelete: PropTypes.func.isRequired,
+};
 
 export default PossibleAnswerForm;
