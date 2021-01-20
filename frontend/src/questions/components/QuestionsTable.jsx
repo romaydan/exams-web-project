@@ -25,6 +25,7 @@ const QuestionsTable = (props) => {
       key: 'delete',
       content: (question) => (
         <button
+          disabled={question.numberOfTests > 0}
           onClick={() => onDelete(question)}
           className="btn btn-danger btn-sm"
         >

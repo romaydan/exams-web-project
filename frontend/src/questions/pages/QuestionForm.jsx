@@ -211,6 +211,10 @@ function QuestionForm(props) {
 
         {error && <div className="alert alert-danger">{error}</div>}
 
+        <button type="button" className="btn btn-outline-primary pull-right">
+          Show
+        </button>
+
         <button type="submit" className="btn btn-primary">
           Save
         </button>
