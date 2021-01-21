@@ -97,49 +97,49 @@ function QuestionForm(props) {
       <h1>Question Form</h1>
 
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="type">Question type:</label>
+        <div className='form-group'>
+          <label htmlFor='type'>Question type:</label>
 
           <select
-            name="type"
-            id="type"
+            name='type'
+            id='type'
             value={data.type}
             onChange={handleChange}
-            className="form-control"
+            className='form-control'
           >
             <option value={0}>Single Choice Question</option>
             <option value={1}>Multiple Selection Question</option>
           </select>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="text">Question text:</label>
+        <div className='form-group'>
+          <label htmlFor='text'>Question text:</label>
 
           <textarea
-            name="text"
-            id="text"
-            rows="2"
+            name='text'
+            id='text'
+            rows='2'
             value={data.text}
             onChange={handleChange}
-            className="form-control"
+            className='form-control'
           ></textarea>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="textBelow">Text below question:</label>
+        <div className='form-group'>
+          <label htmlFor='textBelow'>Text below question:</label>
 
           <textarea
-            name="textBelow"
-            id="textBelow"
-            rows="4"
+            name='textBelow'
+            id='textBelow'
+            rows='4'
             value={data.textBelow}
             onChange={handleChange}
-            className="form-control"
+            className='form-control'
           ></textarea>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="possibleAnswers">Possible answers:</label>
+        <div className='form-group'>
+          <label htmlFor='possibleAnswers'>Possible answers:</label>
 
           {data.possibleAnswers.map((possibleAnswer, index) => (
             <PossibleAnswerForm
@@ -152,70 +152,70 @@ function QuestionForm(props) {
           ))}
 
           <button
-            type="button"
+            type='button'
             onClick={handlePossibleAnswerAdd}
-            className="btn btn-secondary"
+            className='btn btn-secondary'
           >
             Add an answer
           </button>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="answersLayout">Answers layout:</label>
+        <div className='form-group'>
+          <label htmlFor='answersLayout'>Answers layout:</label>
 
-          <div className="form-check">
+          <div className='form-check'>
             <input
-              name="answersLayout"
-              id="vertical"
-              type="radio"
+              name='answersLayout'
+              id='vertical'
+              type='radio'
               value={0}
-              checked={data.answersLayout == 0}
+              checked={+data.answersLayout === 0}
               onChange={handleChange}
-              className="form-check-input"
+              className='form-check-input'
             />
 
-            <label htmlFor="vertical" className="form-check-label">
+            <label htmlFor='vertical' className='form-check-label'>
               Vertical
             </label>
           </div>
 
-          <div className="form-check">
+          <div className='form-check'>
             <input
-              name="answersLayout"
-              id="horizontal"
-              type="radio"
+              name='answersLayout'
+              id='horizontal'
+              type='radio'
               value={1}
               checked={data.answersLayout == 1}
               onChange={handleChange}
-              className="form-check-input"
+              className='form-check-input'
             />
 
-            <label htmlFor="horizontal" className="form-check-label">
+            <label htmlFor='horizontal' className='form-check-label'>
               Horizontal
             </label>
           </div>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="tags">Tags:</label>
+        <div className='form-group'>
+          <label htmlFor='tags'>Tags:</label>
 
           <input
-            name="tags"
-            id="tags"
-            type="text"
+            name='tags'
+            id='tags'
+            type='text'
             value={data.tags}
             onChange={handleChange}
-            className="form-control"
+            className='form-control'
           />
         </div>
 
-        {error && <div className="alert alert-danger">{error}</div>}
+        {error && <div className='alert alert-danger'>{error}</div>}
 
-        <button type="button" className="btn btn-outline-primary pull-right">
+        <button type='button' className='btn btn-outline-primary pull-right'>
           Show
         </button>
 
-        <button type="submit" className="btn btn-primary">
+        <button type='submit' className='btn btn-primary'>
           Save
         </button>
       </form>

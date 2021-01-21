@@ -1,24 +1,24 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useReducer, useEffect, useRef } from 'react';
 import { getQuestions } from '../../../shared/services/questionService';
 import SearchBar from '../../../shared/components/UIElements/SearchBar';
 import classes from './QuestionPicker.module.css';
+import {
+  ACTIONS,
+  radioButtonReducer,
+} from '../../../shared/utils/radioBtnReducer';
 
 const QuestionPicker = (props) => {
-  const [questions, setQuestions] = useState([]);
+  const [questions, dispatch] = useReducer(radioButtonReducer, []);
+  // const [questions, setQuestions] = useState([]);
   const allQuestions = useRef([]);
   useEffect(() => {
     getQuestions().then((res) => {
-      setQuestions(res.data);
+      dispatch({ type: ACTIONS.SET, payload: res.data });
       allQuestions.current = res.data;
     });
   }, []);
-  const questionPicked = (question) => {
-    const newQuestions = [...questions];
-    const index = newQuestions.indexOf(question);
-    newQuestions[index] = { ...newQuestions[index] };
-    newQuestions[index].picked = !newQuestions[index].picked;
-    setQuestions(newQuestions);
-    delete question.picked;
+  const questionSelected = (question) => {
+    dispatch({ type: ACTIONS.SELECT_MULTIPLE, payload: question });
     props.questionSelected(question);
   };
   const searchChangeHandler = (value) => {
@@ -30,20 +30,8 @@ const QuestionPicker = (props) => {
         quest.text.includes(value) ||
         quest.tags.filter((tag) => tag.includes(value)).length > 0
     );
-    setQuestions(filtered);
+    dispatch({ type: ACTIONS.SET, payload: filtered });
   };
-  let questionsItems = questions.map((question) => {
-    return (
-      <div
-        className={question.picked ? classes.Picked : classes.NotPicked}
-        key={question._id}
-        onClick={() => questionPicked(question)}
-      >
-        <h3> {question.text}</h3>
-        <h5 className={classes.Tags}>{question.tags.join(' | ')}</h5>
-      </div>
-    );
-  });
 
   return (
     <div>
@@ -51,7 +39,16 @@ const QuestionPicker = (props) => {
         label='Filter By Tags or content'
         changed={searchChangeHandler}
       ></SearchBar>
-      {questionsItems}
+      {questions.map((question) => (
+        <div
+          className={question.selected ? classes.Selected : classes.NotSelected}
+          key={question._id}
+          onClick={() => questionSelected(question)}
+        >
+          <h3> {question.text}</h3>
+          <h5 className={classes.Tags}>{question.tags.join(' | ')}</h5>
+        </div>
+      ))}
     </div>
   );
 };

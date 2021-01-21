@@ -8,9 +8,6 @@ const NewExam = (props) => {
   const isAddMode = !id;
   const [exam, setExam] = useState({});
   useEffect(() => {
-    fetchExam();
-  }, []);
-  const fetchExam = () => {
     if (
       Object.keys(props.match.params).length > 0 &&
       props.match.params.id !== undefined
@@ -19,34 +16,36 @@ const NewExam = (props) => {
         setExam(res.data);
       });
     }
-  };
+  }, [props.match.params]);
   const submitHandler = (data) => {
     let submitedExam;
-
     submitedExam = !isAddMode ? { ...data, _id: exam._id } : { ...data };
     submitedExam.questions = pickedQuestions;
     console.log('submitedExam :>> ', submitedExam);
     saveExam(submitedExam)
-      .then((res) => console.log('sent', res))
+      .then((res) => setExam(res.data))
       .catch((error) => console.log('error', error));
   };
 
-  const questionPickedHandler = (question) => {
+  const questionSelectedHandler = (question) => {
+    let newQuestion = { ...question };
+    delete newQuestion.selected;
     if (
-      pickedQuestions.find((quest) => quest._id === question._id) !== undefined
+      pickedQuestions.find((quest) => quest._id === newQuestion._id) !==
+      undefined
     ) {
       pickedQuestions = pickedQuestions.filter(
-        (quest) => quest._id !== question._id
+        (quest) => quest._id !== newQuestion._id
       );
     } else {
-      pickedQuestions.push(question);
+      pickedQuestions.push(newQuestion);
     }
   };
   return (
     <div>
       <h3>{isAddMode ? 'Add User' : 'Edit User'}</h3>
       <ExamForm submited={submitHandler} isAddMode={isAddMode} exam={exam}>
-        <QuestionPicker questionSelected={questionPickedHandler} />
+        <QuestionPicker questionSelected={questionSelectedHandler} />
       </ExamForm>
     </div>
   );

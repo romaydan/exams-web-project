@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import classes from './ExamForm.module.css';
-import SaveIcon from '@material-ui/icons/Save';
 import Input from '../../../shared/components/FormElements/Input';
-import { Button } from '@material-ui/core';
+
 const fieldsProps = [
   {
     name: 'language',

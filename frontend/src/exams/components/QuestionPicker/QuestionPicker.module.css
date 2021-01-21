@@ -1,7 +1,7 @@
-.NotPicked {
+.NotSelected {
   background-color: rgb(233, 233, 233);
 }
-.Picked {
+.Selected {
   background-color: lightgreen;
 }
 .Tags {

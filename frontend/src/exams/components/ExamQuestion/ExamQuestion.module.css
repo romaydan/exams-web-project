@@ -1,0 +1,6 @@
+.Selected {
+  background-color: lightgreen;
+}
+.NotSelected {
+  background-color: #ccc;
+}
