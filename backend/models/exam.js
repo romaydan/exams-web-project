@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { questionSchema } = require('./question');
 const Joi = require('joi');
 
 const examSchema = new mongoose.Schema({
@@ -10,7 +9,9 @@ const examSchema = new mongoose.Schema({
   header: { type: String },
   success: { type: String },
   failure: { type: String },
-  questions: { type: [questionSchema] },
+  questions: {
+    type: [{ type: [mongoose.Schema.Types.ObjectId], ref: 'Question' }],
+  },
 });
 
 const Exam = mongoose.model('Exam', examSchema);

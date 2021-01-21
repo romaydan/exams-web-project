@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
 
-const answerSchema = new mongoose.Schema({
+const possibleAnswerSchema = new mongoose.Schema({
   answer: { type: String },
   isCorrect: { type: Boolean },
 });
@@ -10,7 +10,7 @@ const questionSchema = new mongoose.Schema({
   type: { type: Number },
   text: { type: String },
   textBelow: { type: String },
-  possibleAnswers: { type: [answerSchema] },
+  possibleAnswers: { type: [possibleAnswerSchema] },
   answersLayout: { type: Number },
   tags: { type: [String] },
   lastUpdate: { type: Date },
@@ -33,7 +33,9 @@ function validateQuestion(question) {
       )
       .required(),
     answersLayout: Joi.number().min(0).max(1).required(),
-    tags: Joi.array().items(Joi.string()),
+    tags: Joi.string().required(),
+    lastUpdate: Joi.date(),
+    numberOfTests: Joi.number(),
   });
 
   return schema.validate(question);

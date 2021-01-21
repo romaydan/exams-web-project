@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-  const questions = await Question.find().select('-__v');
+  const questions = await Question.find();
 
   res.send(questions);
 });
@@ -18,8 +18,9 @@ router.post('/', async (req, res) => {
     textBelow: req.body.textBelow,
     possibleAnswers: req.body.possibleAnswers,
     answersLayout: req.body.answersLayout,
-    tags: req.body.tags,
+    tags: req.body.tags.split(', '),
     lastUpdate: Date.now(),
+    numberOfTests: 0,
   });
   await question.save();
 
@@ -38,8 +39,9 @@ router.put('/:id', async (req, res) => {
       textBelow: req.body.textBelow,
       possibleAnswers: req.body.possibleAnswers,
       answersLayout: req.body.answersLayout,
-      tags: req.body.tags,
+      tags: req.body.tags.split(', '),
       lastUpdate: Date.now(),
+      numberOfTests: req.body.numberOfTests,
     },
     { new: true }
   );

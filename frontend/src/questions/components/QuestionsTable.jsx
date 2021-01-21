@@ -59,6 +59,10 @@ const QuestionsTable = (props) => {
   const renderCell = (item, column) => {
     if (column.content) return column.content(item);
 
+    if (column.path === 'text') {
+      return _.truncate(_.get(item, column.path), { length: 50 });
+    }
+
     if (column.path === 'lastUpdate')
       return new Date(_.get(item, column.path)).toLocaleDateString();
 
@@ -70,6 +74,10 @@ const QuestionsTable = (props) => {
 
   const createKey = (item, column) => {
     return item._id + (column.path || column.key);
+  };
+
+  const createTitle = (item, column) => {
+    if (item.text.length > 50 && column.path === 'text') return item.text;
   };
 
   return (
@@ -92,7 +100,12 @@ const QuestionsTable = (props) => {
         {questions.map((item) => (
           <tr key={item._id}>
             {columns.map((column) => (
-              <td key={createKey(item, column)}>{renderCell(item, column)}</td>
+              <td
+                key={createKey(item, column)}
+                title={createTitle(item, column)}
+              >
+                {renderCell(item, column)}
+              </td>
             ))}
           </tr>
         ))}
