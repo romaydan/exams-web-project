@@ -1,31 +1,31 @@
 const mongoose = require('mongoose');
-const { questionSchema } = require('./question');
-
+const { examSchema } = require('./exam');
 const Joi = require('joi');
 
 const studentSchema = new mongoose.Schema({
-    firstName: { type: String },
-    lastName: { type: String },
-    email: { type: String },
-    phone: { type: Boolean },
-    registerDate: { type: Date },
-    Answers: { type: [exam] }
+  firstName: { type: String },
+  lastName: { type: String },
+  email: { type: String },
+  phone: { type: String },
+  registerDate: { type: Date },
+  exams: { type: [examSchema] },
 });
 
 const Student = mongoose.model('Student', studentSchema);
 
 function validateExam(exam) {
-    const schema = Joi.object({
-        firstName: Joi.string().min(2).max(50).required(),
-        lastName: Joi.string().min(2).max(50).required(),
-        email: Joi.string().min(8).max(40).required(),
-        phone: Joi.string().min(9).max(15).required(),
-        registerDate: Joi.date()
+  const schema = Joi.object({
+    firstName: Joi.string().min(2).max(50).required(),
+    lastName: Joi.string().min(2).max(50).required(),
+    email: Joi.string().min(5).max(255).required().email(),
+    phone: Joi.string().min(9).max(12).required(),
+    registerDate: Joi.date(),
+    exams: Joi.array(),
+  });
 
-    });
-    return schema.validate(exam);
+  return schema.validate(exam);
 }
 
-exports.examSchema = studentSchema;
+exports.studentSchema = studentSchema;
 exports.Student = Student;
 exports.validate = validateExam;

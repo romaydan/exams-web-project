@@ -1,7 +1,4 @@
 const mongoose = require('mongoose');
-const { questionSchema } = require('./question');
-const { studentSchema } = require('./student');
-
 const Joi = require('joi');
 
 const examSchema = new mongoose.Schema({
@@ -13,10 +10,9 @@ const examSchema = new mongoose.Schema({
   success: { type: String },
   failure: { type: String },
   lastUpdate: { type: Date },
-  students: { type: [studentSchema] },
   questions: {
     type: [{ type: [mongoose.Schema.Types.ObjectId], ref: 'Question' }],
-  }
+  },
 });
 
 const Exam = mongoose.model('Exam', examSchema);
@@ -31,7 +27,6 @@ function validateExam(exam) {
     success: Joi.string().required(),
     failure: Joi.string().required(),
     questions: Joi.array().required(),
-    students: Joi.array()
   });
 
   return schema.validate(exam);

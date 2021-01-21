@@ -19,11 +19,11 @@ router.post('/', async (req, res) => {
   const exam = new Exam({
     language: req.body.language,
     name: req.body.name,
+    passingGrade: req.body.passingGrade,
+    isShow: req.body.isShow,
     header: req.body.header,
     success: req.body.success,
     failure: req.body.failure,
-    isShow: req.body.isShow,
-    passingGrade: req.body.passingGrade,
     lastUpdate: Date.now(),
     questions: req.body.questions,
   });
@@ -46,9 +46,11 @@ router.put('/:id', async (req, res) => {
     {
       language: req.body.language,
       name: req.body.name,
+      passingGrade: req.body.passingGrade,
+      isShow: req.body.isShow,
       header: req.body.header,
-      success: req.body.successMessage,
-      fail: req.body.failMessage,
+      success: req.body.success,
+      failure: req.body.failure,
       lastUpdate: Date.now(),
       questions: req.body.questions,
     },
