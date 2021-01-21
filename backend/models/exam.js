@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const { questionSchema } = require('./question');
 const { studentSchema } = require('./student');
+
 const Joi = require('joi');
 
 const examSchema = new mongoose.Schema({
@@ -12,8 +13,10 @@ const examSchema = new mongoose.Schema({
   success: { type: String },
   failure: { type: String },
   lastUpdate: { type: Date },
-  questions: { type: [questionSchema] },
-  students: { type: [studentSchema] }
+  students: { type: [studentSchema] },
+  questions: {
+    type: [{ type: [mongoose.Schema.Types.ObjectId], ref: 'Question' }],
+  }
 });
 
 const Exam = mongoose.model('Exam', examSchema);

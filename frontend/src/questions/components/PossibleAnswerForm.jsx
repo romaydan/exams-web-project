@@ -8,7 +8,7 @@ const PossibleAnswerForm = (props) => {
       <div className="form-inline">
         <button
           type="button"
-          onClick={() => handleDelete(possibleAnswer)}
+          onClick={() => handleDelete(index)}
           className="btn btn-danger btn-sm"
         >
           X

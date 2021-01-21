@@ -44,6 +44,8 @@ function QuestionForm(props) {
       possibleAnswers: question.possibleAnswers,
       answersLayout: question.answersLayout,
       tags: question.tags.reduce((a, c) => a + ', ' + c),
+      lastUpdate: question.lastUpdate,
+      numberOfTests: question.numberOfTests,
     };
   };
 
@@ -51,14 +53,11 @@ function QuestionForm(props) {
     e.preventDefault();
 
     try {
-      data.tags = data.tags.split(', ');
       await saveQuestion(data);
+      props.history.push('/questions');
     } catch (ex) {
       if (ex.response && ex.response.status === 400) setError(ex.response.data);
-      return;
     }
-
-    props.history.push('/questions');
   };
 
   const handleChange = (e) => {
@@ -69,19 +68,18 @@ function QuestionForm(props) {
     setData(newData);
   };
 
-  const handlePossibleAnswerDelete = (possibleAnswer) => {
-    const newData = { ...data };
-    const index = newData.possibleAnswers.indexOf(possibleAnswer);
-
-    newData.possibleAnswers.splice(index, 1);
-    setData(newData);
-  };
-
   const handlePossibleAnswerChange = (e) => {
     const { id, name, value, checked } = e.currentTarget;
     const newData = { ...data };
 
     newData.possibleAnswers[id][name] = name === 'answer' ? value : checked;
+    setData(newData);
+  };
+
+  const handlePossibleAnswerDelete = (index) => {
+    const newData = { ...data };
+
+    newData.possibleAnswers.splice(index, 1);
     setData(newData);
   };
 
@@ -185,7 +183,7 @@ function QuestionForm(props) {
               id='horizontal'
               type='radio'
               value={1}
-              checked={data.answersLayout == 1}
+              checked={+data.answersLayout === 1}
               onChange={handleChange}
               className='form-check-input'
             />
