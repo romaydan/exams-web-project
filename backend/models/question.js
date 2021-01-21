@@ -41,6 +41,7 @@ function validateQuestion(question) {
   return schema.validate(question);
 }
 
+exports.possibleAnswerSchema = possibleAnswerSchema;
 exports.questionSchema = questionSchema;
 exports.Question = Question;
 exports.validate = validateQuestion;

@@ -8,4 +8,5 @@ const organizationSchema = new mongoose.Schema({
 
 const Organization = mongoose.model('Organization', organizationSchema);
 
+exports.organizationSchema = organizationSchema;
 exports.Organization = Organization;
