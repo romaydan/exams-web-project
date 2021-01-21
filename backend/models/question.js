@@ -40,5 +40,6 @@ function validateQuestion(question) {
 }
 
 exports.questionSchema = questionSchema;
+exports.answerSchema = answerSchema;
 exports.Question = Question;
 exports.validate = validateQuestion;
