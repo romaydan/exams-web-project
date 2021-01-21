@@ -1,4 +1,3 @@
-import './App.css'
 import { Fragment } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { Redirect, Route, Switch } from 'react-router-dom';
@@ -9,7 +8,7 @@ import NotFound from './shared/components/NotFound';
 import NavBar from './shared/components/NavBar';
 import NewExam from './exams/pages/NewExam/NewExam';
 import Exams from './exams/pages/Exams/Exams';
-import StudentForm from './exams/pages/StudentForm/StudentForm'
+import StudentForm from './exams/pages/StudentForm/StudentForm';
 import DoExam from './exams/pages/DoExam/DoExam';
 
 import './App.css';
