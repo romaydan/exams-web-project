@@ -1,3 +1,6 @@
 {
-  "db": "mongodb://localhost/exams"
+  "jwtPrivateKey": "unsecureKey",
+  "db": "mongodb://localhost/exams",
+  "port": "3900",
+  "requiresAuth": false
 }
