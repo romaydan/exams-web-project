@@ -3,14 +3,20 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 const Joi = require('joi');
 
+const { organizationSchema } = require('./organization');
+
 const adminSchema = new mongoose.Schema({
   name: { type: String },
   email: { type: String },
   password: { type: String },
+  organizations: { type: [organizationSchema] },
 });
 
 adminSchema.methods.generateAuthToken = function () {
-  const token = jwt.sign({ _id: this._id }, config.get('jwtPrivateKey'));
+  const token = jwt.sign(
+    { _id: this._id, name: this.name, email: this.email },
+    config.get('jwtPrivateKey')
+  );
   return token;
 };
 
