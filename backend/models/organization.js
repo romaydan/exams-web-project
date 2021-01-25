@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 const { fieldOfStudySchema } = require('./fieldOfStudy');
 
 const organizationSchema = new mongoose.Schema({

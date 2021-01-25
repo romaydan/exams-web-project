@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
 
+const { fieldOfStudySchema } = require('./fieldOfStudy');
+
 const possibleAnswerSchema = new mongoose.Schema({
   answer: { type: String },
   isCorrect: { type: Boolean },
@@ -15,6 +17,7 @@ const questionSchema = new mongoose.Schema({
   tags: { type: [String] },
   lastUpdate: { type: Date },
   numberOfTests: { type: Number },
+  fieldOfStudies: { type: [fieldOfStudySchema] },
 });
 
 const Question = mongoose.model('Question', questionSchema);

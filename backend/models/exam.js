@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
 
+const { fieldOfStudySchema } = require('./fieldOfStudy');
+
 const examSchema = new mongoose.Schema({
   language: { type: Number },
   name: { type: String },
@@ -13,6 +15,7 @@ const examSchema = new mongoose.Schema({
   questions: {
     type: [{ type: [mongoose.Schema.Types.ObjectId], ref: 'Question' }],
   },
+  fieldOfStudy: { type: fieldOfStudySchema },
 });
 
 const Exam = mongoose.model('Exam', examSchema);

@@ -1,6 +1,7 @@
-const { Question, validate } = require('../models/question');
 const express = require('express');
 const router = express.Router();
+const auth = require('../middleware/auth');
+const { Question, validate } = require('../models/question');
 
 router.get('/', async (req, res) => {
   const questions = await Question.find();
@@ -8,7 +9,7 @@ router.get('/', async (req, res) => {
   res.send(questions);
 });
 
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -27,7 +28,7 @@ router.post('/', async (req, res) => {
   res.send(question);
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth, async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -54,7 +55,7 @@ router.put('/:id', async (req, res) => {
   res.send(question);
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
   const question = await Question.findByIdAndRemove(req.params.id);
 
   if (!question)
