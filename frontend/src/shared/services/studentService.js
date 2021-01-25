@@ -3,6 +3,7 @@ import http from './httpService';
 const apiEndpoint = '/students';
 
 const studentUrl = (id) => {
+
     return `${apiEndpoint}/${id}`;
 }
 
@@ -22,10 +23,13 @@ export const saveStudent = (student) => {
     }
     return http.post(apiEndpoint, student);
 }
-export const saveStudentQuestion = (question, studentID, answers) => {
+export const saveStudentQuestion = (questionId, studentId, examId, answers) => {
 
-    const body = { questionId: question, studentID: studentID, answers: answers };
-    return http.put(studentUrl(studentID), body);
+    const body = { questionId: questionId, studentId: studentId, examId: examId, answers: answers };
+    console.log('body in save student', body)
+    let url = `${apiEndpoint}/exam/${studentId}`;
+    console.log('url', url)
+    return http.put(url, body);
 }
 
 
