@@ -61,7 +61,7 @@ const StudentForm = () => {
     let req = { ...data, examId: examId };
     console.log('req', req);
     saveStudent(req).then((res) => {
-      console.log('res', res);
+      console.log('res', res.data);
       let newUrl = examId + '/' + res.data._id;
       console.log('newUrl :>> ', newUrl);
       history.push(newUrl);

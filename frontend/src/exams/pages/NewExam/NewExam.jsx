@@ -20,7 +20,7 @@ const NewExam = (props) => {
   const submitHandler = (data) => {
     let submitedExam;
     submitedExam = !isAddMode ? { ...data, _id: exam._id } : { ...data };
-    submitedExam.questions = pickedQuestions;
+    submitedExam.questions = pickedQuestions.map((question) => question._id);
     console.log('submitedExam :>> ', submitedExam);
     saveExam(submitedExam)
       .then((res) => setExam(res.data))
