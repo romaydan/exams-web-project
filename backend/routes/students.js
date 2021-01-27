@@ -38,7 +38,7 @@ router.get('/:id', async (req, res) => {
     if (!student)
         return res
             .status(404)
-            .send('The question with the given ID was not found.');
+            .send('The student with the given ID was not found.');
     res.send(student);
 });
 
