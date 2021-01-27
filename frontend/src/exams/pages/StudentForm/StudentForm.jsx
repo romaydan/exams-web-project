@@ -54,8 +54,8 @@ const fields = [
   },
 ];
 
-const StudentForm = () => {
-  const history = useHistory();
+const StudentForm = (props) => {
+  const { history } = props;
   let { examId } = useParams();
   const submitHandler = (data) => {
     let req = { ...data, examId: examId };
@@ -65,11 +65,11 @@ const StudentForm = () => {
         console.log('res', res.data);
         let newUrl = examId + '/' + res.data._id;
         console.log('newUrl :>> ', newUrl);
-        history.push(res.data._id);
+        history.push(`${examId}/${res.data._id}`);
       })
       .catch((error) => {
         console.log('error :>> ', error.response);
-        history.push(error.response.data + '/result');
+        history.push(error.response.data.studentId + '/result');
       });
   };
   console.log('in Student Form');
