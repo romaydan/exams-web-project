@@ -1,9 +1,8 @@
 const express = require('express');
+const mongoose = require('mongoose');
 
 const { Student, validate } = require('../models/student');
-// const { Exam } = require('../models/exam');
-const express = require('express');
-const mongoose = require('mongoose');
+
 const router = express.Router();
 
 router.post('/', async (req, res) => {
