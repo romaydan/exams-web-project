@@ -21,7 +21,7 @@ const ExamQuestion2 = (props) => {
       });
     }
     dispatch({ type: ACTIONS.SET, payload: newAnswers });
-  }, [props.question]);
+  }, [props.question, props.selectedAnswers]);
   const answerSelected = (answer) => {
     dispatch({
       type:

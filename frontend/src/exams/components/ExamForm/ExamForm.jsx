@@ -84,13 +84,12 @@ const ExamForm = (props) => {
   const { handleSubmit, register, errors, setValue } = useForm();
   // const { isDirty, isValid } = formState;
   useEffect(() => {
-    console.log('props :>> ', props);
     Object.keys(props.exam).forEach((key) => {
       if (key !== '_id' || key !== '__v') {
         setValue(key, props.exam[key]);
       }
     });
-  }, [props.exam]);
+  }, [props.exam, setValue]);
 
   const formInputs = fieldsProps.map((field) => {
     return (
