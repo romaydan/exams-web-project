@@ -7,6 +7,10 @@ const answeredQuestionSchema = {
 }
 const studentExamSchema = new mongoose.Schema({
   answeredQuestions: { type: [answeredQuestionSchema] },
+  submitted: { type: Boolean },
+  submitDate: { type: Date },
+  rightQuestions: { type: Number },
+  grade: { type: Number }
 })
 const studentSchema = new mongoose.Schema({
   firstName: { type: String },
