@@ -6,15 +6,15 @@ function questionUrl(id) {
   return `${apiEndpoint}/${id}`;
 }
 
-export function getQuestions() {
-  return http.get(apiEndpoint);
+export function getQuestions(fieldOfStudy) {
+  return http.get(apiEndpoint, { params: fieldOfStudy });
 }
 
 export function getQuestion(questionId) {
   return http.get(questionUrl(questionId));
 }
 
-export function saveQuestion(question) {
+export function saveQuestion(question, fieldOfStudy) {
   if (question._id) {
     const body = { ...question };
     delete body._id;
@@ -22,6 +22,7 @@ export function saveQuestion(question) {
     return http.put(questionUrl(question._id), body);
   }
 
+  question.fieldsOfStudy = [fieldOfStudy];
   return http.post(apiEndpoint, question);
 }
 

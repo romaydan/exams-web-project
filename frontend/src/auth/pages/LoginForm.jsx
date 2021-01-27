@@ -16,8 +16,9 @@ function LoginForm(props) {
     try {
       await auth.login(data.email, data.password);
 
-      const { state } = props.location;
-      window.location = state ? state.from.pathname : '/';
+      // const { state } = props.location;
+      // window.location = state ? state.from.pathname : '/organizations';
+      window.location = '/organizations';
     } catch (ex) {
       if (ex.response && ex.response.status === 400) setError(ex.response.data);
     }

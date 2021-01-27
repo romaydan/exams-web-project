@@ -46,6 +46,7 @@ function QuestionForm(props) {
       tags: question.tags.reduce((a, c) => a + ', ' + c),
       lastUpdate: question.lastUpdate,
       numberOfTests: question.numberOfTests,
+      fieldsOfStudy: question.fieldsOfStudy,
     };
   };
 
@@ -53,7 +54,7 @@ function QuestionForm(props) {
     e.preventDefault();
 
     try {
-      await saveQuestion(data);
+      await saveQuestion(data, props.fieldOfStudy);
       props.history.push('/questions');
     } catch (ex) {
       if (ex.response && ex.response.status === 400) setError(ex.response.data);
@@ -61,29 +62,30 @@ function QuestionForm(props) {
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.currentTarget;
+    const { currentTarget: input } = e;
     const newData = { ...data };
 
-    newData[name] = value;
+    newData[input.name] = input.value;
     setData(newData);
   };
 
   const handlePossibleAnswerChange = (e) => {
-    const { id, name, value, checked } = e.currentTarget;
+    const { currentTarget: input } = e;
     const newData = { ...data };
 
-    newData.possibleAnswers[id][name] = name === 'answer' ? value : checked;
+    newData.possibleAnswers[input.id][input.name] =
+      input.name === 'answer' ? input.value : input.checked;
     setData(newData);
   };
 
-  const handlePossibleAnswerDelete = (index) => {
+  const deletePossibleAnswer = (index) => {
     const newData = { ...data };
 
     newData.possibleAnswers.splice(index, 1);
     setData(newData);
   };
 
-  const handlePossibleAnswerAdd = () => {
+  const addPossibleAnswer = () => {
     const newData = { ...data };
 
     newData.possibleAnswers.push({ answer: '', isCorrect: false });
@@ -95,49 +97,49 @@ function QuestionForm(props) {
       <h1>Question Form</h1>
 
       <form onSubmit={handleSubmit}>
-        <div className='form-group'>
-          <label htmlFor='type'>Question type:</label>
+        <div className="form-group">
+          <label htmlFor="type">Question type:</label>
 
           <select
-            name='type'
-            id='type'
+            name="type"
+            id="type"
             value={data.type}
             onChange={handleChange}
-            className='form-control'
+            className="form-control"
           >
             <option value={0}>Single Choice Question</option>
             <option value={1}>Multiple Selection Question</option>
           </select>
         </div>
 
-        <div className='form-group'>
-          <label htmlFor='text'>Question text:</label>
+        <div className="form-group">
+          <label htmlFor="text">Question text:</label>
 
           <textarea
-            name='text'
-            id='text'
-            rows='2'
+            name="text"
+            id="text"
+            rows="2"
             value={data.text}
             onChange={handleChange}
-            className='form-control'
+            className="form-control"
           ></textarea>
         </div>
 
-        <div className='form-group'>
-          <label htmlFor='textBelow'>Text below question:</label>
+        <div className="form-group">
+          <label htmlFor="textBelow">Text below question:</label>
 
           <textarea
-            name='textBelow'
-            id='textBelow'
-            rows='4'
+            name="textBelow"
+            id="textBelow"
+            rows="4"
             value={data.textBelow}
             onChange={handleChange}
-            className='form-control'
+            className="form-control"
           ></textarea>
         </div>
 
-        <div className='form-group'>
-          <label htmlFor='possibleAnswers'>Possible answers:</label>
+        <div className="form-group">
+          <label htmlFor="possibleAnswers">Possible answers:</label>
 
           {data.possibleAnswers.map((possibleAnswer, index) => (
             <PossibleAnswerForm
@@ -145,75 +147,75 @@ function QuestionForm(props) {
               possibleAnswer={possibleAnswer}
               index={index}
               handleChange={handlePossibleAnswerChange}
-              handleDelete={handlePossibleAnswerDelete}
+              deletePossibleAnswer={deletePossibleAnswer}
             />
           ))}
 
           <button
-            type='button'
-            onClick={handlePossibleAnswerAdd}
-            className='btn btn-secondary'
+            type="button"
+            onClick={addPossibleAnswer}
+            className="btn btn-secondary"
           >
             Add an answer
           </button>
         </div>
 
-        <div className='form-group'>
-          <label htmlFor='answersLayout'>Answers layout:</label>
+        <div className="form-group">
+          <label htmlFor="answersLayout">Answers layout:</label>
 
-          <div className='form-check'>
+          <div className="form-check">
             <input
-              name='answersLayout'
-              id='vertical'
-              type='radio'
+              name="answersLayout"
+              id="vertical"
+              type="radio"
               value={0}
               checked={+data.answersLayout === 0}
               onChange={handleChange}
-              className='form-check-input'
+              className="form-check-input"
             />
 
-            <label htmlFor='vertical' className='form-check-label'>
+            <label htmlFor="vertical" className="form-check-label">
               Vertical
             </label>
           </div>
 
-          <div className='form-check'>
+          <div className="form-check">
             <input
-              name='answersLayout'
-              id='horizontal'
-              type='radio'
+              name="answersLayout"
+              id="horizontal"
+              type="radio"
               value={1}
               checked={+data.answersLayout === 1}
               onChange={handleChange}
-              className='form-check-input'
+              className="form-check-input"
             />
 
-            <label htmlFor='horizontal' className='form-check-label'>
+            <label htmlFor="horizontal" className="form-check-label">
               Horizontal
             </label>
           </div>
         </div>
 
-        <div className='form-group'>
-          <label htmlFor='tags'>Tags:</label>
+        <div className="form-group">
+          <label htmlFor="tags">Tags:</label>
 
           <input
-            name='tags'
-            id='tags'
-            type='text'
+            name="tags"
+            id="tags"
+            type="text"
             value={data.tags}
             onChange={handleChange}
-            className='form-control'
+            className="form-control"
           />
         </div>
 
-        {error && <div className='alert alert-danger'>{error}</div>}
+        {error && <div className="alert alert-danger">{error}</div>}
 
-        <button type='button' className='btn btn-outline-primary pull-right'>
+        <button type="button" className="btn btn-outline-primary pull-right">
           Show
         </button>
 
-        <button type='submit' className='btn btn-primary'>
+        <button type="submit" className="btn btn-primary">
           Save
         </button>
       </form>

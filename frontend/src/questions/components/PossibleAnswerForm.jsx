@@ -1,14 +1,14 @@
 import PropTypes from 'prop-types';
 
 const PossibleAnswerForm = (props) => {
-  const { possibleAnswer, index, handleChange, handleDelete } = props;
+  const { possibleAnswer, index, handleChange, deletePossibleAnswer } = props;
 
   return (
     <div className="form-group">
       <div className="form-inline">
         <button
           type="button"
-          onClick={() => handleDelete(index)}
+          onClick={() => deletePossibleAnswer(index)}
           className="btn btn-danger btn-sm"
         >
           X
@@ -46,7 +46,7 @@ PossibleAnswerForm.propTypes = {
   possibleAnswer: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
   handleChange: PropTypes.func.isRequired,
-  handleDelete: PropTypes.func.isRequired,
+  deletePossibleAnswer: PropTypes.func.isRequired,
 };
 
 export default PossibleAnswerForm;

@@ -17,7 +17,7 @@ const questionSchema = new mongoose.Schema({
   tags: { type: [String] },
   lastUpdate: { type: Date },
   numberOfTests: { type: Number },
-  fieldOfStudies: { type: [fieldOfStudySchema] },
+  fieldsOfStudy: { type: [fieldOfStudySchema] },
 });
 
 const Question = mongoose.model('Question', questionSchema);
@@ -39,6 +39,7 @@ function validateQuestion(question) {
     tags: Joi.string().required(),
     lastUpdate: Joi.date(),
     numberOfTests: Joi.number(),
+    fieldsOfStudy: Joi.array(),
   });
 
   return schema.validate(question);
