@@ -60,12 +60,17 @@ const StudentForm = () => {
   const submitHandler = (data) => {
     let req = { ...data, examId: examId };
     console.log('req', req);
-    saveStudent(req).then((res) => {
-      console.log('res', res.data);
-      let newUrl = examId + '/' + res.data._id;
-      console.log('newUrl :>> ', newUrl);
-      history.push(newUrl);
-    });
+    saveStudent(req)
+      .then((res) => {
+        console.log('res', res.data);
+        let newUrl = examId + '/' + res.data._id;
+        console.log('newUrl :>> ', newUrl);
+        history.push(res.data._id);
+      })
+      .catch((error) => {
+        console.log('error :>> ', error.response);
+        history.push(error.response.data + '/result');
+      });
   };
   console.log('in Student Form');
 
