@@ -8,7 +8,7 @@
             "name": "React",
             "type":"chrome",
             "request": "launch",
-            "url": "http://localhost:5402",
+            "url": "http://localhost:3000",
             "webRoot": "${workspaceFolder}/src",
             "sourceMapPathOverrides": {
                 "webpack://?:*/*": "${workspaceFolder}/*"
