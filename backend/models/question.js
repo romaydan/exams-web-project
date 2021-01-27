@@ -4,19 +4,41 @@ const Joi = require('joi');
 const { fieldOfStudySchema } = require('./fieldOfStudy');
 
 const possibleAnswerSchema = new mongoose.Schema({
-  answer: { type: String },
-  isCorrect: { type: Boolean },
+  answer: { type: String, required: true },
+  isCorrect: { type: Boolean, default: false },
 });
 
 const questionSchema = new mongoose.Schema({
-  type: { type: Number },
-  text: { type: String },
-  textBelow: { type: String },
+  type: {
+    type: Number,
+    required: true,
+    min: 0,
+    max: 1,
+  },
+  text: {
+    type: String,
+    required: true,
+  },
+  textBelow: {
+    type: String,
+    required: false,
+  },
   possibleAnswers: { type: [possibleAnswerSchema] },
-  answersLayout: { type: Number },
-  tags: { type: [String] },
+  answersLayout: {
+    type: Number,
+    required: true,
+    min: 0,
+    max: 1,
+  },
+  tags: {
+    type: [String],
+    required: true,
+  },
   lastUpdate: { type: Date },
-  numberOfTests: { type: Number },
+  numberOfTests: {
+    type: Number,
+    min: 0,
+  },
   fieldsOfStudy: { type: [fieldOfStudySchema] },
 });
 
@@ -38,7 +60,7 @@ function validateQuestion(question) {
     answersLayout: Joi.number().min(0).max(1).required(),
     tags: Joi.string().required(),
     lastUpdate: Joi.date(),
-    numberOfTests: Joi.number(),
+    numberOfTests: Joi.number().min(0),
     fieldsOfStudy: Joi.array(),
   });
 
