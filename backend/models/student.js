@@ -1,25 +1,29 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
-
 const { possibleAnswerSchema } = require('./question');
 
+const answeredQuestionSchema = {
+  answers: { type: [possibleAnswerSchema] },
+};
+const studentExamSchema = new mongoose.Schema({
+  answeredQuestions: { type: [answeredQuestionSchema] },
+});
 const studentSchema = new mongoose.Schema({
   firstName: { type: String },
   lastName: { type: String },
   email: { type: String },
   phone: { type: String },
-  answers: { type: [possibleAnswerSchema] },
+  exams: { type: [studentExamSchema] },
 });
 
 const Student = mongoose.model('Student', studentSchema);
-
 function validateStudent(exam) {
   const schema = Joi.object({
     firstName: Joi.string().min(2).max(50).required(),
     lastName: Joi.string().min(2).max(50).required(),
     email: Joi.string().min(5).max(255).required().email(),
     phone: Joi.string().min(5).max(50).required(),
-    answers: Joi.array(),
+    exams: Joi.array(),
   });
 
   return schema.validate(exam);
