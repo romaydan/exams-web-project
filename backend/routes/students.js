@@ -1,11 +1,10 @@
 const express = require('express');
-const mongoose = require('mongoose');
-const { date } = require('joi');
-const { Student, validate } = require('../models/student');
-const { Question } = require('../models/question');
-const { Exam } = require('../models/exam');
-const router = express.Router();
 
+const { Student, validate } = require('../models/student');
+const { Exam } = require('../models/exam');
+const { Question } = require('../models/question');
+
+const router = express.Router();
 
 router.post('/', async (req, res) => {
     let examId = req.body.examId;
@@ -49,6 +48,7 @@ router.put('/exam/:id', async (req, res) => {
     student.save();
     res.send(student)
 });
+
 router.put('/submit/:id', async (req, res) => {
     const student = await Student.findById(req.params.id);
     let studentExam = saveAnswersAndGetStudExam(student, req.body.examId, req.body.questionId, req.body.answers);
@@ -84,9 +84,6 @@ router.put('/submit/:id', async (req, res) => {
     res.sendStatus(200);
 });
 
-
-
-module.exports = router;
 function saveAnswersAndGetStudExam(student, examId, questionId, answers) {
     const studentExam = student.exams.find(e => e._id == examId);
     const answeredQuestion = studentExam.answeredQuestions.find(aq => aq._id == questionId);
@@ -99,3 +96,4 @@ function saveAnswersAndGetStudExam(student, examId, questionId, answers) {
     return studentExam
 }
 
+module.exports = router;

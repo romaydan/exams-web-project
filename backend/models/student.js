@@ -3,8 +3,8 @@ const Joi = require('joi');
 const { possibleAnswerSchema } = require('./question');
 
 const answeredQuestionSchema = {
-  answers: { type: [possibleAnswerSchema] }
-}
+  answers: { type: [possibleAnswerSchema] },
+};
 const studentExamSchema = new mongoose.Schema({
   answeredQuestions: { type: [answeredQuestionSchema] },
   submitted: { type: Boolean },

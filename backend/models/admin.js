@@ -6,15 +6,35 @@ const Joi = require('joi');
 const { organizationSchema } = require('./organization');
 
 const adminSchema = new mongoose.Schema({
-  name: { type: String },
-  email: { type: String },
-  password: { type: String },
+  name: {
+    type: String,
+    required: true,
+    minlength: 2,
+    maxlength: 50,
+  },
+  email: {
+    type: String,
+    required: true,
+    minlength: 5,
+    maxlength: 255,
+    unique: true,
+  },
+  password: {
+    type: String,
+    required: true,
+    minlength: 5,
+    maxlength: 1024,
+  },
   organizations: { type: [organizationSchema] },
 });
 
 adminSchema.methods.generateAuthToken = function () {
   const token = jwt.sign(
-    { _id: this._id, name: this.name, email: this.email },
+    {
+      _id: this._id,
+      name: this.name,
+      organizations: this.organizations,
+    },
     config.get('jwtPrivateKey')
   );
   return token;

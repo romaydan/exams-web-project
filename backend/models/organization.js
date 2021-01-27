@@ -4,7 +4,7 @@ const { fieldOfStudySchema } = require('./fieldOfStudy');
 
 const organizationSchema = new mongoose.Schema({
   name: { type: String },
-  fieldOfStudies: { type: [fieldOfStudySchema] },
+  fieldsOfStudy: { type: [fieldOfStudySchema] },
 });
 
 const Organization = mongoose.model('Organization', organizationSchema);

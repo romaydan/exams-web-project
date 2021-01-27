@@ -20,12 +20,12 @@ function Questions(props) {
 
   useEffect(() => {
     async function populateQuestions() {
-      const { data } = await getQuestions();
+      const { data } = await getQuestions(props.fieldOfStudy);
       setQuestions(data);
     }
 
     populateQuestions();
-  }, []);
+  }, [props.fieldOfStudy]);
 
   const handleDelete = async (question) => {
     const originalQuestions = questions;
@@ -60,28 +60,29 @@ function Questions(props) {
   };
 
   return (
-    <div className="row">
-      <div className="col">
-        <p>Showing {questions.length} questions in the database.</p>
+    <div>
+      <p>
+        Showing {questions.length} available questions for{' '}
+        {props.fieldOfStudy && props.fieldOfStudy.name}.
+      </p>
 
-        <QuestionsTable
-          questions={getPagedData()}
-          sortColumn={sortColumn}
-          onDelete={handleDelete}
-          onSort={handleSort}
-        />
+      <QuestionsTable
+        questions={getPagedData()}
+        sortColumn={sortColumn}
+        onDelete={handleDelete}
+        onSort={handleSort}
+      />
 
-        <Pagination
-          itemsCount={questions.length}
-          pageSize={pageSize}
-          currentPage={currentPage}
-          onPageChange={handlePageChange}
-        />
+      <Pagination
+        itemsCount={questions.length}
+        pageSize={pageSize}
+        currentPage={currentPage}
+        onPageChange={handlePageChange}
+      />
 
-        <Link to="/questions/new" className="btn btn-primary">
-          New Question
-        </Link>
-      </div>
+      <Link to="/questions/new" className="btn btn-primary">
+        New Question
+      </Link>
     </div>
   );
 }

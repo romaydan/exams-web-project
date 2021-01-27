@@ -1,10 +1,12 @@
 const express = require('express');
-const router = express.Router();
+
 const auth = require('../middleware/auth');
 const { Question, validate } = require('../models/question');
 
+const router = express.Router();
+
 router.get('/', async (req, res) => {
-  const questions = await Question.find();
+  const questions = await Question.find({ fieldsOfStudy: req.query });
 
   res.send(questions);
 });
@@ -22,6 +24,7 @@ router.post('/', auth, async (req, res) => {
     tags: req.body.tags.split(', '),
     lastUpdate: Date.now(),
     numberOfTests: 0,
+    fieldsOfStudy: req.body.fieldsOfStudy,
   });
   await question.save();
 
@@ -43,6 +46,7 @@ router.put('/:id', auth, async (req, res) => {
       tags: req.body.tags.split(', '),
       lastUpdate: Date.now(),
       numberOfTests: req.body.numberOfTests,
+      fieldsOfStudy: req.body.fieldsOfStudy,
     },
     { new: true }
   );

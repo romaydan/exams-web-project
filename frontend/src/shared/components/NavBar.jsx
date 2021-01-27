@@ -1,12 +1,12 @@
 import { Link, NavLink } from 'react-router-dom';
 
 const NavBar = (props) => {
-  const { admin } = props;
+  const { admin, organization } = props;
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <Link className="navbar-brand" to="/">
-        Exams
+        Administration System {organization && `- ${organization.name}`}
       </Link>
       <button
         className="navbar-toggler"
@@ -33,9 +33,9 @@ const NavBar = (props) => {
           )}
           {admin && (
             <>
-              <NavLink className="nav-item nav-link" to="/profile">
+              {/* <NavLink className="nav-item nav-link" to="/profile">
                 {admin.name}
-              </NavLink>
+              </NavLink> */}
               <NavLink className="nav-item nav-link" to="/logout">
                 Logout
               </NavLink>
