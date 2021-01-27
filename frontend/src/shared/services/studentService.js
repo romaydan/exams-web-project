@@ -14,7 +14,10 @@ export const getstudents = () => {
 export const getStudent = (studentId) => {
     return http.get(studentUrl(studentId));
 }
-
+export const submitStudentExam = (questionId, studentId, examId, answers) => {
+    const body = { questionId: questionId, studentId: studentId, examId: examId, answers: answers };
+    return http.put(`${apiEndpoint}/submit/${studentId}`, body)
+}
 export const saveStudent = (student) => {
     if (student._id) {
         const body = { ...student };
@@ -26,10 +29,7 @@ export const saveStudent = (student) => {
 export const saveStudentQuestion = (questionId, studentId, examId, answers) => {
 
     const body = { questionId: questionId, studentId: studentId, examId: examId, answers: answers };
-    console.log('body in save student', body)
-    let url = `${apiEndpoint}/exam/${studentId}`;
-    console.log('url', url)
-    return http.put(url, body);
+    return http.put(`${apiEndpoint}/exam/${studentId}`, body);
 }
 
 
