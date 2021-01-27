@@ -13,6 +13,8 @@ import {
 import { paginate } from '../../shared/utils/paginate';
 
 function Questions(props) {
+  const { fieldOfStudy } = props;
+
   const [questions, setQuestions] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
@@ -20,12 +22,12 @@ function Questions(props) {
 
   useEffect(() => {
     async function populateQuestions() {
-      const { data } = await getQuestions(props.fieldOfStudy);
+      const { data } = await getQuestions(fieldOfStudy);
       setQuestions(data);
     }
 
     populateQuestions();
-  }, [props.fieldOfStudy]);
+  }, [fieldOfStudy]);
 
   const handleDelete = async (question) => {
     const originalQuestions = questions;
@@ -63,7 +65,7 @@ function Questions(props) {
     <div>
       <p>
         Showing {questions.length} available questions for{' '}
-        {props.fieldOfStudy && props.fieldOfStudy.name}.
+        {fieldOfStudy && fieldOfStudy.name}.
       </p>
 
       <QuestionsTable

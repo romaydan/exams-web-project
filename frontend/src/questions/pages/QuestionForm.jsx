@@ -8,6 +8,8 @@ import {
 } from '../../shared/services/questionService';
 
 function QuestionForm(props) {
+  const { fieldOfStudy } = props;
+
   const [data, setData] = useState({
     type: 0,
     text: '',
@@ -54,7 +56,7 @@ function QuestionForm(props) {
     e.preventDefault();
 
     try {
-      await saveQuestion(data, props.fieldOfStudy);
+      await saveQuestion(data, fieldOfStudy);
       props.history.push('/questions');
     } catch (ex) {
       if (ex.response && ex.response.status === 400) setError(ex.response.data);
