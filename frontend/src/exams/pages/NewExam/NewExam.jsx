@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import ExamForm from '../../components/ExamForm/ExamForm2';
+import ExamForm from '../../components/ExamForm/ExamForm';
 import QuestionPicker from '../../components/QuestionPicker/QuestionPicker';
 import { saveExam, getExam } from '../../../shared/services/examService';
+import { Link } from 'react-router-dom';
 let pickedQuestions = [];
 const NewExam = (props) => {
   const { id } = props.match.params;
@@ -46,6 +47,9 @@ const NewExam = (props) => {
       <h3>{isAddMode ? 'Add User' : 'Edit User'}</h3>
       <ExamForm submited={submitHandler} isAddMode={isAddMode} exam={exam}>
         <QuestionPicker questionSelected={questionSelectedHandler} />
+        <Link to='/exams' className='btn btn-success'>
+          Go To Exams
+        </Link>
       </ExamForm>
     </div>
   );

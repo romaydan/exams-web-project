@@ -1,32 +1,45 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
-import ExamQuestion from '../../components/ExamQuestion/ExamQuestion2';
+import { useParams, useHistory } from 'react-router-dom';
+import ExamQuestion from '../../components/ExamQuestion/ExamQuestion';
+import Modal from '../../../shared/components/UIElements/Modal';
 import { getExam } from '../../../shared/services/examService';
 import {
   getStudent,
   saveStudentQuestion,
+  submitStudentExam,
 } from '../../../shared/services/studentService';
+import { shuffle } from 'lodash';
+import classes from './DoExam.module.css';
+
 const DoExam = () => {
-  const lastQuestion = useRef('Next');
+  const history = useHistory();
   let { studentId, examId } = useParams();
   const [exam, setExam] = useState({});
   const [student, setStudent] = useState({});
+  const [showModal, setShowModal] = useState(false);
   const [questionIndex, setQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState([]);
+  const answers = useRef([]);
+  useEffect(() => {
+    getExam(examId).then((res) => {
+      res.data.questions = shuffle(res.data.questions);
+      console.log('res.data in exam :>> ', res.data);
+      setExam(res.data);
+    });
+  }, []);
   useEffect(() => {
     getStudent(studentId).then((res) => {
+      console.log('res.data in student :>> ', res.data);
       setStudent(res.data);
     });
-    getExam(examId).then((res) => {
-      setExam({ ...res.data });
-    });
-  }, [studentId, examId]);
+  }, [studentId, examId, questionIndex]);
 
   useEffect(() => {
-    if (exam.questions && questionIndex + 1 === exam.questions.length) {
-      lastQuestion.current = 'End Test';
-    } else {
-      lastQuestion.current = 'Next';
+    if (exam.questions) {
+      let selectedAns = findAnsweredQuestions();
+      if (selectedAns) answers.current = selectedAns.answers;
+      else {
+        answers.current = [];
+      }
     }
   }, [questionIndex, exam.questions]);
 
@@ -35,11 +48,10 @@ const DoExam = () => {
       exam.questions[questionIndex]._id,
       studentId,
       examId,
-      answers
-    ).then((res) => {
-      console.log('res', res);
-      if (lastQuestion.current === 'End Test') {
-        console.log('test submit');
+      answers.current
+    ).then(() => {
+      if (questionIndex + 1 === exam.questions.length) {
+        setShowModal(true);
       } else {
         setQuestionIndex((prevState) => prevState + 1);
       }
@@ -47,32 +59,55 @@ const DoExam = () => {
   };
 
   const prevQuestionHandler = () => {
-    setQuestionIndex((prevState) => prevState - 1);
+    saveStudentQuestion(
+      exam.questions[questionIndex]._id,
+      studentId,
+      examId,
+      answers.current
+    ).then((res) => {
+      setQuestionIndex((prevState) => prevState - 1);
+    });
   };
 
   const answerSelectedHandler = (answer) => {
     if (exam.questions[questionIndex].type === 0) {
-      setAnswers([answer]);
+      answers.current = [answer];
     } else
-      setAnswers((prev) => {
-        return prev.filter((ans) => ans._id === answer._id).length === 1
-          ? prev.filter((ans) => ans._id !== answer._id)
-          : [...prev, answer];
-      });
+      answers.current =
+        answers.current.filter((ans) => ans._id === answer._id).length === 1
+          ? answers.current.filter((ans) => ans._id !== answer._id)
+          : [...answers.current, answer];
   };
   const findAnsweredQuestions = () => {
-    let rightExam = student.exams.find((exam) => exam._id == examId);
-    answers = rightExam.answeredQuestions.find(
-      (aq) => aq._id == exam[questionIndex]._id
-    );
+    if (student.exams) {
+      let rightExam = student.exams.find((exam) => exam._id === examId);
+      return rightExam.answeredQuestions.find(
+        (aq) => aq._id === exam.questions[questionIndex]._id
+      );
+    }
   };
 
+  const sumbitExamHandler = () => {
+    submitStudentExam(
+      exam.questions[questionIndex]._id,
+      studentId,
+      examId,
+      answers.current
+    )
+      .then(() => {
+        history.push(`${studentId}/result`);
+        console.log('ssss :>> ');
+      })
+      .catch((error) => {
+        console.log(error.data);
+      });
+  };
   return (
-    <div>
+    <>
       <h3>hello {student.firstName}</h3>
       {exam.questions && (
         <ExamQuestion
-          // selectedAnswers={findAnsweredQuestions()}
+          selectedAnswers={findAnsweredQuestions()}
           answerSelected={answerSelectedHandler}
           question={exam.questions[questionIndex]}
         />
@@ -80,8 +115,32 @@ const DoExam = () => {
       <button disabled={questionIndex <= 0} onClick={prevQuestionHandler}>
         Prev
       </button>
-      <button onClick={nextQuestionHandler}>{lastQuestion.current}</button>
-    </div>
+      <button onClick={nextQuestionHandler}>
+        {exam.questions && questionIndex + 1 === exam.questions.length
+          ? 'End Test'
+          : 'Next'}
+      </button>
+      <h5>
+        Question {questionIndex + 1} of{' '}
+        {exam.questions && exam.questions.length}
+      </h5>
+      <Modal show={showModal} handleClose={() => setShowModal(false)}>
+        <h5 style={{ textAlign: 'center' }}>
+          Would you like to submit the exam?
+        </h5>
+        <div className={classes.ModalButtons}>
+          <button onClick={sumbitExamHandler} className='btn btn-primary'>
+            Yes
+          </button>
+          <button
+            className='btn btn-danger'
+            onClick={() => setShowModal(false)}
+          >
+            No
+          </button>
+        </div>
+      </Modal>
+    </>
   );
 };
 

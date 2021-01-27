@@ -9,7 +9,18 @@ const ExamQuestion2 = (props) => {
   const [answers, dispatch] = useReducer(radioButtonReducer, []);
 
   useEffect(() => {
-    dispatch({ type: ACTIONS.SET, payload: props.question.possibleAnswers });
+    let newAnswers = props.question.possibleAnswers;
+    if (props.selectedAnswers) {
+      newAnswers = props.question.possibleAnswers.map((pa) => {
+        props.selectedAnswers.answers.forEach((sa) => {
+          if (pa._id === sa._id) {
+            pa.selected = true;
+          }
+        });
+        return pa;
+      });
+    }
+    dispatch({ type: ACTIONS.SET, payload: newAnswers });
   }, [props.question]);
   const answerSelected = (answer) => {
     dispatch({
@@ -27,13 +38,6 @@ const ExamQuestion2 = (props) => {
       <h3>{props.question.text}</h3>
       {props.question &&
         answers.map((answer) => {
-          if (props.selectedAnswers) {
-            props.selectedAnswers.answers.forEach((sa) => {
-              if (answer._id === sa._id) {
-                answer.selected = true;
-              }
-            });
-          }
           return (
             <div
               key={answer._id}
