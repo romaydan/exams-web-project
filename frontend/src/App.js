@@ -19,6 +19,7 @@ import auth from './shared/services/authService';
 
 import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
+import ExamResult from './exams/pages/ExamResult/ExamResult';
 
 function App() {
   const [admin, setAdmin] = useState(null);
@@ -41,6 +42,7 @@ function App() {
           <ProtectedRoute path="/questions" component={Questions} />
           <Route path="/exams/new" component={NewExam} />
           <Route path="/exams/edit/:id" component={NewExam} />
+          <Route path="/exams/:examId/:studentId/result" component={ExamResult} />
           <Route path="/exams/:examId/:studentId" component={DoExam} />
           <Route path="/exams/:examId" component={StudentForm} />
           <Route path="/exams" component={Exams} />
