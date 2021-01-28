@@ -24,12 +24,13 @@ function validateExam(exam) {
   const schema = Joi.object({
     language: Joi.number().min(0).max(1).required(),
     name: Joi.string().min(2).max(200).required(),
-    passingGrade: Joi.number().min(55).max(100).required(),
+    passingGrade: Joi.number().min(54).max(100).required(),
     isShow: Joi.boolean().default(false),
     header: Joi.string().required(),
     success: Joi.string().required(),
     failure: Joi.string().required(),
     questions: Joi.array().required(),
+    fieldOfStudy: Joi.required()
   });
 
   return schema.validate(exam);

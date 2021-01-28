@@ -16,15 +16,12 @@ import NewExam from './exams/pages/NewExam/NewExam';
 import Exams from './exams/pages/Exams/Exams';
 import StudentForm from './exams/pages/StudentForm/StudentForm';
 import DoExam from './exams/pages/DoExam/DoExam';
+import ExamResult from './exams/pages/ExamResult/ExamResult';
 
 import auth from './shared/services/authService';
 
 import 'react-toastify/dist/ReactToastify.css';
-<<<<<<< HEAD
-import ExamResult from './exams/pages/ExamResult/ExamResult';
-=======
 import './App.css';
->>>>>>> a086da84fb04c0fa21e7776f54d391d362cd30ba
 
 function App() {
   const [admin, setAdmin] = useState();
@@ -77,12 +74,20 @@ function App() {
               <Questions {...props} fieldOfStudy={fieldOfStudy} />
             )}
           />
-          <Route path="/exams/new" component={NewExam} />
-          <Route path="/exams/edit/:id" component={NewExam} />
+          <ProtectedRoute path="/exams/new"
+            render={(props) =>
+              <NewExam {...props}
+                fieldOfStudy={fieldOfStudy} />} />
+          <ProtectedRoute
+            path="/exams/edit/:id"
+            render={(props) =>
+              <NewExam {...props} fieldOfStudy={fieldOfStudy} />} />
+          <ProtectedRoute exact path="/exams"
+            render={(props) =>
+              <Exams {...props} fieldOfStudy={fieldOfStudy} />} />
           <Route path="/exams/:examId/:studentId/result" component={ExamResult} />
           <Route path="/exams/:examId/:studentId" component={DoExam} />
           <Route path="/exams/:examId" component={StudentForm} />
-          <Route path="/exams" component={Exams} />
           <Route path="/not-found" component={NotFound} />
           <Redirect from="/" exact to="/main-menu" />
           <Redirect to="/not-found" />

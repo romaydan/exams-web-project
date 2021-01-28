@@ -6,7 +6,7 @@ const { Question } = require('../models/question');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-  const exams = await Exam.find().populate('questions');
+  const exams = await Exam.find({ fieldOfStudy: req.query }).populate('questions');
 
   res.send(exams);
 });
@@ -28,6 +28,7 @@ router.post('/', async (req, res) => {
     failure: req.body.failure,
     lastUpdate: Date.now(),
     questions: req.body.questions,
+    fieldOfStudy: req.body.fieldOfStudy,
   });
   await exam.save();
 
@@ -55,6 +56,7 @@ router.put('/:id', async (req, res) => {
       failure: req.body.failure,
       lastUpdate: Date.now(),
       questions: req.body.questions,
+      fieldsOfStudy: req.body.fieldsOfStudy,
     },
     { new: true }
   );
