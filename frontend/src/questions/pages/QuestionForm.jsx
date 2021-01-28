@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 import PossibleAnswerForm from '../components/PossibleAnswerForm';
 
@@ -57,6 +58,8 @@ function QuestionForm(props) {
 
     try {
       await saveQuestion(data, fieldOfStudy);
+
+      toast.success('Question saved successfully.');
       props.history.push('/questions');
     } catch (ex) {
       if (ex.response && ex.response.status === 400) setError(ex.response.data);

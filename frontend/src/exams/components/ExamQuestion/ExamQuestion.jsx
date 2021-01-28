@@ -5,7 +5,7 @@ import {
   radioButtonReducer,
 } from '../../../shared/utils/radioBtnReducer';
 
-const ExamQuestion2 = (props) => {
+const ExamQuestion = (props) => {
   const [answers, dispatch] = useReducer(radioButtonReducer, []);
 
   useEffect(() => {
@@ -55,4 +55,4 @@ const ExamQuestion2 = (props) => {
   );
 };
 
-export default ExamQuestion2;
+export default ExamQuestion;
