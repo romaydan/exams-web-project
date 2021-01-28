@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import classes from './ExamForm.module.css';
+
 import Input from '../../../shared/components/FormElements/Input';
+
+import classes from './ExamForm.module.css';
 
 const fieldsProps = [
   {
@@ -22,7 +24,7 @@ const fieldsProps = [
     type: 'text',
     defaultValue: '',
     label: 'Exam Name: ',
-    placeHolder: 'EnterName',
+    placeholder: 'Enter Name',
     maxLength: 200,
     validation: {
       required: true,
@@ -79,10 +81,9 @@ const fieldsProps = [
     validation: {},
   },
 ];
+
 const ExamForm = (props) => {
-  console.log('props :>> ', props);
   const { handleSubmit, register, errors, setValue } = useForm();
-  // const { isDirty, isValid } = formState;
   useEffect(() => {
     Object.keys(props.exam).forEach((key) => {
       if (key !== '_id' || key !== '__v') {
@@ -91,10 +92,10 @@ const ExamForm = (props) => {
     });
   }, [props.exam, setValue]);
 
-  const formInputs = fieldsProps.map((field) => {
+  const formInputs = fieldsProps.map((field, index) => {
     return (
-      <div>
-        <Input reference={register} {...field} />
+      <div key={index}>
+        <Input reference={register} id={index} {...field} />
         {errors[field.name] && <p>invalid {field.name}</p>}
       </div>
     );
@@ -105,42 +106,12 @@ const ExamForm = (props) => {
       <form onSubmit={handleSubmit(props.submited)}>
         {formInputs}
         {props.children}
-        <button type='submit'>Save Exam</button>
+        <button className='btn btn-primary' type='submit'>
+          Save Exam
+        </button>
       </form>
     </div>
   );
 };
-export default ExamForm;
 
-// <Controller
-// control={control}
-// name='language'
-// render={(props) => (
-//   <FormControl style={{ minWidth: '120px' }}>
-//     <InputLabel>Language</InputLabel>
-//     <Select
-//       value={getValues().language ? getValues().language : 0}
-//       inputRef={props.ref}
-//       onChange={props.onChange}
-//     >
-//       {Object.keys(languages).map((key) => (
-//         <MenuItem value={languages[key]}>{key}</MenuItem>
-//       ))}
-//     </Select>
-//   </FormControl>
-// )}
-// />
-// <Controller
-// control={control}
-// name='name'
-// render={(props) => (
-//   <FormControl style={{ minWidth: '120px' }}>
-//     <TextField
-//       inputRef={props.ref}
-//       onChange={props.onChange}
-//       label='Name'
-//       varient='outlined'
-//     ></TextField>
-//   </FormControl>
-// )}
-// />
+export default ExamForm;

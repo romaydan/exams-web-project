@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@material-ui/core';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { getExams, deleteExam } from '../../../shared/services/examService';
 import classes from './Exams.module.css';
 import * as _ from 'lodash';
@@ -11,13 +11,14 @@ const columns = [
   { field: 'questions', label: 'Num of Questions', order: true },
   { field: 'lastUpdate', label: 'Last Update', order: true },
 ];
-const Exams = () => {
+const Exams = (props) => {
   const [exams, setExams] = useState([]);
   const allExams = useRef([]);
   const history = useHistory();
   useEffect(() => {
-    getExams()
+    getExams(props.fieldOfStudy)
       .then((res) => {
+        console.log('res :>> ', res);
         setExams(res.data);
         allExams.current = res.data;
       })
@@ -34,6 +35,15 @@ const Exams = () => {
       .catch((error) => console.log(error));
     setExams((prevExams) => prevExams.filter((ex) => ex._id !== exam._id));
   };
+  const copyLinkHandler = (exam) => {
+    var tempInput = document.createElement('input');
+    tempInput.style = 'position: absolute; left: -1000px; top: -1000px';
+    tempInput.value = `http://localhost:3000/exams/${exam._id}`;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempInput);
+  };
   const sortTableHandler = (col) => {
     setExams((prevState) => {
       let newState = col.order
@@ -43,6 +53,7 @@ const Exams = () => {
     });
     col.order = !col.order;
   };
+
   const examsElms = exams.map((exam) => (
     <tr>
       <td>{exam._id}</td>
@@ -50,6 +61,7 @@ const Exams = () => {
       <td>{exam.questions.length}</td>
       <td>{exam.lastUpdate}</td>
       <td>
+        <Button onClick={() => copyLinkHandler(exam)}>Copy Link</Button>
         <Button onClick={() => editExamHandler(exam)}>Edit</Button>
         <Button onClick={() => deleteExamHandler(exam)}>Delete</Button>
       </td>
@@ -63,9 +75,16 @@ const Exams = () => {
   return (
     <div className={classes.Exams}>
       <h2>Exams Page</h2>
-
-      <SearchBar label='Filter Exams by name: ' changed={searchChangeHandler} />
-      <table class='table'>
+      <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
+        <SearchBar
+          label='Filter Exams by name: '
+          changed={searchChangeHandler}
+        />
+        <Link className='btn btn-info' to='/exams/new'>
+          Create New Exam
+        </Link>
+      </div>
+      <table className='table'>
         <thead>
           <tr>
             {columns.map((col) => (

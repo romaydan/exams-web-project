@@ -5,7 +5,7 @@ import {
   radioButtonReducer,
 } from '../../../shared/utils/radioBtnReducer';
 
-const ExamQuestion2 = (props) => {
+const ExamQuestion = (props) => {
   const [answers, dispatch] = useReducer(radioButtonReducer, []);
 
   useEffect(() => {
@@ -22,6 +22,7 @@ const ExamQuestion2 = (props) => {
     }
     dispatch({ type: ACTIONS.SET, payload: newAnswers });
   }, [props.question, props.selectedAnswers]);
+
   const answerSelected = (answer) => {
     dispatch({
       type:
@@ -30,8 +31,9 @@ const ExamQuestion2 = (props) => {
           : ACTIONS.SELECT_MULTIPLE,
       payload: answer,
     });
-    props.answerSelected(answer);
+    props.answerSelected && props.answerSelected(answer);
   };
+
   return (
     <div>
       {' '}
@@ -55,4 +57,4 @@ const ExamQuestion2 = (props) => {
   );
 };
 
-export default ExamQuestion2;
+export default ExamQuestion;

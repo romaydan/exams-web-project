@@ -1,14 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
+import { shuffle } from 'lodash';
+
 import ExamQuestion from '../../components/ExamQuestion/ExamQuestion';
 import Modal from '../../../shared/components/UIElements/Modal';
 import { getExam } from '../../../shared/services/examService';
+
 import {
   getStudent,
   saveStudentQuestion,
   submitStudentExam,
 } from '../../../shared/services/studentService';
-import { shuffle } from 'lodash';
+
 import classes from './DoExam.module.css';
 
 const DoExam = () => {
@@ -19,6 +22,7 @@ const DoExam = () => {
   const [showModal, setShowModal] = useState(false);
   const [questionIndex, setQuestionIndex] = useState(0);
   const answers = useRef([]);
+
   useEffect(() => {
     getExam(examId).then((res) => {
       res.data.questions = shuffle(res.data.questions);
@@ -96,7 +100,6 @@ const DoExam = () => {
     )
       .then(() => {
         history.push(`${studentId}/result`);
-        console.log('ssss :>> ');
       })
       .catch((error) => {
         console.log(error.data);

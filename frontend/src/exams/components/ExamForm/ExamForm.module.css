@@ -3,3 +3,6 @@
   flex-direction: column;
   justify-content: space-evenly;
 }
+.ExamForm button {
+  margin-left: 30px;
+}
