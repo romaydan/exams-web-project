@@ -34,6 +34,7 @@ function Questions(props) {
     const newQuestions = originalQuestions.filter(
       (q) => q._id !== question._id
     );
+
     setQuestions(newQuestions);
 
     try {

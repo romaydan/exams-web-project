@@ -30,7 +30,7 @@ const ExamQuestion = (props) => {
           : ACTIONS.SELECT_MULTIPLE,
       payload: answer,
     });
-    props.answerSelected(answer);
+    props.answerSelected && props.answerSelected(answer);
   };
   return (
     <div>

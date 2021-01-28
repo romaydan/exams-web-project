@@ -17,8 +17,8 @@ function RegisterForm(props) {
 
     try {
       const response = await adminService.register(data);
-      auth.loginWithJwt(response.headers['x-auth-token']);
 
+      auth.loginWithJwt(response.headers['x-auth-token']);
       window.location = '/organizations';
     } catch (ex) {
       if (ex.response && ex.response.status === 400) setError(ex.response.data);
