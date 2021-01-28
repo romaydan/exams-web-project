@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import Modal from 'react-bootstrap/Modal';
 
 import PossibleAnswerForm from '../components/PossibleAnswerForm';
+import ExamQuestion from '../../exams/components/ExamQuestion/ExamQuestion';
 
 import {
   getQuestion,
@@ -8,6 +11,8 @@ import {
 } from '../../shared/services/questionService';
 
 function QuestionForm(props) {
+  const { fieldOfStudy } = props;
+
   const [data, setData] = useState({
     type: 0,
     text: '',
@@ -17,6 +22,7 @@ function QuestionForm(props) {
     tags: '',
   });
   const [error, setError] = useState('');
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     async function populateQuestion() {
@@ -54,7 +60,9 @@ function QuestionForm(props) {
     e.preventDefault();
 
     try {
-      await saveQuestion(data, props.fieldOfStudy);
+      await saveQuestion(data, fieldOfStudy);
+
+      toast.success('Question saved successfully.');
       props.history.push('/questions');
     } catch (ex) {
       if (ex.response && ex.response.status === 400) setError(ex.response.data);
@@ -95,7 +103,6 @@ function QuestionForm(props) {
   return (
     <div>
       <h1>Question Form</h1>
-
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="type">Question type:</label>
@@ -211,9 +218,20 @@ function QuestionForm(props) {
 
         {error && <div className="alert alert-danger">{error}</div>}
 
-        <button type="button" className="btn btn-outline-primary pull-right">
+        <button
+          type="button"
+          onClick={() => setShow(true)}
+          className="btn btn-outline-primary pull-right"
+        >
           Show
         </button>
+
+        <Modal size="lg" centered show={show} onHide={() => setShow(false)}>
+          <Modal.Header closeButton></Modal.Header>
+          <Modal.Body>
+            <ExamQuestion question={data} />
+          </Modal.Body>
+        </Modal>
 
         <button type="submit" className="btn btn-primary">
           Save

@@ -56,7 +56,7 @@ router.put('/:id', async (req, res) => {
       failure: req.body.failure,
       lastUpdate: Date.now(),
       questions: req.body.questions,
-      fieldsOfStudy: req.body.fieldsOfStudy,
+      fieldOfStudy: req.body.fieldOfStudy,
     },
     { new: true }
   );
@@ -72,6 +72,13 @@ router.delete('/:id', async (req, res) => {
 
   if (!exam)
     return res.status(404).send('The exam with the given ID was not found.');
+
+  const questions = await Question.find({ _id: { $in: exam.questions } });
+
+  questions.forEach((question) => {
+    question.numberOfTests--;
+    question.save();
+  });
 
   res.send(exam);
 });

@@ -1,11 +1,13 @@
 import { Link } from 'react-router-dom';
 
 function MainMenu(props) {
+  const { options, setFieldOfStudy } = props;
+
   const handleChange = (e) => {
     const { currentTarget: input } = e;
-    const newFieldOfStudy = props.options[input.value];
+    const newFieldOfStudy = options[input.value];
 
-    props.setFieldOfStudy(newFieldOfStudy);
+    setFieldOfStudy(newFieldOfStudy);
   };
 
   return (
@@ -22,8 +24,8 @@ function MainMenu(props) {
           className="form-control"
         >
           <option value="" />
-          {props.options &&
-            props.options.map((option, index) => (
+          {options &&
+            options.map((option, index) => (
               <option key={option._id} value={index}>
                 {option.name}
               </option>

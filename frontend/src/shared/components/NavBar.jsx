@@ -32,14 +32,9 @@ const NavBar = (props) => {
             </>
           )}
           {admin && (
-            <>
-              {/* <NavLink className="nav-item nav-link" to="/profile">
-                {admin.name}
-              </NavLink> */}
-              <NavLink className="nav-item nav-link" to="/logout">
-                Logout
-              </NavLink>
-            </>
+            <NavLink className="nav-item nav-link" to="/logout">
+              Logout
+            </NavLink>
           )}
         </div>
       </div>

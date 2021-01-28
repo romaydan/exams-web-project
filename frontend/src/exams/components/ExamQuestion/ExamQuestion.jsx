@@ -26,7 +26,7 @@ const ExamQuestion = (props) => {
   const answerSelected = (answer) => {
     dispatch({
       type:
-        props.question.type === 0
+        +props.question.type === 0
           ? ACTIONS.SELECT_ONE
           : ACTIONS.SELECT_MULTIPLE,
       payload: answer,

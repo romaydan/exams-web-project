@@ -17,6 +17,7 @@ const PossibleAnswerForm = (props) => {
         <textarea
           name="answer"
           id={index}
+          cols="60"
           rows="1"
           value={possibleAnswer.answer}
           onChange={handleChange}

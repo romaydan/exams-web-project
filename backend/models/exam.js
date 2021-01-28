@@ -30,7 +30,7 @@ function validateExam(exam) {
     success: Joi.string().required(),
     failure: Joi.string().required(),
     questions: Joi.array().required(),
-    fieldOfStudy: Joi.required()
+    fieldOfStudy: Joi..object().required()
   });
 
   return schema.validate(exam);
