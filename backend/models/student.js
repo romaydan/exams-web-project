@@ -1,26 +1,14 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
 
-const { possibleAnswerSchema } = require('./question');
-
-const answeredQuestionSchema = {
-  answers: { type: [possibleAnswerSchema] },
-};
-
-const studentExamSchema = new mongoose.Schema({
-  answeredQuestions: { type: [answeredQuestionSchema] },
-  submitted: { type: Boolean },
-  submitDate: { type: Date },
-  rightQuestions: { type: Number },
-  grade: { type: Number }
-})
+const { examInstanceSchema } = require('./examInstance');
 
 const studentSchema = new mongoose.Schema({
   firstName: { type: String },
   lastName: { type: String },
   email: { type: String },
   phone: { type: String },
-  exams: { type: [studentExamSchema] },
+  exams: { type: [examInstanceSchema] },
 });
 
 const Student = mongoose.model('Student', studentSchema);

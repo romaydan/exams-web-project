@@ -12,7 +12,7 @@ function ExamReport(props) {
 
   useEffect(() => {
     async function populateExams() {
-      const { data } = await getExams();
+      const { data } = await getExams(fieldOfStudy);
       setExams(data);
     }
 
