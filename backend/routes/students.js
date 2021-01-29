@@ -24,7 +24,7 @@ router.post('/', async (req, res) => {
 
     }
     else if (studentExam[0].submitted) {
-        res.status(403).send(student._id);
+        res.status(400).send(student._id);
     }
     else
         res.send(student)
@@ -53,7 +53,7 @@ router.put('/submit/:id', async (req, res) => {
     const student = await Student.findById(req.params.id);
     let studentExam = saveAnswersAndGetStudExam(student, req.body.examId, req.body.questionId, req.body.answers);
     studentExam.submitDate = Date.now();
-    if (studentExam.submitted) { return res.status(403).send('student already submitted') }
+    if (studentExam.submitted) { return res.status(400).send('student already submitted') }
     studentExam.submitted = true
     let fullExam = await Exam.findById(req.body.examId);
     let grade = 0

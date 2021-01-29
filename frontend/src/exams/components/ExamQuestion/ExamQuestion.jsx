@@ -22,6 +22,7 @@ const ExamQuestion = (props) => {
     }
     dispatch({ type: ACTIONS.SET, payload: newAnswers });
   }, [props.question, props.selectedAnswers]);
+
   const answerSelected = (answer) => {
     dispatch({
       type:
@@ -32,6 +33,7 @@ const ExamQuestion = (props) => {
     });
     props.answerSelected && props.answerSelected(answer);
   };
+
   return (
     <div>
       {' '}

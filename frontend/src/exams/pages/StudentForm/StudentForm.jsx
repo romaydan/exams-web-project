@@ -57,29 +57,27 @@ const fields = [
 const StudentForm = (props) => {
   const { history } = props;
   let { examId } = useParams();
+  const { register, errors, handleSubmit } = useForm();
+
   const submitHandler = (data) => {
     let req = { ...data, examId: examId };
-    console.log('req', req);
     saveStudent(req)
       .then((res) => {
-        console.log('res', res.data);
-        let newUrl = examId + '/' + res.data._id;
-        console.log('newUrl :>> ', newUrl);
         history.push(`${examId}/${res.data._id}`);
+        // history.push(`/${res.data._id}`);
       })
       .catch((error) => {
-        console.log('error :>> ', error.response);
-        history.push(error.response.data.studentId + '/result');
+        if (error.response && error.response.status === 400)
+          history.push(`${examId}/${error.response.data}/result`);
       });
   };
-  console.log('in Student Form');
+  // console.log('in Student Form');
 
-  const { register, errors, handleSubmit } = useForm();
   return (
     <div>
       <form onSubmit={handleSubmit(submitHandler)}>
-        {fields.map((field) => (
-          <div key={field.name}>
+        {fields.map((field, index) => (
+          <div className='form-group' key={index}>
             <Input reference={register} {...field} />
             {errors[field.name] && <p>invalid {field.name}</p>}
           </div>

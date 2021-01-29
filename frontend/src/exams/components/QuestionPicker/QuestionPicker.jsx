@@ -1,26 +1,30 @@
 import React, { useReducer, useEffect, useRef } from 'react';
 import { getQuestions } from '../../../shared/services/questionService';
 import SearchBar from '../../../shared/components/UIElements/SearchBar';
-import classes from './QuestionPicker.module.css';
 import {
   ACTIONS,
   radioButtonReducer,
 } from '../../../shared/utils/radioBtnReducer';
+
+import classes from './QuestionPicker.module.css';
 
 const QuestionPicker = (props) => {
   const [questions, dispatch] = useReducer(radioButtonReducer, []);
   // const [questions, setQuestions] = useState([]);
   const allQuestions = useRef([]);
   useEffect(() => {
-    getQuestions().then((res) => {
+    getQuestions(props.fieldOfStudy).then((res) => {
+      console.log('res :>> ', res);
       dispatch({ type: ACTIONS.SET, payload: res.data });
       allQuestions.current = res.data;
     });
   }, []);
+
   const questionSelected = (question) => {
     dispatch({ type: ACTIONS.SELECT_MULTIPLE, payload: question });
     props.questionSelected(question);
   };
+
   const searchChangeHandler = (value) => {
     console.log('allQuestions :>> ', allQuestions);
     if (value.trim() === '') {

@@ -75,8 +75,23 @@ function App() {
               <Questions {...props} fieldOfStudy={fieldOfStudy} />
             )}
           />
-          <Route path="/exams/new" component={NewExam} />
-          <Route path="/exams/edit/:id" component={NewExam} />
+          <ProtectedRoute
+            path="/exams/new"
+            render={(props) => (
+              <NewExam {...props} fieldOfStudy={fieldOfStudy} />
+            )}
+          />
+          <ProtectedRoute
+            path="/exams/edit/:id"
+            render={(props) => (
+              <NewExam {...props} fieldOfStudy={fieldOfStudy} />
+            )}
+          />
+          <ProtectedRoute
+            exact
+            path="/exams"
+            render={(props) => <Exams {...props} fieldOfStudy={fieldOfStudy} />}
+          />
           <Route
             path="/exams/:examId/:studentId/result"
             component={ExamResult}

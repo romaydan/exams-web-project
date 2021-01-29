@@ -6,7 +6,7 @@ const { Question } = require('../models/question');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-  const exams = await Exam.find().populate('questions');
+  const exams = await Exam.find({ fieldOfStudy: req.query }).populate('questions');
 
   res.send(exams);
 });

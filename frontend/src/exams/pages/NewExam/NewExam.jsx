@@ -23,12 +23,13 @@ const NewExam = (props) => {
     submitedExam = !isAddMode ? { ...data, _id: exam._id } : { ...data };
     submitedExam.questions = pickedQuestions.map((question) => question._id);
     console.log('submitedExam :>> ', submitedExam);
-    saveExam(submitedExam)
+    saveExam(submitedExam, props.fieldOfStudy)
       .then((res) => setExam(res.data))
       .catch((error) => console.log('error', error));
   };
 
   const questionSelectedHandler = (question) => {
+    console.log('question', question);
     let newQuestion = { ...question };
     delete newQuestion.selected;
     if (
@@ -39,14 +40,18 @@ const NewExam = (props) => {
         (quest) => quest._id !== newQuestion._id
       );
     } else {
-      pickedQuestions.push(newQuestion);
+      pickedQuestions = [...pickedQuestions, question];
     }
+    console.log('pcikedQuestions :>> ', pickedQuestions);
   };
   return (
     <div>
-      <h3>{isAddMode ? 'Add User' : 'Edit User'}</h3>
+      <h3>{isAddMode ? 'Add Exam' : 'Edit Exam'}</h3>
       <ExamForm submited={submitHandler} isAddMode={isAddMode} exam={exam}>
-        <QuestionPicker questionSelected={questionSelectedHandler} />
+        <QuestionPicker
+          fieldOfStudy={props.fieldOfStudy}
+          questionSelected={questionSelectedHandler}
+        />
         <Link to='/exams' className='btn btn-success'>
           Go To Exams
         </Link>
