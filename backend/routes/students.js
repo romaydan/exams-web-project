@@ -25,11 +25,11 @@ router.post('/', async (req, res) => {
       phone: req.body.phone,
     },
     { new: true, upsert: true }
-  );
-  const studentExam = student.exams.filter((ex) => ex._id == examId);
+  )
+  const studentExam = student.exams.filter((exId) => exId == examId);
   if (studentExam.length < 1) {
-
-    student.exams = [...student.exams, { exam: examId }];
+    const exam = await ExamInstance.create({ exam: examId, student: student._id })
+    student.exams = [...student.exams, exam._id];
   } else if (studentExam[0].submitted) {
     res.status(400).send(student._id);
   }
@@ -40,9 +40,11 @@ router.post('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   const student = await Student.findById(req.params.id)
     .populate({
-      path: 'exams.exam',
+      path: 'exams',
       populate: {
-        path: 'questions',
+        path: 'exam', populate: {
+          path: 'questions',
+        },
       },
     })
     .populate('exams.answeredQuestions.question');
@@ -52,23 +54,30 @@ router.get('/:id', async (req, res) => {
 });
 
 router.put('/exam/:id', async (req, res) => {
-  const student = await Student.findById(req.body.studentId);
+  const student = await Student.findById(req.body.studentId).populate({
+    path: 'exams', populate: {
+      path: 'answeredQuestions.question'
+    }
+  });
 
-  saveAnswersAndGetStudExam(
+  const exam = await saveAnswersAndGetStudExam(
     student,
     req.body.examId,
     req.body.questionId,
     req.body.answers
   );
-  student.save();
+  exam.save();
+
   res.send(student);
 });
 
 router.put('/submit/:id', async (req, res) => {
-  const student = await Student.findById(req.params.id).populate(
-    'exams.answeredQuestions.question'
-  );
-  let studentExam = saveAnswersAndGetStudExam(
+  const student = await Student.findById(req.params.id).populate({
+    path: 'exams', populate: {
+      path: 'answeredQuestions.question'
+    }
+  });
+  let studentExam = await saveAnswersAndGetStudExam(
     student,
     req.body.examId,
     req.body.questionId,
@@ -86,7 +95,7 @@ router.put('/submit/:id', async (req, res) => {
   for (let answeredQuestion of studentExam.answeredQuestions) {
     let points = 0;
     let fullQuestion = answeredQuestion.question;
-    if (answeredQuestion.question.type === 0) {
+    if (fullQuestion.type === 0) {
       if (answeredQuestion.answers[0].isCorrect) {
         points = questionPoints;
         rightQuetionsCounter++;
@@ -114,23 +123,25 @@ router.put('/submit/:id', async (req, res) => {
   studentExam.grade = Math.round(grade);
   studentExam.rightQuestions = rightQuetionsCounter;
   student.save();
+  studentExam.save();
   res.sendStatus(200);
 });
 
-function saveAnswersAndGetStudExam(student, examId, questionId, answers) {
-  const studentExam = student.exams.find((e) => e.exam._id == examId);
-  const answeredQuestion = studentExam.answeredQuestions.find(
+async function saveAnswersAndGetStudExam(student, examId, questionId, answers) {
+  const exam = await ExamInstance.findOne({ exam: examId, student: student._id }).populate('answeredQuestions.question')
+  // const studentExam = student.exams.find((ex) => ex.exam == examId);
+  const answeredQuestion = exam.answeredQuestions.find(
     (aq) => aq.question._id == questionId
   );
   if (answeredQuestion) {
     answeredQuestion.answers = [...answers];
   } else {
-    studentExam.answeredQuestions = [
-      ...studentExam.answeredQuestions,
+    exam.answeredQuestions = [
+      ...exam.answeredQuestions,
       { question: questionId, answers: answers },
     ];
   }
-  return studentExam;
+  return exam;
 }
 
 module.exports = router;

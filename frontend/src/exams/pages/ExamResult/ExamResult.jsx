@@ -1,44 +1,39 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getExam } from '../../../shared/services/examService';
 import { getStudent } from '../../../shared/services/studentService';
 const ExamResult = () => {
   const { studentId, examId } = useParams();
   const [student, setStudent] = useState({});
-  const [exam, setExam] = useState({});
   useEffect(() => {
     getStudent(studentId).then((res) => {
       setStudent(res.data);
     });
-    getExam(examId).then((res) => {
-      setExam(res.data);
-    });
   }, [studentId, examId]);
-
+  const rightExam = student.exams
+    ? student.exams.find((exam) => exam.exam._id === examId)
+    : null;
+  console.log('rightExam :>> ', rightExam);
   return (
     <div>
-      {student.exams && exam.questions && (
+      {student.exams && (
         <>
           <h3> Hello {student.name} </h3>
           <h4>
-            {student.exams.find((exam) => exam._id === examId).grade >=
-            exam.passingGrade
-              ? exam.success
-              : exam.failure}
+            {rightExam.grade >= rightExam.exam.passingGrade
+              ? rightExam.exam.success
+              : rightExam.exam.failure}
           </h4>
-          you got{' '}
-          {student.exams.find((exam) => exam._id === examId).rightQuestions} of{' '}
-          <span>{exam.questions.length} and your grade is</span>
+          you got {rightExam.rightQuestions} of{' '}
+          <span>{rightExam.exam.questions.length} and your grade is</span>{' '}
           <span
             style={{
               color:
-                student.exams.find((exam) => exam._id === examId).grade >=
-                exam.passingGrade
+                rightExam.grade >= rightExam.exam.passingGrade
                   ? 'green'
                   : 'red',
             }}
           >
-            {student.exams.find((exam) => exam._id === examId).grade}
+            {rightExam.grade}
           </span>
         </>
       )}
