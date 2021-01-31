@@ -15,12 +15,12 @@ export const getExam = (examId) => {
 }
 
 export const saveExam = (exam, fieldOfStudy) => {
+    exam.fieldOfStudy = fieldOfStudy;
     if (exam._id) {
         const body = { ...exam };
         delete body._id;
         return http.put(examUrl(exam._id), body);
     }
-    exam.fieldOfStudy = fieldOfStudy;
     return http.post(apiEndpoint, exam);
 }
 
