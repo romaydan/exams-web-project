@@ -8,6 +8,7 @@ const answeredQuestionSchema = {
 };
 
 const studentExamSchema = new mongoose.Schema({
+  exam: { type: { type: [mongoose.Schema.Types.ObjectId], ref: 'Exam' } },
   answeredQuestions: { type: [answeredQuestionSchema] },
   submitted: { type: Boolean },
   submitDate: { type: Date },
