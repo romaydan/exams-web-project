@@ -71,12 +71,13 @@ router.put('/submit/:id', async (req, res) => {
             let correctAnsCountInFull = fullQuestion.possibleAnswers.filter(ans => ans.isCorrect).length
             let correctAnsCountInExam = answeredQuestion.answers.filter(ans => ans.isCorrect).length;
             let wrongAnswersCount = answeredQuestion.answers.length - correctAnsCountInExam
-            points = 100 / fullExam.questions.length * ((correctAnsCountInExam - wrongAnswersCount) / correctAnsCountInFull)
+            points = 100 / fullExam.questions.length * ((correctAnsCountInExam / correctAnsCountInFull) - 100 / fullExam.questions.length * ((wrongAnswersCount) / correctAnsCountInFull)
             if (correctAnsCountInFull === correctAnsCountInExam) {
                 rightQuetionsCounter++;
             }
         }
-        grade += points;
+        if (points < 0)
+            grade += points;
     }
     studentExam.grade = Math.round(grade);
     studentExam.rightQuestions = rightQuetionsCounter;
