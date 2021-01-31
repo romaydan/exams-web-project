@@ -25,19 +25,23 @@ router.post('/', async (req, res) => {
       phone: req.body.phone,
     },
     { new: true, upsert: true }
-  );
-
+  )
   const studentExam = student.exams.filter((ex) => ex._id == examId);
   if (studentExam.length < 1) {
-    student.exams = [...student.exams, { _id: examId }];
+    student.exams = [...student.exams, { exam: examId }];
   } else if (studentExam[0].submitted) {
     res.status(400).send(student._id);
-  } else res.send(student);
+  }
+  res.send(student);
   student.save();
 });
 
 router.get('/:id', async (req, res) => {
-  const student = await Student.findById(req.params.id);
+  const student = await Student.findById(req.params.id).populate({
+    path: 'exams.exam', populate: {
+      path: 'questions'
+    }
+  }).populate('exams.answeredQuestions.question')
   if (!student)
     return res.status(404).send('The student with the given ID was not found.');
   res.send(student);
@@ -93,16 +97,16 @@ router.put('/submit/:id', async (req, res) => {
 });
 
 function saveAnswersAndGetStudExam(student, examId, questionId, answers) {
-  const studentExam = student.exams.find((e) => e._id == examId);
+  const studentExam = student.exams.find((e) => e.exam._id == examId);
   const answeredQuestion = studentExam.answeredQuestions.find(
-    (aq) => aq._id == questionId
+    (aq) => aq.question._id == questionId
   );
   if (answeredQuestion) {
     answeredQuestion.answers = [...answers];
   } else {
     studentExam.answeredQuestions = [
       ...studentExam.answeredQuestions,
-      { _id: questionId, answers: answers },
+      { question: questionId, answers: answers },
     ];
   }
   return studentExam;
