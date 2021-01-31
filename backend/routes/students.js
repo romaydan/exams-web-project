@@ -8,7 +8,6 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
   const students = await Student.find();
-
   res.send(students);
 });
 
@@ -61,7 +60,7 @@ router.put('/exam/:id', async (req, res) => {
 });
 
 router.put('/submit/:id', async (req, res) => {
-  const student = await Student.findById(req.params.id);
+  const student = await Student.findById(req.params.id).populate('exams.answeredQuestions.question');
   let studentExam = saveAnswersAndGetStudExam(student, req.body.examId, req.body.questionId, req.body.answers);
   studentExam.submitDate = Date.now();
   if (studentExam.submitted) { return res.status(400).send('student already submitted') }
@@ -69,12 +68,13 @@ router.put('/submit/:id', async (req, res) => {
   let fullExam = await Exam.findById(req.body.examId);
   let grade = 0
   let rightQuetionsCounter = 0;
+  const questionPoints = 100 / fullExam.questions.length;
   for (let answeredQuestion of studentExam.answeredQuestions) {
     let points = 0;
-    let fullQuestion = await Question.findById(answeredQuestion._id);
-    if (fullQuestion.type === 0) {
+    let fullQuestion = answeredQuestion.question;
+    if (answeredQuestion.question.type === 0) {
       if (answeredQuestion.answers[0].isCorrect) {
-        points = 100 / fullExam.questions.length;
+        points = questionPoints;
         rightQuetionsCounter++;
       }
     }
@@ -82,7 +82,9 @@ router.put('/submit/:id', async (req, res) => {
       let correctAnsCountInFull = fullQuestion.possibleAnswers.filter(ans => ans.isCorrect).length
       let correctAnsCountInExam = answeredQuestion.answers.filter(ans => ans.isCorrect).length;
       let wrongAnswersCount = answeredQuestion.answers.length - correctAnsCountInExam
-      points = 100 / fullExam.questions.length * ((correctAnsCountInExam / correctAnsCountInFull) - 100 / fullExam.questions.length * ((wrongAnswersCount) / correctAnsCountInFull))
+      let pointsToAdd = questionPoints * (correctAnsCountInExam / correctAnsCountInFull)
+      let pointsToSubstract = questionPoints * ((wrongAnswersCount) / correctAnsCountInFull)
+      points = pointsToAdd - pointsToSubstract
       if (correctAnsCountInFull === correctAnsCountInExam) {
         rightQuetionsCounter++;
       }
