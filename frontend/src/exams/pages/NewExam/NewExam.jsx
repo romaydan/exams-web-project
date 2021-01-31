@@ -44,6 +44,7 @@ const NewExam = (props) => {
     }
     console.log('pcikedQuestions :>> ', pickedQuestions);
   };
+  console.log('exam :>> ', exam);
   return (
     <div>
       <h3>{isAddMode ? 'Add Exam' : 'Edit Exam'}</h3>
@@ -51,7 +52,9 @@ const NewExam = (props) => {
         <QuestionPicker
           fieldOfStudy={props.fieldOfStudy}
           questionSelected={questionSelectedHandler}
+          examQuestions={isAddMode ? null : exam.questions}
         />
+
         <Link to='/exams' className='btn btn-success'>
           Go To Exams
         </Link>

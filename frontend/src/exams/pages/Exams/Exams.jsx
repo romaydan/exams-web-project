@@ -55,7 +55,7 @@ const Exams = (props) => {
   };
 
   const examsElms = exams.map((exam) => (
-    <tr>
+    <tr key={exam._id}>
       <td>{exam._id}</td>
       <td>{exam.name}</td>
       <td>{exam.questions.length}</td>

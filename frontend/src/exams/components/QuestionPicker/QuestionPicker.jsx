@@ -10,15 +10,23 @@ import classes from './QuestionPicker.module.css';
 
 const QuestionPicker = (props) => {
   const [questions, dispatch] = useReducer(radioButtonReducer, []);
-  // const [questions, setQuestions] = useState([]);
   const allQuestions = useRef([]);
   useEffect(() => {
     getQuestions(props.fieldOfStudy).then((res) => {
-      console.log('res :>> ', res);
-      dispatch({ type: ACTIONS.SET, payload: res.data });
       allQuestions.current = res.data;
+      let newQuestions = res.data;
+      if (props.examQuestions)
+        newQuestions = res.data.map((question) => {
+          props.examQuestions.forEach((quest) => {
+            if (quest._id === question._id) {
+              question.selected = true;
+            }
+          });
+          return question;
+        });
+      dispatch({ type: ACTIONS.SET, payload: newQuestions });
     });
-  }, []);
+  }, [props.fieldOfStudy]);
 
   const questionSelected = (question) => {
     dispatch({ type: ACTIONS.SELECT_MULTIPLE, payload: question });
@@ -26,7 +34,6 @@ const QuestionPicker = (props) => {
   };
 
   const searchChangeHandler = (value) => {
-    console.log('allQuestions :>> ', allQuestions);
     if (value.trim() === '') {
     }
     let filtered = allQuestions.current.filter(
@@ -36,23 +43,26 @@ const QuestionPicker = (props) => {
     );
     dispatch({ type: ACTIONS.SET, payload: filtered });
   };
-
   return (
     <div>
       <SearchBar
         label='Filter By Tags or content'
         changed={searchChangeHandler}
       ></SearchBar>
-      {questions.map((question) => (
-        <div
-          className={question.selected ? classes.Selected : classes.NotSelected}
-          key={question._id}
-          onClick={() => questionSelected(question)}
-        >
-          <h3> {question.text}</h3>
-          <h5 className={classes.Tags}>{question.tags.join(' | ')}</h5>
-        </div>
-      ))}
+      {questions.map((question) => {
+        return (
+          <div
+            key={question._id}
+            className={
+              question.selected ? classes.Selected : classes.NotSelected
+            }
+            onClick={() => questionSelected(question)}
+          >
+            <h3> {question.text}</h3>
+            <h5 className={classes.Tags}>{question.tags.join(' | ')}</h5>
+          </div>
+        );
+      })}
     </div>
   );
 };
