@@ -14,20 +14,23 @@ const QuestionPicker = (props) => {
   useEffect(() => {
     getQuestions(props.fieldOfStudy).then((res) => {
       allQuestions.current = res.data;
-      let newQuestions = res.data;
-      if (props.examQuestions)
-        newQuestions = res.data.map((question) => {
-          props.examQuestions.forEach((quest) => {
-            if (quest._id === question._id) {
-              question.selected = true;
-            }
-          });
-          return question;
-        });
-      dispatch({ type: ACTIONS.SET, payload: newQuestions });
+      dispatch({ type: ACTIONS.SET, payload: res.data });
     });
   }, [props.fieldOfStudy]);
 
+  useEffect(() => {
+    if (props.examQuestions) {
+      let newQuestions = questions.map((question) => {
+        props.examQuestions.forEach((quest) => {
+          if (quest._id === question._id) {
+            question.selected = true;
+          }
+        });
+        return question;
+      });
+      dispatch({ type: ACTIONS.SET, payload: newQuestions });
+    }
+  }, [props.examQuestions]);
   const questionSelected = (question) => {
     dispatch({ type: ACTIONS.SELECT_MULTIPLE, payload: question });
     props.questionSelected(question);
