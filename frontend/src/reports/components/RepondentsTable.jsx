@@ -6,11 +6,14 @@ const RespondentsTable = (props) => {
   const { respondents, setRespondent } = props;
 
   const columns = [
-    { path: 'firstName', label: 'Respondent' },
+    { path: 'name', label: 'Respondent' },
     { path: 'email', label: 'Email' },
   ];
 
   const renderCell = (item, column) => {
+    if (column.path === 'name')
+      return _.get(item, 'firstName').concat(' ', _.get(item, 'lastName'));
+
     return _.get(item, column.path);
   };
 

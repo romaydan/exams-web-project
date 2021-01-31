@@ -27,6 +27,8 @@ function RespondentReport(props) {
   const getFilteredData = () => {
     if (!searchQuery) return [];
 
+    if (searchQuery === ' ') return students;
+
     return students.filter((s) =>
       s.firstName.toLowerCase().startsWith(searchQuery.toLowerCase())
     );
@@ -52,6 +54,8 @@ function RespondentReport(props) {
         <p>
           To find a respondent, start typing a name below. Then select a
           respondent from the list that will appear.
+          <br />
+          Tip: To show all respondents, press the spacebar
         </p>
 
         <SearchBox value={searchQuery} onChange={handleSearch} />
