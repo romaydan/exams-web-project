@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
-
+const { examInstanceSchema } = require('./examInstance');
 const { possibleAnswerSchema } = require('./question');
 
 const answeredQuestionSchema = {
@@ -21,7 +21,7 @@ const studentSchema = new mongoose.Schema({
   lastName: { type: String },
   email: { type: String },
   phone: { type: String },
-  exams: { type: [studentExamSchema] },
+  exams: { type: [examInstanceSchema] },
 });
 
 const Student = mongoose.model('Student', studentSchema);

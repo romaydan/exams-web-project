@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
+import NavBar from './shared/components/NavBar';
 import RegisterForm from './auth/pages/RegisterForm';
 import LoginForm from './auth/pages/LoginForm';
 import Logout from './auth/components/Logout';
@@ -10,13 +11,14 @@ import Organizations from './organizations/pages/Organizations';
 import MainMenu from './main-menu/pages/MainMenu';
 import QuestionForm from './questions/pages/QuestionForm';
 import Questions from './questions/pages/Questions';
-import NavBar from './shared/components/NavBar';
-import NotFound from './shared/components/NotFound';
 import NewExam from './exams/pages/NewExam/NewExam';
 import Exams from './exams/pages/Exams/Exams';
 import StudentForm from './exams/pages/StudentForm/StudentForm';
 import DoExam from './exams/pages/DoExam/DoExam';
 import ExamResult from './exams/pages/ExamResult/ExamResult';
+import ExamReport from './reports/pages/ExamReport';
+import RespondentReport from './reports/pages/RespondentReport';
+import NotFound from './shared/components/NotFound';
 
 import auth from './shared/services/authService';
 
@@ -74,20 +76,40 @@ function App() {
               <Questions {...props} fieldOfStudy={fieldOfStudy} />
             )}
           />
-          <ProtectedRoute path="/exams/new"
-            render={(props) =>
-              <NewExam {...props}
-                fieldOfStudy={fieldOfStudy} />} />
+          <ProtectedRoute
+            path="/exams/new"
+            render={(props) => (
+              <NewExam {...props} fieldOfStudy={fieldOfStudy} />
+            )}
+          />
           <ProtectedRoute
             path="/exams/edit/:id"
-            render={(props) =>
-              <NewExam {...props} fieldOfStudy={fieldOfStudy} />} />
-          <ProtectedRoute exact path="/exams"
-            render={(props) =>
-              <Exams {...props} fieldOfStudy={fieldOfStudy} />} />
-          <Route path="/exams/:examId/:studentId/result" component={ExamResult} />
+            render={(props) => (
+              <NewExam {...props} fieldOfStudy={fieldOfStudy} />
+            )}
+          />
+          <ProtectedRoute
+            exact
+            path="/exams"
+            render={(props) => <Exams {...props} fieldOfStudy={fieldOfStudy} />}
+          />
+          <Route
+            path="/exams/:examId/:studentId/result"
+            component={ExamResult}
+          />
           <Route path="/exams/:examId/:studentId" component={DoExam} />
           <Route path="/exams/:examId" component={StudentForm} />
+          <Route path="/exams" component={Exams} />
+          <ProtectedRoute
+            path="/reports/exam"
+            render={(props) => (
+              <ExamReport {...props} fieldOfStudy={fieldOfStudy} />
+            )}
+          />
+          <ProtectedRoute
+            path="/reports/respondent"
+            component={RespondentReport}
+          />
           <Route path="/not-found" component={NotFound} />
           <Redirect from="/" exact to="/main-menu" />
           <Redirect to="/not-found" />
