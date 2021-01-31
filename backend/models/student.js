@@ -9,7 +9,7 @@ const studentSchema = new mongoose.Schema({
   lastName: { type: String },
   email: { type: String },
   phone: { type: String },
-  exams: { type: [examInstanceSchema] },
+  exams: [{ type: [mongoose.Schema.Types.ObjectId], ref: 'ExamInstance' }],
 });
 
 const Student = mongoose.model('Student', studentSchema);

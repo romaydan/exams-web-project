@@ -3,6 +3,7 @@ const express = require('express');
 const { Student, validate } = require('../models/student');
 const { Exam } = require('../models/exam');
 const { Question } = require('../models/question');
+const { ExamInstance } = require('../models/examInstance');
 
 const router = express.Router();
 
@@ -27,6 +28,7 @@ router.post('/', async (req, res) => {
   )
   const studentExam = student.exams.filter((ex) => ex._id == examId);
   if (studentExam.length < 1) {
+
     student.exams = [...student.exams, { exam: examId }];
   } else if (studentExam[0].submitted) {
     res.status(400).send(student._id);
