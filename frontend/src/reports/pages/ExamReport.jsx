@@ -17,7 +17,7 @@ function ExamReport(props) {
     }
 
     populateExams();
-  }, []);
+  }, [fieldOfStudy]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

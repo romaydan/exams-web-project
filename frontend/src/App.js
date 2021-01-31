@@ -17,6 +17,7 @@ import StudentForm from './exams/pages/StudentForm/StudentForm';
 import DoExam from './exams/pages/DoExam/DoExam';
 import ExamResult from './exams/pages/ExamResult/ExamResult';
 import ExamReport from './reports/pages/ExamReport';
+import RespondentReport from './reports/pages/RespondentReport';
 import NotFound from './shared/components/NotFound';
 
 import auth from './shared/services/authService';
@@ -104,6 +105,10 @@ function App() {
             render={(props) => (
               <ExamReport {...props} fieldOfStudy={fieldOfStudy} />
             )}
+          />
+          <ProtectedRoute
+            path="/reports/respondent"
+            component={RespondentReport}
           />
           <Route path="/not-found" component={NotFound} />
           <Redirect from="/" exact to="/main-menu" />

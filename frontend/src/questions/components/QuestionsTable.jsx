@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import { Table } from 'react-bootstrap';
 
 const QuestionsTable = (props) => {
   const { questions, sortColumn, onDelete, onSort } = props;
@@ -81,7 +82,7 @@ const QuestionsTable = (props) => {
   };
 
   return (
-    <table className="table">
+    <Table striped bordered hover>
       <thead>
         <tr>
           {columns.map((column) => (
@@ -110,7 +111,7 @@ const QuestionsTable = (props) => {
           </tr>
         ))}
       </tbody>
-    </table>
+    </Table>
   );
 };
 
