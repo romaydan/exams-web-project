@@ -8,7 +8,7 @@ const { ExamInstance } = require('../models/examInstance');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-  const students = await Student.find();
+  const students = await Student.find().populate('exams.exam');
   res.send(students);
 });
 
@@ -25,7 +25,7 @@ router.post('/', async (req, res) => {
       phone: req.body.phone,
     },
     { new: true, upsert: true }
-  )
+  );
   const studentExam = student.exams.filter((ex) => ex._id == examId);
   if (studentExam.length < 1) {
 
@@ -38,11 +38,14 @@ router.post('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-  const student = await Student.findById(req.params.id).populate({
-    path: 'exams.exam', populate: {
-      path: 'questions'
-    }
-  }).populate('exams.answeredQuestions.question')
+  const student = await Student.findById(req.params.id)
+    .populate({
+      path: 'exams.exam',
+      populate: {
+        path: 'questions',
+      },
+    })
+    .populate('exams.answeredQuestions.question');
   if (!student)
     return res.status(404).send('The student with the given ID was not found.');
   res.send(student);
@@ -62,13 +65,22 @@ router.put('/exam/:id', async (req, res) => {
 });
 
 router.put('/submit/:id', async (req, res) => {
-  const student = await Student.findById(req.params.id).populate('exams.answeredQuestions.question');
-  let studentExam = saveAnswersAndGetStudExam(student, req.body.examId, req.body.questionId, req.body.answers);
+  const student = await Student.findById(req.params.id).populate(
+    'exams.answeredQuestions.question'
+  );
+  let studentExam = saveAnswersAndGetStudExam(
+    student,
+    req.body.examId,
+    req.body.questionId,
+    req.body.answers
+  );
   studentExam.submitDate = Date.now();
-  if (studentExam.submitted) { return res.status(400).send('student already submitted') }
-  studentExam.submitted = true
+  if (studentExam.submitted) {
+    return res.status(400).send('student already submitted');
+  }
+  studentExam.submitted = true;
   let fullExam = await Exam.findById(req.body.examId);
-  let grade = 0
+  let grade = 0;
   let rightQuetionsCounter = 0;
   const questionPoints = 100 / fullExam.questions.length;
   for (let answeredQuestion of studentExam.answeredQuestions) {
@@ -79,20 +91,25 @@ router.put('/submit/:id', async (req, res) => {
         points = questionPoints;
         rightQuetionsCounter++;
       }
-    }
-    else if (fullQuestion.type === 1) {
-      let correctAnsCountInFull = fullQuestion.possibleAnswers.filter(ans => ans.isCorrect).length
-      let correctAnsCountInExam = answeredQuestion.answers.filter(ans => ans.isCorrect).length;
-      let wrongAnswersCount = answeredQuestion.answers.length - correctAnsCountInExam
-      let pointsToAdd = questionPoints * (correctAnsCountInExam / correctAnsCountInFull)
-      let pointsToSubstract = questionPoints * ((wrongAnswersCount) / correctAnsCountInFull)
-      points = pointsToAdd - pointsToSubstract
+    } else if (fullQuestion.type === 1) {
+      let correctAnsCountInFull = fullQuestion.possibleAnswers.filter(
+        (ans) => ans.isCorrect
+      ).length;
+      let correctAnsCountInExam = answeredQuestion.answers.filter(
+        (ans) => ans.isCorrect
+      ).length;
+      let wrongAnswersCount =
+        answeredQuestion.answers.length - correctAnsCountInExam;
+      let pointsToAdd =
+        questionPoints * (correctAnsCountInExam / correctAnsCountInFull);
+      let pointsToSubstract =
+        questionPoints * (wrongAnswersCount / correctAnsCountInFull);
+      points = pointsToAdd - pointsToSubstract;
       if (correctAnsCountInFull === correctAnsCountInExam) {
         rightQuetionsCounter++;
       }
     }
-    if (points > 0)
-      grade += points;
+    if (points > 0) grade += points;
   }
   studentExam.grade = Math.round(grade);
   studentExam.rightQuestions = rightQuetionsCounter;
