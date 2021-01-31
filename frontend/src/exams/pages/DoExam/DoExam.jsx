@@ -4,7 +4,6 @@ import { shuffle } from 'lodash';
 
 import ExamQuestion from '../../components/ExamQuestion/ExamQuestion';
 import Modal from '../../../shared/components/UIElements/Modal';
-import { getExam } from '../../../shared/services/examService';
 
 import {
   getStudent,
@@ -22,18 +21,15 @@ const DoExam = () => {
   const [showModal, setShowModal] = useState(false);
   const [questionIndex, setQuestionIndex] = useState(0);
   const answers = useRef([]);
-
   useEffect(() => {
-    getExam(examId).then((res) => {
-      res.data.questions = shuffle(res.data.questions);
-      console.log('res.data in exam :>> ', res.data);
-      setExam(res.data);
-    });
-  }, []);
-  useEffect(() => {
-    getStudent(studentId).then((res) => {
+    getStudent(studentId, examId).then((res) => {
       console.log('res.data in student :>> ', res.data);
       setStudent(res.data);
+      const correctExam = res.data.exams.find((ex) => ex.exam._id === examId)
+        .exam;
+      console.log('correctExam :>> ', correctExam);
+
+      setExam(correctExam);
     });
   }, [studentId, examId, questionIndex]);
 
@@ -84,10 +80,16 @@ const DoExam = () => {
   };
   const findAnsweredQuestions = () => {
     if (student.exams) {
-      let rightExam = student.exams.find((exam) => exam._id === examId);
-      return rightExam.answeredQuestions.find(
-        (aq) => aq._id === exam.questions[questionIndex]._id
+      let rightExam = student.exams.find(
+        (studentExam) => studentExam.exam._id === examId
       );
+      console.log('rightExam', rightExam);
+      console.log('exam :>> ', exam);
+      const ret = rightExam.answeredQuestions.find(
+        (aq) => aq.question._id === exam.questions[questionIndex]._id
+      );
+      console.log('ret', ret);
+      return ret;
     }
   };
 

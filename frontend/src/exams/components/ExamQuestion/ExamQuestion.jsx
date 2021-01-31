@@ -33,7 +33,7 @@ const ExamQuestion = (props) => {
     });
     props.answerSelected && props.answerSelected(answer);
   };
-
+  console.log('props :>> ', props);
   return (
     <div>
       {' '}
