@@ -13,11 +13,11 @@ import QuestionForm from './questions/pages/QuestionForm';
 import Questions from './questions/pages/Questions';
 import NewExam from './exams/pages/NewExam/NewExam';
 import Exams from './exams/pages/Exams/Exams';
-import StudentForm from './exams/pages/StudentForm/StudentForm';
-import DoExam from './exams/pages/DoExam/DoExam';
-import ExamResult from './exams/pages/ExamResult/ExamResult';
 import ExamReport from './reports/pages/ExamReport';
 import RespondentReport from './reports/pages/RespondentReport';
+import ExamResult from './exams/pages/ExamResult/ExamResult';
+import DoExam from './exams/pages/DoExam/DoExam';
+import StudentForm from './exams/pages/StudentForm/StudentForm';
 import NotFound from './shared/components/NotFound';
 
 import auth from './shared/services/authService';
@@ -93,13 +93,6 @@ function App() {
             path="/exams"
             render={(props) => <Exams {...props} fieldOfStudy={fieldOfStudy} />}
           />
-          <Route
-            path="/exams/:examId/:studentId/result"
-            component={ExamResult}
-          />
-          <Route path="/exams/:examId/:studentId" component={DoExam} />
-          <Route path="/exams/:examId" component={StudentForm} />
-          <Route path="/exams" component={Exams} />
           <ProtectedRoute
             path="/reports/exam"
             render={(props) => (
@@ -110,6 +103,12 @@ function App() {
             path="/reports/respondent"
             component={RespondentReport}
           />
+          <Route
+            path="/exams/:examId/:studentId/result"
+            component={ExamResult}
+          />
+          <Route path="/exams/:examId/:studentId" component={DoExam} />
+          <Route path="/exams/:examId" component={StudentForm} />
           <Route path="/not-found" component={NotFound} />
           <Redirect from="/" exact to="/main-menu" />
           <Redirect to="/not-found" />

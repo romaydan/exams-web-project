@@ -6,6 +6,7 @@ const ExamsTable = (props) => {
   const { exams } = props;
 
   const columns = [
+    { path: 'exam.name', label: 'Test Name' },
     { path: 'grade', label: 'Grade' },
     { path: 'submitDate', label: 'Last Activity' },
   ];
