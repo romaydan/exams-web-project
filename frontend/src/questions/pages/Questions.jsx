@@ -83,9 +83,13 @@ function Questions(props) {
         onPageChange={handlePageChange}
       />
 
-      <Link to="/questions/new" className="btn btn-primary">
+      <Link to="/questions/new" className="btn btn-primary pull-right">
         New Question
       </Link>
+
+      <button onClick={props.history.goBack} className="btn btn-primary">
+        Back
+      </button>
     </div>
   );
 }

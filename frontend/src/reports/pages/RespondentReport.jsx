@@ -42,6 +42,10 @@ function RespondentReport(props) {
     return grades.reduce((a, c) => a + c) / grades.length;
   };
 
+  const handleExamClick = (examId) => {
+    props.history.push(`/reports/${respondent._id}/${examId}`);
+  };
+
   return (
     <div>
       <h1>Report by Respondent Name</h1>
@@ -74,13 +78,22 @@ function RespondentReport(props) {
             {`${respondent.firstName} ${respondent.lastName}`}
           </h3>
 
-          <p>
-            Average grade for a test: {calculateAverageGrade(respondent.exams)}
-          </p>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <p>Click a test to show its results</p>
 
-          <ExamsTable exams={respondent.exams} />
+            <p style={{ fontWeight: 'bold' }}>
+              Average grade for a test:{' '}
+              {calculateAverageGrade(respondent.exams)}
+            </p>
+          </div>
+
+          <ExamsTable exams={respondent.exams} onClick={handleExamClick} />
         </div>
       )}
+
+      <button onClick={props.history.goBack} className="btn btn-primary">
+        Back
+      </button>
     </div>
   );
 }

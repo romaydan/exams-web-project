@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 
 function MainMenu(props) {
-  const { options, setFieldOfStudy } = props;
+  const { options, fieldOfStudy, setFieldOfStudy } = props;
 
   const handleChange = (e) => {
     const { currentTarget: input } = e;
-    const newFieldOfStudy = options[input.value];
+    const newFieldOfStudy = options.find((o) => o.name === input.value);
 
     setFieldOfStudy(newFieldOfStudy);
   };
@@ -20,13 +20,14 @@ function MainMenu(props) {
         <select
           name="fieldOfStudy"
           id="fieldOfStudy"
+          value={fieldOfStudy && fieldOfStudy.name}
           onChange={handleChange}
           className="form-control"
         >
           <option value="" />
           {options &&
-            options.map((option, index) => (
-              <option key={option._id} value={index}>
+            options.map((option) => (
+              <option key={option._id} value={option.name}>
                 {option.name}
               </option>
             ))}

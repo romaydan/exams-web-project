@@ -13,8 +13,9 @@ import QuestionForm from './questions/pages/QuestionForm';
 import Questions from './questions/pages/Questions';
 import NewExam from './exams/pages/NewExam/NewExam';
 import Exams from './exams/pages/Exams/Exams';
-import ExamReport from './reports/pages/ExamReport';
+// import ExamReport from './reports/pages/ExamReport';
 import RespondentReport from './reports/pages/RespondentReport';
+import RespondentReportResults from './reports/pages/RespondentReportResults';
 import ExamResult from './exams/pages/ExamResult/ExamResult';
 import DoExam from './exams/pages/DoExam/DoExam';
 import StudentForm from './exams/pages/StudentForm/StudentForm';
@@ -50,6 +51,7 @@ function App() {
               <Organizations
                 {...props}
                 options={admin && admin.organizations}
+                organization={organization}
                 setOrganization={setOrganization}
               />
             )}
@@ -60,6 +62,7 @@ function App() {
               <MainMenu
                 {...props}
                 options={organization && organization.fieldsOfStudy}
+                fieldOfStudy={fieldOfStudy}
                 setFieldOfStudy={setFieldOfStudy}
               />
             )}
@@ -93,15 +96,19 @@ function App() {
             path="/exams"
             render={(props) => <Exams {...props} fieldOfStudy={fieldOfStudy} />}
           />
-          <ProtectedRoute
+          {/* <ProtectedRoute
             path="/reports/exam"
             render={(props) => (
               <ExamReport {...props} fieldOfStudy={fieldOfStudy} />
             )}
-          />
+          /> */}
           <ProtectedRoute
             path="/reports/respondent"
             component={RespondentReport}
+          />
+          <ProtectedRoute
+            path="/reports/:studentId/:examId"
+            component={RespondentReportResults}
           />
           <Route
             path="/exams/:examId/:studentId/result"

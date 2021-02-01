@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 
 function Organizations(props) {
-  const { options, setOrganization } = props;
+  const { options, organization, setOrganization } = props;
 
   const handleChange = (e) => {
     const { currentTarget: input } = e;
-    const newOrganization = options[input.value];
+    const newOrganization = options.find((o) => o.name === input.value);
 
     setOrganization(newOrganization);
   };
@@ -22,13 +22,14 @@ function Organizations(props) {
         <select
           name="organization"
           id="organization"
+          value={organization && organization.name}
           onChange={handleChange}
           className="form-control"
         >
           <option value="" />
           {options &&
-            options.map((option, index) => (
-              <option key={option._id} value={index}>
+            options.map((option) => (
+              <option key={option._id} value={option.name}>
                 {option.name}
               </option>
             ))}
