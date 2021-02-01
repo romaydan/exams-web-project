@@ -83,12 +83,9 @@ const DoExam = () => {
       let rightExam = student.exams.find(
         (studentExam) => studentExam.exam._id === examId
       );
-      console.log('rightExam', rightExam);
-      console.log('exam :>> ', exam);
       const ret = rightExam.answeredQuestions.find(
-        (aq) => aq.question._id === exam.questions[questionIndex]._id
+        (aq) => aq.question === exam.questions[questionIndex]._id
       );
-      console.log('ret', ret);
       return ret;
     }
   };

@@ -64,7 +64,7 @@ const StudentForm = (props) => {
     saveStudent(req)
       .then((res) => {
         history.push(`${examId}/${res.data._id}`);
-        // history.push(`/${res.data._id}`);
+        //history.push(`/${res.data._id}`);
       })
       .catch((error) => {
         if (error.response && error.response.status === 400)
