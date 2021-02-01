@@ -23,7 +23,7 @@ const ExamsTable = (props) => {
   };
 
   return (
-    <Table striped bordered hover size="sm">
+    <Table striped bordered hover size="sm" variant="dark">
       <thead>
         <tr>
           {columns.map((column) => (

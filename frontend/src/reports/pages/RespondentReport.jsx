@@ -42,8 +42,8 @@ function RespondentReport(props) {
     return grades.reduce((a, c) => a + c) / grades.length;
   };
 
-  const handleExamClick = (examId) => {
-    props.history.push(`/reports/${respondent._id}/${examId}`);
+  const handleExamClick = (id) => {
+    props.history.push(`/reports/respondent/${id}`);
   };
 
   return (

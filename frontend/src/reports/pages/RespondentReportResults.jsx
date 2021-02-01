@@ -3,31 +3,25 @@ import { useEffect, useState } from 'react';
 import Summary from '../components/Summary';
 import Details from '../components/Details';
 
-import { getStudent } from '../../shared/services/studentService';
+import { getExamInstance } from '../../shared/services/examInstanceService';
 
 function RespondentReportResults(props) {
-  const [student, setStudent] = useState({});
   const [examInstance, setExamInstance] = useState();
 
   useEffect(() => {
-    async function populateStudent() {
+    async function populateExamInstance() {
       try {
-        const studentId = props.match.params.studentId;
-        const examId = props.match.params.examId;
+        const { data } = await getExamInstance(props.match.params.id);
 
-        const { data: studentData } = await getStudent(studentId);
-        setStudent(studentData);
-
-        const examInstanceData = student.exams.find((e) => e._id === examId);
-        setExamInstance(examInstanceData);
+        setExamInstance(data);
       } catch (ex) {
         if (ex.response && ex.response.status === 404)
           props.history.replace('/not-found');
       }
     }
 
-    populateStudent();
-  }, [props.history, props.match.params, student]);
+    populateExamInstance();
+  }, [props.history, props.match.params.id]);
 
   return (
     <div>
@@ -36,7 +30,8 @@ function RespondentReportResults(props) {
           <h1>Test results for {examInstance.exam.name}</h1>
 
           <h3>
-            Respondent: {student.firstName} {student.lastName}
+            Respondent: {examInstance.student.firstName}{' '}
+            {examInstance.student.lastName}
           </h3>
 
           <br />

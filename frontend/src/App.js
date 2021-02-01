@@ -103,12 +103,12 @@ function App() {
             )}
           /> */}
           <ProtectedRoute
-            path="/reports/respondent"
-            component={RespondentReport}
+            path="/reports/respondent/:id"
+            component={RespondentReportResults}
           />
           <ProtectedRoute
-            path="/reports/:studentId/:examId"
-            component={RespondentReportResults}
+            path="/reports/respondent"
+            component={RespondentReport}
           />
           <Route
             path="/exams/:examId/:studentId/result"
