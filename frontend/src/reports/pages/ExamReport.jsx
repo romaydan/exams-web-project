@@ -1,94 +1,115 @@
-// import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-// import { getExams } from '../../shared/services/examService';
+import { getExams } from '../../shared/services/examService';
 
-// function ExamReport(props) {
-//   const { fieldOfStudy } = props;
+function ExamReport(props) {
+  const { fieldOfStudy } = props;
 
-//   const [exams, setExams] = useState([]);
-//   const [exam, setExam] = useState();
-//   const [startDate, setStartDate] = useState();
-//   const [endDate, setEndDate] = useState();
+  const [exams, setExams] = useState([]);
+  const [exam, setExam] = useState();
+  //   const [startDate, setStartDate] = useState();
+  //   const [endDate, setEndDate] = useState();
 
-//   useEffect(() => {
-//     async function populateExams() {
-//       const { data } = await getExams(fieldOfStudy);
-//       setExams(data);
-//     }
+  useEffect(() => {
+    async function populateExams() {
+      const { data } = await getExams(fieldOfStudy);
 
-//     populateExams();
-//   }, [fieldOfStudy]);
+      setExams(data);
+    }
 
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//   };
+    populateExams();
+  }, [fieldOfStudy]);
 
-//   const handleChange = (e) => {
-//     const { currentTarget: input } = e;
-//     const newExam = exams[input.value];
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-//     setExam(newExam);
-//   };
+    props.history.push(`/reports/exam/${exam._id}`);
+  };
 
-//   return (
-//     <div>
-//       <h1>Exam Report for {fieldOfStudy && fieldOfStudy.name}</h1>
+  const handleExamChange = (e) => {
+    const { currentTarget: input } = e;
+    const newExam = exams.find((e) => e.name === input.value);
 
-//       <form onSubmit={handleSubmit}>
-//         <div className="form-group">
-//           <label htmlFor="exam">Select Exam:</label>
+    setExam(newExam);
+  };
 
-//           <select
-//             name="exam"
-//             id="exam"
-//             onChange={handleChange}
-//             className="form-control"
-//           >
-//             <option value="" />
-//             {exams.map((item, index) => (
-//               <option key={item._id} value={index}>
-//                 {item.name}
-//               </option>
-//             ))}
-//           </select>
-//         </div>
+  //   const handleDateChange = (e) => {
+  //     const { currentTarget: input } = e;
+  //     const newDate = new Date(input.value);
 
-//         <div className="form-group">
-//           <label htmlFor="dateRange">Date Range:</label>
+  //     input.name === 'from' ? setStartDate(newDate) : setEndDate(newDate);
+  //   };
 
-//           <div className="form-group">
-//             <div className="form-inline">
-//               <label htmlFor="from">From:</label>
+  return (
+    <div>
+      <h1>Test Report for {fieldOfStudy && fieldOfStudy.name}</h1>
 
-//               <input
-//                 name="from"
-//                 id="from"
-//                 type="date"
-//                 className="form-control ml-2 mr-4"
-//                 onChange={(e) =>
-//                   setStartDate(new Date(e.currentTarget.value).toISOString())
-//                 }
-//               />
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="exam">Select Exam:</label>
 
-//               <label htmlFor="to">To:</label>
+          <select
+            name="exam"
+            id="exam"
+            value={exam && exam.name}
+            onChange={handleExamChange}
+            className="form-control"
+          >
+            <option value="" />
+            {exams.map((item) => (
+              <option key={item._id} value={item.name}>
+                {item.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
-//               <input
-//                 name="to"
-//                 id="to"
-//                 type="date"
-//                 className="form-control ml-2"
-//                 onChange={(e) =>
-//                   setEndDate(new Date(e.currentTarget.value).toISOString())
-//                 }
-//               />
-//             </div>
-//           </div>
-//         </div>
+        {/* <div className="form-group">
+          <label htmlFor="dateRange">Date Range:</label>
 
-//         <button className="btn btn-primary">Generate Report</button>
-//       </form>
-//     </div>
-//   );
-// }
+          <div className="form-group">
+            <div className="form-inline">
+              <label htmlFor="from">From:</label>
 
-// export default ExamReport;
+              <input
+                name="from"
+                id="from"
+                type="date"
+                className="form-control ml-2 mr-4"
+                onChange={handleDateChange}
+              />
+
+              <label htmlFor="to">To:</label>
+
+              <input
+                name="to"
+                id="to"
+                type="date"
+                className="form-control ml-2"
+                onChange={handleDateChange}
+              />
+            </div>
+          </div>
+        </div> */}
+
+        <button
+          disabled={!exam}
+          type="submit"
+          className="btn btn-primary pull-right"
+        >
+          Generate Report &raquo;
+        </button>
+
+        <button
+          type="button"
+          onClick={props.history.goBack}
+          className="btn btn-primary"
+        >
+          &laquo; Back
+        </button>
+      </form>
+    </div>
+  );
+}
+
+export default ExamReport;

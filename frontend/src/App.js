@@ -13,9 +13,10 @@ import QuestionForm from './questions/pages/QuestionForm';
 import Questions from './questions/pages/Questions';
 import NewExam from './exams/pages/NewExam/NewExam';
 import Exams from './exams/pages/Exams/Exams';
-// import ExamReport from './reports/pages/ExamReport';
-import RespondentReport from './reports/pages/RespondentReport';
+import ExamReportResults from './reports/pages/ExamReportResults';
+import ExamReport from './reports/pages/ExamReport';
 import RespondentReportResults from './reports/pages/RespondentReportResults';
+import RespondentReport from './reports/pages/RespondentReport';
 import ExamResult from './exams/pages/ExamResult/ExamResult';
 import DoExam from './exams/pages/DoExam/DoExam';
 import StudentForm from './exams/pages/StudentForm/StudentForm';
@@ -96,12 +97,18 @@ function App() {
             path="/exams"
             render={(props) => <Exams {...props} fieldOfStudy={fieldOfStudy} />}
           />
-          {/* <ProtectedRoute
+          <ProtectedRoute
+            path="/reports/exam/:id"
+            render={(props) => (
+              <ExamReportResults {...props} fieldOfStudy={fieldOfStudy} />
+            )}
+          />
+          <ProtectedRoute
             path="/reports/exam"
             render={(props) => (
               <ExamReport {...props} fieldOfStudy={fieldOfStudy} />
             )}
-          /> */}
+          />
           <ProtectedRoute
             path="/reports/respondent/:id"
             component={RespondentReportResults}

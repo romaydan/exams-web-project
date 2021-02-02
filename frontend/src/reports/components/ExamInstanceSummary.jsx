@@ -4,7 +4,7 @@ import { Row, Col } from 'react-bootstrap';
 
 import SummaryCol from './SummaryCol';
 
-const Summary = (props) => {
+const ExamInstanceSummary = (props) => {
   const { examInstance } = props;
 
   const columns = [
@@ -22,16 +22,17 @@ const Summary = (props) => {
   ];
 
   const renderCell = (column) => {
-    if (column.path === 'submitDate')
-      return new Date(_.get(examInstance, column.path)).toLocaleString();
-
-    if (column.path === 'status')
-      return _.get(examInstance, 'grade') >=
-        _.get(examInstance, 'exam.passingGrade')
-        ? 'Passed'
-        : 'Failed';
-
-    return _.get(examInstance, column.path);
+    switch (column.path) {
+      case 'submitDate':
+        return new Date(_.get(examInstance, column.path)).toLocaleString();
+      case 'status':
+        return _.get(examInstance, 'grade') >=
+          _.get(examInstance, 'exam.passingGrade')
+          ? 'Passed'
+          : 'Failed';
+      default:
+        return _.get(examInstance, column.path);
+    }
   };
 
   return (
@@ -61,8 +62,8 @@ const Summary = (props) => {
   );
 };
 
-Summary.propTypes = {
+ExamInstanceSummary.propTypes = {
   examInstance: PropTypes.object.isRequired,
 };
 
-export default Summary;
+export default ExamInstanceSummary;

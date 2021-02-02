@@ -84,11 +84,11 @@ function Questions(props) {
       />
 
       <Link to="/questions/new" className="btn btn-primary pull-right">
-        New Question
+        New Question &raquo;
       </Link>
 
       <button onClick={props.history.goBack} className="btn btn-primary">
-        Back
+        &laquo; Back
       </button>
     </div>
   );

@@ -4,11 +4,13 @@ const { ExamInstance } = require('../models/examInstance');
 
 const router = express.Router();
 
-// router.get('/', async (req, res) => {
-//   const questions = await Question.find({ fieldsOfStudy: req.query });
+router.get('/', async (req, res) => {
+  const examInstances = await ExamInstance.find({ exam: req.query }).populate(
+    'student'
+  );
 
-//   res.send(questions);
-// });
+  res.send(examInstances);
+});
 
 router.get('/:id', async (req, res) => {
   const examInstance = await ExamInstance.findById(req.params.id)

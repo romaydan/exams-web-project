@@ -47,7 +47,7 @@ function MainMenu(props) {
       </div>
 
       <div>
-        <Link to="/reports/respondent" className="btn btn-primary">
+        <Link to="/reports/exam" className="btn btn-primary">
           Reports &raquo;
         </Link>
       </div>

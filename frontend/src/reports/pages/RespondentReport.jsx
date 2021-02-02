@@ -5,6 +5,7 @@ import RespondentsTable from '../components/RepondentsTable';
 import ExamsTable from '../components/ExamsTable';
 
 import { getStudents } from '../../shared/services/studentService';
+import { calculateAverageGrade } from '../../shared/utils/calculate';
 
 function RespondentReport(props) {
   const [searchQuery, setSearchQuery] = useState('');
@@ -32,14 +33,6 @@ function RespondentReport(props) {
     return students.filter((s) =>
       s.firstName.toLowerCase().startsWith(searchQuery.toLowerCase())
     );
-  };
-
-  const calculateAverageGrade = (exams) => {
-    const grades = [];
-
-    exams.forEach((e) => grades.push(e.grade));
-
-    return grades.reduce((a, c) => a + c) / grades.length;
   };
 
   const handleExamClick = (id) => {
@@ -92,7 +85,7 @@ function RespondentReport(props) {
       )}
 
       <button onClick={props.history.goBack} className="btn btn-primary">
-        Back
+        &laquo; Back
       </button>
     </div>
   );

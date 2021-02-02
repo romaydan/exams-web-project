@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import Summary from '../components/Summary';
+import ExamInstanceSummary from '../components/ExamInstanceSummary';
 import Details from '../components/Details';
 
 import { getExamInstance } from '../../shared/services/examInstanceService';
@@ -36,7 +36,7 @@ function RespondentReportResults(props) {
 
           <br />
 
-          <Summary examInstance={examInstance} />
+          <ExamInstanceSummary examInstance={examInstance} />
 
           <br />
 
@@ -45,7 +45,7 @@ function RespondentReportResults(props) {
       )}
 
       <button onClick={props.history.goBack} className="btn btn-primary my-3">
-        Back
+        &laquo; Back
       </button>
     </div>
   );

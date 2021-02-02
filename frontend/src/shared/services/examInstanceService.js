@@ -6,9 +6,9 @@ function examInstanceUrl(id) {
   return `${apiEndpoint}/${id}`;
 }
 
-// export function getQuestions(fieldOfStudy) {
-//   return http.get(apiEndpoint, { params: fieldOfStudy });
-// }
+export function getExamInstances(exam) {
+  return http.get(apiEndpoint, { params: exam });
+}
 
 export function getExamInstance(examInstanceId) {
   return http.get(examInstanceUrl(examInstanceId));
