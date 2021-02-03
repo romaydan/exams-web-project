@@ -4,10 +4,7 @@ const NavBar = (props) => {
   const { admin, organization } = props;
 
   return (
-    <nav
-      style={{ borderBottom: '6px solid white' }}
-      className="navbar navbar-expand-lg navbar-light bg-light"
-    >
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <Link className="navbar-brand" to="/">
         Administration System {organization && `- ${organization.name}`}
       </Link>

@@ -7,8 +7,8 @@ function ExamReport(props) {
 
   const [exams, setExams] = useState([]);
   const [exam, setExam] = useState();
-  //   const [startDate, setStartDate] = useState();
-  //   const [endDate, setEndDate] = useState();
+  // const [startDate, setStartDate] = useState();
+  // const [endDate, setEndDate] = useState();
 
   useEffect(() => {
     async function populateExams() {
@@ -33,16 +33,21 @@ function ExamReport(props) {
     setExam(newExam);
   };
 
-  //   const handleDateChange = (e) => {
-  //     const { currentTarget: input } = e;
-  //     const newDate = new Date(input.value);
+  // const handleDateChange = (e) => {
+  //   const { currentTarget: input } = e;
+  //   const newDate = new Date(input.value);
 
-  //     input.name === 'from' ? setStartDate(newDate) : setEndDate(newDate);
-  //   };
+  //   input.name === 'from' ? setStartDate(newDate) : setEndDate(newDate);
+  // };
 
   return (
     <div>
-      <h1>Test Report for {fieldOfStudy && fieldOfStudy.name}</h1>
+      <h1>
+        Test Report for
+        <span style={{ color: '#007bff' }}>
+          {` ${fieldOfStudy && fieldOfStudy.name}`}
+        </span>
+      </h1>
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">

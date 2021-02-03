@@ -17,7 +17,7 @@ function Questions(props) {
 
   const [questions, setQuestions] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(10);
   const [sortColumn, setSortColumn] = useState({ path: 'title', order: 'asc' });
 
   useEffect(() => {
@@ -81,6 +81,7 @@ function Questions(props) {
         pageSize={pageSize}
         currentPage={currentPage}
         onPageChange={handlePageChange}
+        setPageSize={setPageSize}
       />
 
       <Link to="/questions/new" className="btn btn-primary pull-right">

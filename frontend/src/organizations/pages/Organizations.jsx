@@ -1,5 +1,3 @@
-import { Link } from 'react-router-dom';
-
 function Organizations(props) {
   const { options, organization, setOrganization } = props;
 
@@ -36,9 +34,13 @@ function Organizations(props) {
         </select>
       </div>
 
-      <Link to="/main-menu" className="btn btn-primary">
-        Open Menu
-      </Link>
+      <button
+        disabled={!organization}
+        onClick={() => props.history.push('/main-menu')}
+        className="btn btn-primary"
+      >
+        Open Menu &raquo;
+      </button>
     </div>
   );
 }

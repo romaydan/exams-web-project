@@ -17,7 +17,10 @@ function QuestionForm(props) {
     type: 0,
     text: '',
     textBelow: '',
-    possibleAnswers: [{ answer: '', isCorrect: false }],
+    possibleAnswers: [
+      { answer: '', isCorrect: false },
+      { answer: '', isCorrect: false },
+    ],
     answersLayout: 0,
     tags: '',
   });
@@ -87,6 +90,11 @@ function QuestionForm(props) {
   };
 
   const deletePossibleAnswer = (index) => {
+    if (data.possibleAnswers.length <= 2) {
+      setError('"possibleAnswers" must contain at least 2 items');
+      return;
+    }
+
     const newData = { ...data };
 
     newData.possibleAnswers.splice(index, 1);

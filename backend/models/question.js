@@ -56,6 +56,7 @@ function validateQuestion(question) {
           isCorrect: Joi.boolean().default(false),
         })
       )
+      .min(2)
       .required(),
     answersLayout: Joi.number().min(0).max(1).required(),
     tags: Joi.string().required(),

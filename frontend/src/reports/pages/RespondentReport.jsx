@@ -67,8 +67,10 @@ function RespondentReport(props) {
       {respondent && (
         <div>
           <h3>
-            Activity Report for:{' '}
-            {`${respondent.firstName} ${respondent.lastName}`}
+            Activity Report for:
+            <span
+              style={{ color: '#007bff' }}
+            >{` ${respondent.firstName} ${respondent.lastName}`}</span>
           </h3>
 
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>

@@ -36,9 +36,13 @@ const Details = (props) => {
                 <span>{answeredQ.question.text}</span>
 
                 {answeredQ.answers.every((a) => a.isCorrect === true) ? (
-                  <span style={{ color: 'green' }}>Correct</span>
+                  <span style={{ fontWeight: 'bold', color: 'green' }}>
+                    Correct
+                  </span>
                 ) : (
-                  <span style={{ color: 'red' }}>Incorrect</span>
+                  <span style={{ fontWeight: 'bold', color: 'red' }}>
+                    Incorrect
+                  </span>
                 )}
               </div>
             </Accordion.Toggle>

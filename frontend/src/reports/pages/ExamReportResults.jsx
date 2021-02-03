@@ -33,7 +33,9 @@ function ExamReportResults(props) {
 
   return (
     <div>
-      <h1>Test Report: {exam.name}</h1>
+      <h1>
+        Test Report:<span style={{ color: '#007bff' }}>{` ${exam.name}`}</span>
+      </h1>
 
       <br />
 

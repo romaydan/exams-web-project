@@ -1,5 +1,3 @@
-import { Link } from 'react-router-dom';
-
 function MainMenu(props) {
   const { options, fieldOfStudy, setFieldOfStudy } = props;
 
@@ -35,21 +33,43 @@ function MainMenu(props) {
       </div>
 
       <div>
-        <Link to="/questions" className="btn btn-primary">
+        <button
+          disabled={!fieldOfStudy}
+          onClick={() => props.history.push('/questions')}
+          className="btn btn-primary"
+        >
           Manage Questions &raquo;
-        </Link>
+        </button>
       </div>
 
       <div>
-        <Link to="/exams" className="btn btn-primary my-3">
+        <button
+          disabled={!fieldOfStudy}
+          onClick={() => props.history.push('/exams')}
+          className="btn btn-primary my-3"
+        >
           Manage Exams &raquo;
-        </Link>
+        </button>
       </div>
 
       <div>
-        <Link to="/reports/exam" className="btn btn-primary">
-          Reports &raquo;
-        </Link>
+        <button
+          disabled={!fieldOfStudy}
+          onClick={() => props.history.push('/reports/respondent')}
+          className="btn btn-primary my-3"
+        >
+          Reports By Respondent &raquo;
+        </button>
+      </div>
+
+      <div>
+        <button
+          disabled={!fieldOfStudy}
+          onClick={() => props.history.push('/reports/exam')}
+          className="btn btn-primary"
+        >
+          Reports By Exam &raquo;
+        </button>
       </div>
     </div>
   );

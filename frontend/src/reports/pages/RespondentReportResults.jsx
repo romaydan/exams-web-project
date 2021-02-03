@@ -27,11 +27,16 @@ function RespondentReportResults(props) {
     <div>
       {examInstance && (
         <>
-          <h1>Test results for {examInstance.exam.name}</h1>
+          <h1>
+            Test results for
+            <span style={{ color: '#007bff' }}> {examInstance.exam.name}</span>
+          </h1>
 
           <h3>
-            Respondent: {examInstance.student.firstName}{' '}
-            {examInstance.student.lastName}
+            Respondent:
+            <span style={{ color: '#007bff' }}>
+              {` ${examInstance.student.firstName} ${examInstance.student.lastName}`}
+            </span>
           </h3>
 
           <br />
