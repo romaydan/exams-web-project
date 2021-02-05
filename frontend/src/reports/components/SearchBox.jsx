@@ -1,5 +1,3 @@
-import React from 'react';
-
 const SearchBox = ({ value, onChange }) => {
   return (
     <div className="form-group">

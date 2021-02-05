@@ -1,22 +1,21 @@
 import PropTypes from 'prop-types';
-
 import { Accordion, Card } from 'react-bootstrap';
 
 const Details = (props) => {
   const { answeredQuestions } = props;
 
-  const applyDynamicStyles = (answeredQ, possibleA) => {
-    let style = {};
+  const applyDynamicClassNames = (answeredQ, possibleA) => {
+    let className = '';
 
-    if (possibleA.isCorrect) style = { color: 'green' };
+    if (possibleA.isCorrect) className = 'text-success';
 
     if (answeredQ.answers.some((a) => a._id === possibleA._id && a.isCorrect))
-      style = { fontWeight: 'bold', color: 'green' };
+      className = 'font-weight-bold text-success';
 
     if (answeredQ.answers.some((a) => a._id === possibleA._id && !a.isCorrect))
-      style = { fontWeight: 'bold', color: 'red' };
+      className = 'font-weight-bold text-danger';
 
-    return style;
+    return className;
   };
 
   return (
@@ -36,11 +35,9 @@ const Details = (props) => {
                 <span>{answeredQ.question.text}</span>
 
                 {answeredQ.answers.every((a) => a.isCorrect === true) ? (
-                  <span style={{ fontWeight: 'bold', color: 'green' }}>
-                    Correct
-                  </span>
+                  <span className="font-weight-bold text-success">Correct</span>
                 ) : (
-                  <span style={{ fontWeight: 'bold', color: 'red' }}>
+                  <span className="font-weight-bold text-danger">
                     Incorrect
                   </span>
                 )}
@@ -52,7 +49,7 @@ const Details = (props) => {
                 <h6>Answers:</h6>
 
                 {answeredQ.question.possibleAnswers.map((possibleA) => (
-                  <div style={applyDynamicStyles(answeredQ, possibleA)}>
+                  <div className={applyDynamicClassNames(answeredQ, possibleA)}>
                     {possibleA.answer}
                   </div>
                 ))}

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 import { Row, Col } from 'react-bootstrap';
+import _ from 'lodash';
 
 import SummaryCol from './SummaryCol';
 

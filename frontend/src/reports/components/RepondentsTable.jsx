@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 import { Table } from 'react-bootstrap';
+import _ from 'lodash';
 
 const RespondentsTable = (props) => {
   const { respondents, setRespondent } = props;
@@ -12,15 +12,16 @@ const RespondentsTable = (props) => {
   ];
 
   const renderCell = (item, column) => {
-    if (column.path === 'respondent')
-      return _.get(item, 'firstName').concat(' ', _.get(item, 'lastName'));
-
-    if (column.path === 'lastActivity')
-      return new Date(
-        _.get(item, `exams[${item.exams.length - 1}].submitDate`)
-      ).toLocaleDateString();
-
-    return _.get(item, column.path);
+    switch (column.path) {
+      case 'respondent':
+        return _.get(item, 'firstName').concat(' ', _.get(item, 'lastName'));
+      case 'lastActivity':
+        return new Date(
+          _.get(item, `exams[${item.exams.length - 1}].submitDate`)
+        ).toLocaleDateString();
+      default:
+        return _.get(item, column.path);
+    }
   };
 
   const createKey = (item, column) => {

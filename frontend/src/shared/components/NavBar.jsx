@@ -1,13 +1,14 @@
 import { Link, NavLink } from 'react-router-dom';
 
 const NavBar = (props) => {
-  const { admin, organization } = props;
+  const { organization, admin } = props;
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <Link className="navbar-brand" to="/">
         Administration System {organization && `- ${organization.name}`}
       </Link>
+
       <button
         className="navbar-toggler"
         type="button"
@@ -19,6 +20,7 @@ const NavBar = (props) => {
       >
         <span className="navbar-toggler-icon"></span>
       </button>
+
       <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div className="navbar-nav">
           {!admin && (
@@ -26,11 +28,13 @@ const NavBar = (props) => {
               <NavLink className="nav-item nav-link" to="/login">
                 Login
               </NavLink>
+
               <NavLink className="nav-item nav-link" to="/register">
                 Register
               </NavLink>
             </>
           )}
+
           {admin && (
             <NavLink className="nav-item nav-link" to="/logout">
               Logout

@@ -1,5 +1,5 @@
 function MainMenu(props) {
-  const { options, fieldOfStudy, setFieldOfStudy } = props;
+  const { fieldOfStudy, setFieldOfStudy, options } = props;
 
   const handleChange = (e) => {
     const { currentTarget: input } = e;
@@ -55,20 +55,20 @@ function MainMenu(props) {
       <div>
         <button
           disabled={!fieldOfStudy}
-          onClick={() => props.history.push('/reports/respondent')}
+          onClick={() => props.history.push('/reports/exam')}
           className="btn btn-primary my-3"
         >
-          Reports By Respondent &raquo;
+          Reports By Exam &raquo;
         </button>
       </div>
 
       <div>
         <button
           disabled={!fieldOfStudy}
-          onClick={() => props.history.push('/reports/exam')}
+          onClick={() => props.history.push('/reports/respondent')}
           className="btn btn-primary"
         >
-          Reports By Exam &raquo;
+          Reports By Respondent &raquo;
         </button>
       </div>
     </div>

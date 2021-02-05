@@ -19,10 +19,12 @@ export function saveQuestion(question, fieldOfStudy) {
     const body = { ...question };
     delete body._id;
     body.possibleAnswers.forEach((a) => delete a._id);
+
     return http.put(questionUrl(question._id), body);
   }
 
   question.fieldsOfStudy = [fieldOfStudy];
+
   return http.post(apiEndpoint, question);
 }
 

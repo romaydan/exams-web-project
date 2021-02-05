@@ -1,5 +1,5 @@
 function Organizations(props) {
-  const { options, organization, setOrganization } = props;
+  const { organization, setOrganization, options } = props;
 
   const handleChange = (e) => {
     const { currentTarget: input } = e;

@@ -13,6 +13,7 @@ const Pagination = (props) => {
   } = props;
 
   const pagesCount = Math.ceil(itemsCount / pageSize);
+
   if (pagesCount === 1) return null;
 
   const pages = _.range(1, pagesCount + 1);
@@ -30,6 +31,7 @@ const Pagination = (props) => {
             </button>
           </li>
         ))}
+
         <DropdownButton id="dropdown-basic-button" title="Item per page">
           <Dropdown.Item onClick={() => setPageSize(5)}>5</Dropdown.Item>
           <Dropdown.Item onClick={() => setPageSize(10)}>10</Dropdown.Item>

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 import { Table } from 'react-bootstrap';
+import _ from 'lodash';
 
 const ExamsTable = (props) => {
   const { exams, onClick } = props;

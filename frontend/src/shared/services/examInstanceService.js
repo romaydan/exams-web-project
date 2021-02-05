@@ -6,8 +6,8 @@ function examInstanceUrl(id) {
   return `${apiEndpoint}/${id}`;
 }
 
-export function getExamInstances(exam) {
-  return http.get(apiEndpoint, { params: exam });
+export function getExamInstances(exam, dateRange) {
+  return http.get(apiEndpoint, { params: { exam, dateRange } });
 }
 
 export function getExamInstance(examInstanceId) {

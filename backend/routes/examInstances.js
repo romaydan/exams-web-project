@@ -5,9 +5,20 @@ const { ExamInstance } = require('../models/examInstance');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-  const examInstances = await ExamInstance.find({ exam: req.query }).populate(
-    'student'
-  );
+  const exam = JSON.parse(req.query.exam);
+  const dateRange = JSON.parse(req.query.dateRange);
+
+  const examInstances = await ExamInstance.find({
+    exam: exam,
+    submitDate: { $gte: dateRange.startDate, $lte: dateRange.endDate },
+  }).populate('student');
+
+  if (examInstances.length === 0)
+    return res
+      .status(404)
+      .send(
+        'The exam instances with the given exam and date range was not found.'
+      );
 
   res.send(examInstances);
 });

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import ExamInstanceSummary from '../components/ExamInstanceSummary';
 import Details from '../components/Details';
@@ -29,12 +29,12 @@ function RespondentReportResults(props) {
         <>
           <h1>
             Test results for
-            <span style={{ color: '#007bff' }}> {examInstance.exam.name}</span>
+            <span className="text-primary"> {examInstance.exam.name}</span>
           </h1>
 
           <h3>
             Respondent:
-            <span style={{ color: '#007bff' }}>
+            <span className="text-primary">
               {` ${examInstance.student.firstName} ${examInstance.student.lastName}`}
             </span>
           </h3>

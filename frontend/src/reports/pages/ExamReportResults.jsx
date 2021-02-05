@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import ExamSummary from '../components/ExamSummary';
+import ExamInstancesTable from '../components/ExamInstancesTable';
 
 import { getExam } from '../../shared/services/examService';
 import { getExamInstances } from '../../shared/services/examInstanceService';
-import ExamInstancesTable from '../components/ExamInstancesTable';
 
 function ExamReportResults(props) {
   const [exam, setExam] = useState({});
@@ -14,7 +14,11 @@ function ExamReportResults(props) {
     async function populateExamInstances() {
       try {
         const { data: examData } = await getExam(props.match.params.id);
-        const { data: examInstancesData } = await getExamInstances(examData);
+        const params = new URLSearchParams(props.location.search);
+        const { data: examInstancesData } = await getExamInstances(examData, {
+          startDate: params.get('from'),
+          endDate: params.get('to'),
+        });
 
         setExam(examData);
         setExamInstances(examInstancesData);
@@ -25,7 +29,7 @@ function ExamReportResults(props) {
     }
 
     populateExamInstances();
-  }, [props.history, props.match.params.id]);
+  }, [props.history, props.match.params.id, props.location.search]);
 
   const handleExamInstanceClick = (id) => {
     props.history.push(`/reports/respondent/${id}`);
@@ -34,7 +38,7 @@ function ExamReportResults(props) {
   return (
     <div>
       <h1>
-        Test Report:<span style={{ color: '#007bff' }}>{` ${exam.name}`}</span>
+        Test Report:<span className="text-primary">{` ${exam.name}`}</span>
       </h1>
 
       <br />

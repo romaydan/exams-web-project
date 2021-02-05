@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 import _ from 'lodash';
 
 import Pagination from '../components/Pagination';
@@ -23,6 +23,7 @@ function Questions(props) {
   useEffect(() => {
     async function populateQuestions() {
       const { data } = await getQuestions(fieldOfStudy);
+
       setQuestions(data);
     }
 
@@ -64,10 +65,14 @@ function Questions(props) {
 
   return (
     <div>
-      <p>
-        Showing {questions.length} available questions for{' '}
-        {fieldOfStudy && fieldOfStudy.name}.
-      </p>
+      <h1>
+        Available questions for
+        <span className="text-primary">
+          {` ${fieldOfStudy && fieldOfStudy.name}`}
+        </span>
+      </h1>
+
+      <p>Showing {questions.length} questions in the database.</p>
 
       <QuestionsTable
         questions={getPagedData()}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import SearchBox from '../components/SearchBox';
 import RespondentsTable from '../components/RepondentsTable';
@@ -15,6 +15,7 @@ function RespondentReport(props) {
   useEffect(() => {
     async function populateStudents() {
       const { data } = await getStudents();
+
       setStudents(data);
     }
 
@@ -56,6 +57,7 @@ function RespondentReport(props) {
         </p>
 
         <SearchBox value={searchQuery} onChange={handleSearch} />
+
         <RespondentsTable
           respondents={getFilteredData()}
           setRespondent={setRespondent}
@@ -68,15 +70,13 @@ function RespondentReport(props) {
         <div>
           <h3>
             Activity Report for:
-            <span
-              style={{ color: '#007bff' }}
-            >{` ${respondent.firstName} ${respondent.lastName}`}</span>
+            <span className="text-primary">{` ${respondent.firstName} ${respondent.lastName}`}</span>
           </h3>
 
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div className="d-flex justify-content-between">
             <p>Click a test to show its results</p>
 
-            <p style={{ fontWeight: 'bold' }}>
+            <p className="font-weight-bold">
               Average grade for a test:{' '}
               {calculateAverageGrade(respondent.exams)}
             </p>

@@ -6,7 +6,7 @@ const SummaryCol = (props) => {
   return (
     <p>
       {column.label}:{' '}
-      <span style={{ fontWeight: 'bold' }}>{renderCell(column)}</span>
+      <span className="font-weight-bold">{renderCell(column)}</span>
     </p>
   );
 };

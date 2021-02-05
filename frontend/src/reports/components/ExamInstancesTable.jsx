@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 import { Table } from 'react-bootstrap';
+import _ from 'lodash';
 
 const ExamInstancesTable = (props) => {
   const { examInstances, onClick } = props;
@@ -13,16 +13,17 @@ const ExamInstancesTable = (props) => {
   ];
 
   const renderCell = (item, column) => {
-    if (column.path === 'respondent')
-      return _.get(item, 'student.firstName').concat(
-        ' ',
-        _.get(item, 'student.lastName')
-      );
-
-    if (column.path === 'submitDate')
-      return new Date(_.get(item, column.path)).toLocaleDateString();
-
-    return _.get(item, column.path);
+    switch (column.path) {
+      case 'respondent':
+        return _.get(item, 'student.firstName').concat(
+          ' ',
+          _.get(item, 'student.lastName')
+        );
+      case 'submitDate':
+        return new Date(_.get(item, column.path)).toLocaleDateString();
+      default:
+        return _.get(item, column.path);
+    }
   };
 
   const createKey = (item, column) => {

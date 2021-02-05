@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import Modal from 'react-bootstrap/Modal';
 
@@ -31,9 +31,11 @@ function QuestionForm(props) {
     async function populateQuestion() {
       try {
         const questionId = props.match.params.id;
+
         if (questionId === 'new') return;
 
         const { data: question } = await getQuestion(questionId);
+
         setData(mapToViewModel(question));
       } catch (ex) {
         if (ex.response && ex.response.status === 404)
@@ -66,6 +68,7 @@ function QuestionForm(props) {
       await saveQuestion(data, fieldOfStudy);
 
       toast.success('Question saved successfully.');
+
       props.history.push('/questions');
     } catch (ex) {
       if (ex.response && ex.response.status === 400) setError(ex.response.data);
@@ -92,6 +95,7 @@ function QuestionForm(props) {
   const deletePossibleAnswer = (index) => {
     if (data.possibleAnswers.length <= 2) {
       setError('"possibleAnswers" must contain at least 2 items');
+
       return;
     }
 
@@ -160,10 +164,10 @@ function QuestionForm(props) {
           {data.possibleAnswers.map((possibleAnswer, index) => (
             <PossibleAnswerForm
               key={possibleAnswer._id || index}
-              possibleAnswer={possibleAnswer}
               index={index}
-              handleChange={handlePossibleAnswerChange}
+              possibleAnswer={possibleAnswer}
               deletePossibleAnswer={deletePossibleAnswer}
+              handleChange={handlePossibleAnswerChange}
             />
           ))}
 

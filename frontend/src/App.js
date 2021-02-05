@@ -51,9 +51,9 @@ function App() {
             render={(props) => (
               <Organizations
                 {...props}
-                options={admin && admin.organizations}
                 organization={organization}
                 setOrganization={setOrganization}
+                options={admin && admin.organizations}
               />
             )}
           />
@@ -62,9 +62,9 @@ function App() {
             render={(props) => (
               <MainMenu
                 {...props}
-                options={organization && organization.fieldsOfStudy}
                 fieldOfStudy={fieldOfStudy}
                 setFieldOfStudy={setFieldOfStudy}
+                options={organization && organization.fieldsOfStudy}
               />
             )}
           />
