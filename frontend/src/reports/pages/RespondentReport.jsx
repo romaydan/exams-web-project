@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import SearchBox from '../components/SearchBox';
 import RespondentsTable from '../components/RepondentsTable';
 import ExamsTable from '../components/ExamsTable';
 
 import { getStudents } from '../../shared/services/studentService';
+import { calculateAverageGrade } from '../../shared/utils/calculate';
 
 function RespondentReport(props) {
   const [searchQuery, setSearchQuery] = useState('');
@@ -14,6 +15,7 @@ function RespondentReport(props) {
   useEffect(() => {
     async function populateStudents() {
       const { data } = await getStudents();
+
       setStudents(data);
     }
 
@@ -34,12 +36,8 @@ function RespondentReport(props) {
     );
   };
 
-  const calculateAverageGrade = (exams) => {
-    const grades = [];
-
-    exams.forEach((e) => grades.push(e.grade));
-
-    return grades.reduce((a, c) => a + c) / grades.length;
+  const handleExamClick = (id) => {
+    props.history.push(`/reports/respondent/${id}`);
   };
 
   return (
@@ -59,6 +57,7 @@ function RespondentReport(props) {
         </p>
 
         <SearchBox value={searchQuery} onChange={handleSearch} />
+
         <RespondentsTable
           respondents={getFilteredData()}
           setRespondent={setRespondent}
@@ -70,17 +69,26 @@ function RespondentReport(props) {
       {respondent && (
         <div>
           <h3>
-            Activity Report for:{' '}
-            {`${respondent.firstName} ${respondent.lastName}`}
+            Activity Report for:
+            <span className="text-primary">{` ${respondent.firstName} ${respondent.lastName}`}</span>
           </h3>
 
-          <p>
-            Average grade for a test: {calculateAverageGrade(respondent.exams)}
-          </p>
+          <div className="d-flex justify-content-between">
+            <p>Click a test to show its results</p>
 
-          <ExamsTable exams={respondent.exams} />
+            <p className="font-weight-bold">
+              Average grade for a test:{' '}
+              {calculateAverageGrade(respondent.exams)}
+            </p>
+          </div>
+
+          <ExamsTable exams={respondent.exams} onClick={handleExamClick} />
         </div>
       )}
+
+      <button onClick={props.history.goBack} className="btn btn-primary">
+        &laquo; Back
+      </button>
     </div>
   );
 }

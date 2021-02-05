@@ -2,13 +2,20 @@ const express = require('express');
 
 const { Student, validate } = require('../models/student');
 const { Exam } = require('../models/exam');
-const { Question } = require('../models/question');
 const { ExamInstance } = require('../models/examInstance');
 
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-  const students = await Student.find().populate('exams.exam');
+  const students = await Student.find().populate({
+    path: 'exams',
+    populate: {
+      path: 'exam',
+      populate: {
+        path: 'questions',
+      },
+    },
+  });
   res.send(students);
 });
 
@@ -33,7 +40,10 @@ router.post('/', async (req, res) => {
   console.log('student.exams', student.exams)
   const studentExam = student.exams.filter((exInstance) => exInstance.exam._id == examId);
   if (studentExam.length < 1) {
-    const exam = await ExamInstance.create({ exam: examId, student: student._id })
+    const exam = await ExamInstance.create({
+      exam: examId,
+      student: student._id,
+    });
     student.exams = [...student.exams, exam._id];
   } else if (studentExam[0].submitted) {
     res.status(400).send(student._id);
@@ -47,12 +57,22 @@ router.get('/:id', async (req, res) => {
     .populate({
       path: 'exams',
       populate: {
-        path: 'exam', populate: {
+        path: 'exam',
+        populate: {
           path: 'questions',
         },
       },
     })
-    .populate('exams.answeredQuestions.question');
+    .populate({
+      path: 'exams',
+      populate: {
+        path: 'answeredQuestions',
+        populate: {
+          path: 'question',
+        },
+      },
+    });
+
   if (!student)
     return res.status(404).send('The student with the given ID was not found.');
   res.send(student);
@@ -60,9 +80,10 @@ router.get('/:id', async (req, res) => {
 
 router.put('/exam/:id', async (req, res) => {
   const student = await Student.findById(req.body.studentId).populate({
-    path: 'exams', populate: {
-      path: 'answeredQuestions.question'
-    }
+    path: 'exams',
+    populate: {
+      path: 'answeredQuestions.question',
+    },
   });
 
   const exam = await saveAnswersAndGetStudExam(
@@ -78,9 +99,10 @@ router.put('/exam/:id', async (req, res) => {
 
 router.put('/submit/:id', async (req, res) => {
   const student = await Student.findById(req.params.id).populate({
-    path: 'exams', populate: {
-      path: 'answeredQuestions.question'
-    }
+    path: 'exams',
+    populate: {
+      path: 'answeredQuestions.question',
+    },
   });
   let studentExam = await saveAnswersAndGetStudExam(
     student,
@@ -133,7 +155,10 @@ router.put('/submit/:id', async (req, res) => {
 });
 
 async function saveAnswersAndGetStudExam(student, examId, questionId, answers) {
-  const exam = await ExamInstance.findOne({ exam: examId, student: student._id }).populate('answeredQuestions.question')
+  const exam = await ExamInstance.findOne({
+    exam: examId,
+    student: student._id,
+  }).populate('answeredQuestions.question');
   // const studentExam = student.exams.find((ex) => ex.exam == examId);
   const answeredQuestion = exam.answeredQuestions.find(
     (aq) => aq.question._id == questionId

@@ -1,11 +1,9 @@
-import { Link } from 'react-router-dom';
-
 function MainMenu(props) {
-  const { options, setFieldOfStudy } = props;
+  const { fieldOfStudy, setFieldOfStudy, options } = props;
 
   const handleChange = (e) => {
     const { currentTarget: input } = e;
-    const newFieldOfStudy = options[input.value];
+    const newFieldOfStudy = options.find((o) => o.name === input.value);
 
     setFieldOfStudy(newFieldOfStudy);
   };
@@ -20,13 +18,14 @@ function MainMenu(props) {
         <select
           name="fieldOfStudy"
           id="fieldOfStudy"
+          value={fieldOfStudy && fieldOfStudy.name}
           onChange={handleChange}
           className="form-control"
         >
           <option value="" />
           {options &&
-            options.map((option, index) => (
-              <option key={option._id} value={index}>
+            options.map((option) => (
+              <option key={option._id} value={option.name}>
                 {option.name}
               </option>
             ))}
@@ -34,21 +33,43 @@ function MainMenu(props) {
       </div>
 
       <div>
-        <Link to="/questions" className="btn btn-primary">
+        <button
+          disabled={!fieldOfStudy}
+          onClick={() => props.history.push('/questions')}
+          className="btn btn-primary"
+        >
           Manage Questions &raquo;
-        </Link>
+        </button>
       </div>
 
       <div>
-        <Link to="/exams" className="btn btn-primary my-3">
+        <button
+          disabled={!fieldOfStudy}
+          onClick={() => props.history.push('/exams')}
+          className="btn btn-primary my-3"
+        >
           Manage Exams &raquo;
-        </Link>
+        </button>
       </div>
 
       <div>
-        <Link to="/reports/respondent" className="btn btn-primary">
-          Reports &raquo;
-        </Link>
+        <button
+          disabled={!fieldOfStudy}
+          onClick={() => props.history.push('/reports/exam')}
+          className="btn btn-primary my-3"
+        >
+          Reports By Exam &raquo;
+        </button>
+      </div>
+
+      <div>
+        <button
+          disabled={!fieldOfStudy}
+          onClick={() => props.history.push('/reports/respondent')}
+          className="btn btn-primary"
+        >
+          Reports By Respondent &raquo;
+        </button>
       </div>
     </div>
   );

@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
 
-const { examInstanceSchema } = require('./examInstance');
-
 const studentSchema = new mongoose.Schema({
   firstName: { type: String },
   lastName: { type: String },

@@ -9,6 +9,7 @@ http.setJwt(getJwt());
 
 export async function login(email, password) {
   const { data: jwt } = await http.post(apiEndpoint, { email, password });
+
   sessionStorage.setItem(tokenKey, jwt);
 }
 
@@ -23,6 +24,7 @@ export function logout() {
 export function getCurrentAdmin() {
   try {
     const jwt = sessionStorage.getItem(tokenKey);
+
     return jwtDecode(jwt);
   } catch (ex) {
     return null;

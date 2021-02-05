@@ -2,23 +2,25 @@ import PropTypes from 'prop-types';
 import { Table } from 'react-bootstrap';
 import _ from 'lodash';
 
-const RespondentsTable = (props) => {
-  const { respondents, setRespondent } = props;
+const ExamInstancesTable = (props) => {
+  const { examInstances, onClick } = props;
 
   const columns = [
     { path: 'respondent', label: 'Respondent' },
-    { path: 'email', label: 'Email' },
-    { path: 'lastActivity', label: 'Last Activity' },
+    { path: 'submitDate', label: 'Submitted' },
+    { path: 'answeredQuestions.length', label: 'Number of Questions Answered' },
+    { path: 'grade', label: 'Grade' },
   ];
 
   const renderCell = (item, column) => {
     switch (column.path) {
       case 'respondent':
-        return _.get(item, 'firstName').concat(' ', _.get(item, 'lastName'));
-      case 'lastActivity':
-        return new Date(
-          _.get(item, `exams[${item.exams.length - 1}].submitDate`)
-        ).toLocaleDateString();
+        return _.get(item, 'student.firstName').concat(
+          ' ',
+          _.get(item, 'student.lastName')
+        );
+      case 'submitDate':
+        return new Date(_.get(item, column.path)).toLocaleDateString();
       default:
         return _.get(item, column.path);
     }
@@ -39,10 +41,10 @@ const RespondentsTable = (props) => {
       </thead>
 
       <tbody>
-        {respondents.map((item) => (
+        {examInstances.map((item) => (
           <tr
             key={item._id}
-            onClick={() => setRespondent(item)}
+            onClick={() => onClick(item._id)}
             className="clickable"
           >
             {columns.map((column) => (
@@ -55,9 +57,9 @@ const RespondentsTable = (props) => {
   );
 };
 
-RespondentsTable.propTypes = {
-  respondents: PropTypes.array.isRequired,
-  setRespondent: PropTypes.func.isRequired,
+ExamInstancesTable.propTypes = {
+  examInstances: PropTypes.array.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
-export default RespondentsTable;
+export default ExamInstancesTable;

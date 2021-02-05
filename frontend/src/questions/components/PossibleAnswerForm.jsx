@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 const PossibleAnswerForm = (props) => {
-  const { possibleAnswer, index, handleChange, deletePossibleAnswer } = props;
+  const { index, possibleAnswer, deletePossibleAnswer, handleChange } = props;
 
   return (
     <div className="form-group">
@@ -11,7 +11,7 @@ const PossibleAnswerForm = (props) => {
           onClick={() => deletePossibleAnswer(index)}
           className="btn btn-danger btn-sm"
         >
-          X
+          <i className="fa fa-trash"></i>
         </button>
 
         <textarea
@@ -44,10 +44,10 @@ const PossibleAnswerForm = (props) => {
 };
 
 PossibleAnswerForm.propTypes = {
-  possibleAnswer: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
-  handleChange: PropTypes.func.isRequired,
+  possibleAnswer: PropTypes.object.isRequired,
   deletePossibleAnswer: PropTypes.func.isRequired,
+  handleChange: PropTypes.func.isRequired,
 };
 
 export default PossibleAnswerForm;

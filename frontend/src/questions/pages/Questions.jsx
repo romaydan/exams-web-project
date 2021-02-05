@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 import _ from 'lodash';
 
 import Pagination from '../components/Pagination';
@@ -17,12 +17,13 @@ function Questions(props) {
 
   const [questions, setQuestions] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(10);
   const [sortColumn, setSortColumn] = useState({ path: 'title', order: 'asc' });
 
   useEffect(() => {
     async function populateQuestions() {
       const { data } = await getQuestions(fieldOfStudy);
+
       setQuestions(data);
     }
 
@@ -64,10 +65,14 @@ function Questions(props) {
 
   return (
     <div>
-      <p>
-        Showing {questions.length} available questions for{' '}
-        {fieldOfStudy && fieldOfStudy.name}.
-      </p>
+      <h1>
+        Available questions for
+        <span className="text-primary">
+          {` ${fieldOfStudy && fieldOfStudy.name}`}
+        </span>
+      </h1>
+
+      <p>Showing {questions.length} questions in the database.</p>
 
       <QuestionsTable
         questions={getPagedData()}
@@ -81,11 +86,16 @@ function Questions(props) {
         pageSize={pageSize}
         currentPage={currentPage}
         onPageChange={handlePageChange}
+        setPageSize={setPageSize}
       />
 
-      <Link to="/questions/new" className="btn btn-primary">
-        New Question
+      <Link to="/questions/new" className="btn btn-primary pull-right">
+        New Question &raquo;
       </Link>
+
+      <button onClick={props.history.goBack} className="btn btn-primary">
+        &laquo; Back
+      </button>
     </div>
   );
 }

@@ -60,17 +60,16 @@ const QuestionsTable = (props) => {
   const renderCell = (item, column) => {
     if (column.content) return column.content(item);
 
-    if (column.path === 'text') {
-      return _.truncate(_.get(item, column.path), { length: 50 });
+    switch (column.path) {
+      case 'text':
+        return _.truncate(_.get(item, column.path), { length: 50 });
+      case 'lastUpdate':
+        return new Date(_.get(item, column.path)).toLocaleDateString();
+      case 'type':
+        return _.get(item, column.path) === 0 ? 'Single' : 'Multiple';
+      default:
+        return _.get(item, column.path);
     }
-
-    if (column.path === 'lastUpdate')
-      return new Date(_.get(item, column.path)).toLocaleDateString();
-
-    if (column.path === 'type')
-      return _.get(item, column.path) === 0 ? 'Single' : 'Multiple';
-
-    return _.get(item, column.path);
   };
 
   const createKey = (item, column) => {

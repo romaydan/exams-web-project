@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 import { Table } from 'react-bootstrap';
+import _ from 'lodash';
 
 const ExamsTable = (props) => {
-  const { exams } = props;
+  const { exams, onClick } = props;
 
   const columns = [
     { path: 'exam.name', label: 'Test Name' },
@@ -23,7 +23,7 @@ const ExamsTable = (props) => {
   };
 
   return (
-    <Table striped bordered hover size="sm">
+    <Table striped bordered hover size="sm" variant="dark">
       <thead>
         <tr>
           {columns.map((column) => (
@@ -36,7 +36,7 @@ const ExamsTable = (props) => {
         {exams.map((item) => (
           <tr
             key={item._id}
-            // onClick={}
+            onClick={() => onClick(item._id)}
             className="clickable"
           >
             {columns.map((column) => (
@@ -51,6 +51,7 @@ const ExamsTable = (props) => {
 
 ExamsTable.propTypes = {
   exams: PropTypes.array.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default ExamsTable;
