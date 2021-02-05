@@ -76,7 +76,6 @@ const fieldsProps = [
   {
     name: 'isShow',
     type: 'checkbox',
-    defaultValue: false,
     label: 'Show answers after?:  ',
     validation: {},
   },
@@ -95,7 +94,7 @@ const ExamForm = (props) => {
   const formInputs = fieldsProps.map((field, index) => {
     return (
       <div key={index}>
-        <Input reference={register} id={index} {...field} />
+        <Input reference={register(field.validation)} id={index} {...field} />
         {errors[field.name] && <p>invalid {field.name}</p>}
       </div>
     );
@@ -103,12 +102,9 @@ const ExamForm = (props) => {
 
   return (
     <div className={classes.ExamForm}>
-      <form onSubmit={handleSubmit(props.submited)}>
+      <form id='exam-form' onSubmit={handleSubmit(props.submited)}>
         {formInputs}
         {props.children}
-        <button className='btn btn-primary' type='submit'>
-          Save Exam
-        </button>
       </form>
     </div>
   );

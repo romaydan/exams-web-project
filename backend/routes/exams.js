@@ -29,7 +29,7 @@ router.post('/', async (req, res) => {
     lastUpdate: Date.now(),
     questions: req.body.questions,
     fieldOfStudy: req.body.fieldOfStudy,
-  });
+  })
   await exam.save();
 
   questions.forEach((question) => {
@@ -59,7 +59,7 @@ router.put('/:id', async (req, res) => {
       fieldOfStudy: req.body.fieldOfStudy,
     },
     { new: true }
-  );
+  ).populate('questions');;
 
   if (!exam)
     return res.status(404).send('The exam with the given ID was not found.');

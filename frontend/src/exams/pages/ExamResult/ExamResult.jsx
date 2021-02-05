@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getStudent } from '../../../shared/services/studentService';
+import DoExam from '../DoExam/DoExam';
 const ExamResult = () => {
   const { studentId, examId } = useParams();
   const [student, setStudent] = useState({});
@@ -35,6 +36,7 @@ const ExamResult = () => {
           >
             {rightExam.grade}
           </span>
+          {rightExam.exam.isShow ? <DoExam review /> : null}
         </>
       )}
     </div>

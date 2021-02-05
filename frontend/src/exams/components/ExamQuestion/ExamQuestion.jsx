@@ -23,29 +23,38 @@ const ExamQuestion = (props) => {
     dispatch({ type: ACTIONS.SET, payload: newAnswers });
   }, [props.question, props.selectedAnswers]);
 
-  const answerSelected = (answer) => {
-    dispatch({
-      type:
-        +props.question.type === 0
-          ? ACTIONS.SELECT_ONE
-          : ACTIONS.SELECT_MULTIPLE,
-      payload: answer,
-    });
-    props.answerSelected && props.answerSelected(answer);
+  const answerColor = (answer) => {
+    if (props.review) {
+      if (answer.selected)
+        return answer.isCorrect ? classes.Selected : classes.Wrong;
+      else if (answer.isCorrect) {
+        return classes.Selected;
+      } else return classes.NotSelected;
+    } else return answer.selected ? classes.Selected : classes.NotSelected;
   };
-  console.log('props :>> ', props);
+
+  const answerSelected = (answer) => {
+    if (!props.review) {
+      dispatch({
+        type:
+          +props.question.type === 0
+            ? ACTIONS.SELECT_ONE
+            : ACTIONS.SELECT_MULTIPLE,
+        payload: answer,
+      });
+      props.answerSelected && props.answerSelected(answer);
+    }
+  };
   return (
     <div>
       {' '}
-      <h3>{props.question.text}</h3>
+      <h4>{props.question.text}</h4>
       {props.question &&
         answers.map((answer) => {
           return (
             <div
               key={answer._id}
-              className={
-                answer.selected ? classes.Selected : classes.NotSelected
-              }
+              className={[classes.Question, answerColor(answer)].join(' ')}
               onClick={() => answerSelected(answer)}
             >
               <h4>{answer.answer}</h4>

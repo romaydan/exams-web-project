@@ -3,7 +3,7 @@ import { useParams, useHistory } from 'react-router-dom';
 import { shuffle } from 'lodash';
 
 import ExamQuestion from '../../components/ExamQuestion/ExamQuestion';
-import Modal from '../../../shared/components/UIElements/Modal';
+import { Modal } from 'react-bootstrap';
 
 import {
   getStudent,
@@ -13,7 +13,7 @@ import {
 
 import classes from './DoExam.module.css';
 
-const DoExam = () => {
+const DoExam = (props) => {
   const history = useHistory();
   let { studentId, examId } = useParams();
   const [exam, setExam] = useState({});
@@ -23,12 +23,9 @@ const DoExam = () => {
   const answers = useRef([]);
   useEffect(() => {
     getStudent(studentId, examId).then((res) => {
-      console.log('res.data in student :>> ', res.data);
       setStudent(res.data);
       const correctExam = res.data.exams.find((ex) => ex.exam._id === examId)
         .exam;
-      console.log('correctExam :>> ', correctExam);
-
       setExam(correctExam);
     });
   }, [studentId, examId, questionIndex]);
@@ -83,10 +80,9 @@ const DoExam = () => {
       let rightExam = student.exams.find(
         (studentExam) => studentExam.exam._id === examId
       );
-      const ret = rightExam.answeredQuestions.find(
+      return rightExam.answeredQuestions.find(
         (aq) => aq.question === exam.questions[questionIndex]._id
       );
-      return ret;
     }
   };
 
@@ -106,31 +102,48 @@ const DoExam = () => {
   };
   return (
     <>
-      <h3>hello {student.firstName}</h3>
+      {props.review ? null : <h3>Question #{questionIndex + 1}</h3>}
       {exam.questions && (
         <ExamQuestion
+          review={props.review}
           selectedAnswers={findAnsweredQuestions()}
           answerSelected={answerSelectedHandler}
           question={exam.questions[questionIndex]}
         />
       )}
-      <button disabled={questionIndex <= 0} onClick={prevQuestionHandler}>
-        Prev
+      <button
+        disabled={questionIndex <= 0}
+        className='btn btn-info'
+        onClick={
+          props.review
+            ? () => setQuestionIndex((prev) => prev - 1)
+            : prevQuestionHandler
+        }
+      >
+        {'<< Prev Question'}
       </button>
-      <button onClick={nextQuestionHandler}>
+      <button
+        className='btn btn-primary'
+        onClick={
+          props.review
+            ? () => setQuestionIndex((prev) => prev + 1)
+            : nextQuestionHandler
+        }
+      >
         {exam.questions && questionIndex + 1 === exam.questions.length
-          ? 'End Test'
-          : 'Next'}
+          ? 'Submit The Test!'
+          : 'Next Question >>'}
       </button>
       <h5>
         Question {questionIndex + 1} of{' '}
         {exam.questions && exam.questions.length}
       </h5>
-      <Modal show={showModal} handleClose={() => setShowModal(false)}>
-        <h5 style={{ textAlign: 'center' }}>
-          Would you like to submit the exam?
-        </h5>
-        <div className={classes.ModalButtons}>
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header>
+          <Modal.Title>submit Test</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Would you like to submit the exam?</Modal.Body>
+        <Modal.Footer>
           <button onClick={sumbitExamHandler} className='btn btn-primary'>
             Yes
           </button>
@@ -140,7 +153,7 @@ const DoExam = () => {
           >
             No
           </button>
-        </div>
+        </Modal.Footer>
       </Modal>
     </>
   );
