@@ -1,6 +1,15 @@
+.Question {
+  border-radius: 5px;
+  border: solid 1px #ccc;
+  margin-top: 10px;
+}
+
 .Selected {
-  background-color: lightgreen;
+  background-color: #00e676;
 }
 .NotSelected {
-  background-color: #ccc;
+  background-color: #eeeeee;
+}
+.Wrong {
+  background-color: #dc3545;
 }

@@ -16,7 +16,7 @@ const QuestionsTable = (props) => {
       content: (question) => (
         <Link
           to={`/questions/${question._id}`}
-          className="btn btn-warning btn-sm"
+          className='btn btn-warning btn-sm'
         >
           Edit
         </Link>
@@ -28,7 +28,7 @@ const QuestionsTable = (props) => {
         <button
           disabled={question.numberOfTests > 0}
           onClick={() => onDelete(question)}
-          className="btn btn-danger btn-sm"
+          className='btn btn-danger btn-sm'
         >
           Delete
         </button>
@@ -52,9 +52,9 @@ const QuestionsTable = (props) => {
   const renderSortIcon = (column) => {
     if (column.path !== sortColumn.path) return null;
 
-    if (sortColumn.order === 'asc') return <i className="fa fa-sort-asc"></i>;
+    if (sortColumn.order === 'asc') return <i className='fa fa-sort-asc'></i>;
 
-    return <i className="fa fa-sort-desc"></i>;
+    return <i className='fa fa-sort-desc'></i>;
   };
 
   const renderCell = (item, column) => {
@@ -88,7 +88,7 @@ const QuestionsTable = (props) => {
             <th
               key={column.path || column.key}
               onClick={() => raiseSort(column.path)}
-              className="clickable"
+              className='clickable'
             >
               {column.label} {renderSortIcon(column)}
             </th>

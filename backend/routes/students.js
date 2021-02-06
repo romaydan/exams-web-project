@@ -32,8 +32,13 @@ router.post('/', async (req, res) => {
       phone: req.body.phone,
     },
     { new: true, upsert: true }
-  );
-  const studentExam = student.exams.filter((exId) => exId == examId);
+  ).populate({
+    path: 'exams', populate: {
+      path: 'exam'
+    }
+  })
+  console.log('student.exams', student.exams)
+  const studentExam = student.exams.filter((exInstance) => exInstance.exam._id == examId);
   if (studentExam.length < 1) {
     const exam = await ExamInstance.create({
       exam: examId,

@@ -38,7 +38,7 @@ const Input = (props) => {
       element = (
         <input
           ref={props.reference}
-          className='class="form-check-input"'
+          className='form-check-input'
           {...newProps}
         />
       );
@@ -49,15 +49,16 @@ const Input = (props) => {
   }
   return (
     <div>
-      {props.label ? (
-        <label
-          htmlFor={element.id}
-          className={props.type === 'checkbox' ? 'form-check-label' : ''}
-        >
+      {props.label && props.type !== 'checkbox' ? (
+        <label htmlFor={element.id}>{props.label}</label>
+      ) : null}
+      {element}
+      {props.type === 'checkbox' ? (
+        <label htmlFor={element.id} class='form-check-label'>
           {props.label}
         </label>
       ) : null}
-      {element}
+      
     </div>
   );
 };

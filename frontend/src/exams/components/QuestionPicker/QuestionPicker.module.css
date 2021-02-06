@@ -1,9 +1,25 @@
+.Question {
+  border-radius: 5px;
+  border: solid 1px #ccc;
+  margin-top: 10px;
+}
 .NotSelected {
-  background-color: rgb(233, 233, 233);
+  background-color: #eeeeee;
 }
 .Selected {
-  background-color: lightgreen;
+  background-color: #00e676;
 }
-.Tags {
-  color: lightblue;
+
+.Answer {
+  margin: 10px;
+  border: 1px solid black;
+  box-sizing: border-box;
+}
+.Answers {
+  padding-top: 10px;
+  background-color: #f9f9f7;
+}
+.Dashboard {
+  display: flex;
+  justify-content: space-evenly;
 }

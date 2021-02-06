@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button } from '@material-ui/core';
+import { Button } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import { getExams, deleteExam } from '../../../shared/services/examService';
 import classes from './Exams.module.css';
 import * as _ from 'lodash';
 import SearchBar from '../../../shared/components/UIElements/SearchBar';
+import { toast } from 'react-toastify';
 const columns = [
   { field: '_id', label: 'ID', order: true },
   { field: 'name', label: 'Exam Name', order: true },
@@ -43,6 +44,7 @@ const Exams = (props) => {
     tempInput.select();
     document.execCommand('copy');
     document.body.removeChild(tempInput);
+    toast.success('exam link copied to clipboard.');
   };
   const sortTableHandler = (col) => {
     setExams((prevState) => {
@@ -61,9 +63,19 @@ const Exams = (props) => {
       <td>{exam.questions.length}</td>
       <td>{exam.lastUpdate}</td>
       <td>
-        <Button onClick={() => copyLinkHandler(exam)}>Copy Link</Button>
-        <Button onClick={() => editExamHandler(exam)}>Edit</Button>
-        <Button onClick={() => deleteExamHandler(exam)}>Delete</Button>
+        <Button variant='light' onClick={() => copyLinkHandler(exam)}>
+          Link
+        </Button>
+      </td>
+      <td>
+        <Button variant='warning' onClick={() => editExamHandler(exam)}>
+          Edit
+        </Button>
+      </td>
+      <td>
+        <Button variant='danger' onClick={() => deleteExamHandler(exam)}>
+          Delete
+        </Button>
       </td>
     </tr>
   ));
