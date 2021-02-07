@@ -1,4 +1,5 @@
 import React, { useState, useReducer, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 import { getQuestions } from '../../../shared/services/questionService';
 import SearchBar from '../../../shared/components/UIElements/SearchBar';
 import {
@@ -10,42 +11,41 @@ import classes from './QuestionPicker.module.css';
 import { Accordion, Badge, Button } from 'react-bootstrap';
 
 const QuestionPicker = (props) => {
+  const {
+    fieldOfStudy,
+    examQuestions,
+    pickedQuestions,
+    questionSelected,
+  } = props;
   const [questions, dispatch] = useReducer(radioButtonReducer, []);
   const allQuestions = useRef([]);
   const [pickedAll, setPickedAll] = useState(false);
   const [accordionKey, setAccordionKey] = useState('');
   useEffect(() => {
-    getQuestions(props.fieldOfStudy).then((res) => {
+    getQuestions(fieldOfStudy).then((res) => {
       allQuestions.current = res.data;
       dispatch({ type: ACTIONS.SET, payload: res.data });
     });
-  }, [props.fieldOfStudy]);
+  }, [fieldOfStudy]);
   useEffect(() => {
-    if (props.examQuestions) {
-      console.log('props.examQuestions in picker:>> ', props.examQuestions);
-      console.log('questions in picker:>> ', questions);
+    if (examQuestions) {
       let newQuestions = questions.map((question) => {
-        props.examQuestions.forEach((quest) => {
-          if (quest._id === question._id) {
-            question.selected = true;
-          }
-        });
+        selectSelectedAnswers(examQuestions, question);
         return question;
       });
-      console.log('here :>> ');
-      props.questionSelected(props.examQuestions);
+      questionSelected(examQuestions);
       dispatch({ type: ACTIONS.SET, payload: newQuestions });
     }
-  }, [props.examQuestions]);
+  }, [examQuestions]);
 
-  const questionSelected = (question) => {
+  const onQuestionSelected = (question) => {
     dispatch({ type: ACTIONS.SELECT_MULTIPLE, payload: question });
-    props.questionSelected(question);
+    questionSelected(question);
   };
 
   const searchChangeHandler = (value) => {
     if (value.trim() === '') {
-      getQuestions(props.fieldOfStudy).then(
+      getQuestions(fieldOfStudy).then(
         (res) => (allQuestions.current = res.data)
       );
     }
@@ -55,19 +55,14 @@ const QuestionPicker = (props) => {
         quest.tags.filter((tag) => tag.includes(value)).length > 0
     );
     filtered.forEach((question) => {
-      props.pickedQuestions.forEach((quest) => {
-        if (quest._id === question._id) {
-          question.selected = true;
-        }
-      });
+      selectSelectedAnswers(pickedQuestions, question);
     });
-    console.log('filtered', filtered);
     dispatch({ type: ACTIONS.SET, payload: filtered });
   };
   const selectAllHandler = () => {
     let newQuestions = selectAllExtenstion(!pickedAll);
     const questionsToSelect = !pickedAll ? newQuestions : [];
-    props.questionSelected(questionsToSelect);
+    questionSelected(questionsToSelect);
     dispatch({ type: ACTIONS.SET, payload: newQuestions });
   };
 
@@ -89,7 +84,7 @@ const QuestionPicker = (props) => {
         <Button variant='info' onClick={selectAllHandler}>
           {pickedAll ? 'Deselect All' : 'Select All'}
         </Button>
-        <h3> Questions Picked {props.pickedQuestions.length}</h3>
+        <h3> Questions Picked {pickedQuestions.length}</h3>
       </div>
       <Accordion
         onSelect={(eventKey) => {
@@ -104,7 +99,7 @@ const QuestionPicker = (props) => {
                 classes.Question,
                 question.selected ? classes.Selected : classes.NotSelected,
               ].join(' ')}
-              onClick={() => questionSelected(question)}
+              onClick={() => onQuestionSelected(question)}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <h3 title={question.text}>
@@ -151,5 +146,18 @@ const QuestionPicker = (props) => {
     </div>
   );
 };
-
+QuestionPicker.propTypes = {
+  fieldOfStudy: PropTypes.object.isRequired,
+  examQuestions: PropTypes.array.isRequired,
+  questionSelected: PropTypes.func.isRequired,
+  pickedQuestions: PropTypes.array,
+};
 export default QuestionPicker;
+
+function selectSelectedAnswers(examQuestions, question) {
+  examQuestions.forEach((quest) => {
+    if (quest._id === question._id) {
+      question.selected = true;
+    }
+  });
+}

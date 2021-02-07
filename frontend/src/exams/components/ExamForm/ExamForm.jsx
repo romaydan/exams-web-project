@@ -1,5 +1,8 @@
 import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 import Input from '../../../shared/components/FormElements/Input';
 
@@ -15,9 +18,6 @@ const fieldsProps = [
     },
     defaultValue: 0,
     label: 'Language: ',
-    validation: {
-      required: true,
-    },
   },
   {
     name: 'name',
@@ -26,11 +26,6 @@ const fieldsProps = [
     label: 'Exam Name: ',
     placeholder: 'Enter Name',
     maxLength: 200,
-    validation: {
-      required: true,
-      minLength: 2,
-      maxLength: 200,
-    },
   },
   {
     name: 'header',
@@ -38,9 +33,6 @@ const fieldsProps = [
     defaultValue: '',
 
     label: 'Header:',
-    validation: {
-      required: true,
-    },
   },
   {
     name: 'success',
@@ -48,9 +40,6 @@ const fieldsProps = [
     defaultValue: '',
 
     label: 'Success Message:',
-    validation: {
-      required: true,
-    },
   },
   {
     name: 'failure',
@@ -58,56 +47,62 @@ const fieldsProps = [
     defaultValue: '',
 
     label: 'Fail Message:',
-    validation: {
-      required: true,
-    },
   },
   {
     name: 'passingGrade',
     type: 'number',
     defaultValue: 54,
-
     label: 'Passing Grade: ',
-    validation: {
-      max: 100,
-      min: 54,
-    },
   },
   {
     name: 'isShow',
     type: 'checkbox',
     label: 'Show answers after?:  ',
-    validation: {},
   },
 ];
+const schema = yup.object().shape({
+  language: yup.number().min(0).max(1).required(),
+  name: yup.string().min(2).max(200).required(),
+  header: yup.string().required(),
+  success: yup.string().required(),
+  failure: yup.string().required(),
+  passingGrade: yup.number().min(54).max(100).required(),
+  isShow: yup.boolean().required(),
+});
 
 const ExamForm = (props) => {
-  const { handleSubmit, register, errors, setValue } = useForm();
+  const { exam, submited } = props;
+  const { handleSubmit, register, errors, setValue } = useForm({
+    resolver: yupResolver(schema),
+  });
   useEffect(() => {
-    Object.keys(props.exam).forEach((key) => {
+    Object.keys(exam).forEach((key) => {
       if (key !== '_id' || key !== '__v') {
-        setValue(key, props.exam[key]);
+        setValue(key, exam[key]);
       }
     });
-  }, [props.exam, setValue]);
+  }, [exam, setValue]);
 
   const formInputs = fieldsProps.map((field, index) => {
     return (
       <div key={index}>
         <Input reference={register(field.validation)} id={index} {...field} />
-        {errors[field.name] && <p>invalid {field.name}</p>}
+        {<p>{errors[field.name]?.message}</p>}
       </div>
     );
   });
 
   return (
     <div className={classes.ExamForm}>
-      <form id='exam-form' onSubmit={handleSubmit(props.submited)}>
+      <form id='exam-form' onSubmit={handleSubmit(submited)}>
         {formInputs}
         {props.children}
       </form>
     </div>
   );
 };
-
+ExamForm.propTypes = {
+  exam: PropTypes.object,
+  submited: PropTypes.func.isRequired,
+};
 export default ExamForm;

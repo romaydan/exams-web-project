@@ -11,14 +11,14 @@ import Organizations from './organizations/pages/Organizations';
 import MainMenu from './main-menu/pages/MainMenu';
 import QuestionForm from './questions/pages/QuestionForm';
 import Questions from './questions/pages/Questions';
-import NewExam from './exams/pages/NewExam/NewExam';
+import CreateEditExam from './exams/pages/CreateEditExam/CreateEditExam';
 import Exams from './exams/pages/Exams/Exams';
 import ExamReportResults from './reports/pages/ExamReportResults';
 import ExamReport from './reports/pages/ExamReport';
 import RespondentReportResults from './reports/pages/RespondentReportResults';
 import RespondentReport from './reports/pages/RespondentReport';
-import ExamResult from './exams/pages/ExamResult/ExamResult';
-import DoExam from './exams/pages/DoExam/DoExam';
+import StudentExamResult from './exams/pages/StudentExamResult/StudentExamResult';
+import StudentExam from './exams/pages/StudentExam/StudentExam';
 import StudentForm from './exams/pages/StudentForm/StudentForm';
 import NotFound from './shared/components/NotFound';
 
@@ -83,13 +83,13 @@ function App() {
           <ProtectedRoute
             path="/exams/new"
             render={(props) => (
-              <NewExam {...props} fieldOfStudy={fieldOfStudy} />
+              <CreateEditExam {...props} fieldOfStudy={fieldOfStudy} />
             )}
           />
           <ProtectedRoute
             path="/exams/edit/:id"
             render={(props) => (
-              <NewExam {...props} fieldOfStudy={fieldOfStudy} />
+              <CreateEditExam {...props} fieldOfStudy={fieldOfStudy} />
             )}
           />
           <ProtectedRoute
@@ -119,9 +119,9 @@ function App() {
           />
           <Route
             path="/exams/:examId/:studentId/result"
-            component={ExamResult}
+            component={StudentExamResult}
           />
-          <Route path="/exams/:examId/:studentId" component={DoExam} />
+          <Route path="/exams/:examId/:studentId" component={StudentExam} />
           <Route path="/exams/:examId" component={StudentForm} />
           <Route path="/not-found" component={NotFound} />
           <Redirect from="/" exact to="/main-menu" />

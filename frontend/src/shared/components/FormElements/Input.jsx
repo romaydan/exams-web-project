@@ -58,13 +58,12 @@ const Input = (props) => {
           {props.label}
         </label>
       ) : null}
-      
     </div>
   );
 };
 
 Input.propTypes = {
-  inputType: PropTypes.string,
+  inputType: PropTypes.string.isRequired,
 };
 
 export default Input;

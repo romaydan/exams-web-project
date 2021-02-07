@@ -1,5 +1,5 @@
 import React from 'react';
-
+import PropTypes from 'prop-types';
 const SearchBar = (props) => {
   return (
     <>
@@ -15,5 +15,8 @@ const SearchBar = (props) => {
     </>
   );
 };
-
+SearchBar.propTypes = {
+  label: PropTypes.string.isRequired,
+  changed: PropTypes.func.isRequired,
+};
 export default SearchBar;

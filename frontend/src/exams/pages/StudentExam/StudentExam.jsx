@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { shuffle } from 'lodash';
-
-import ExamQuestion from '../../components/ExamQuestion/ExamQuestion';
+import PropTypes from 'prop-types';
 import { Modal } from 'react-bootstrap';
+import { toast } from 'react-toastify';
+import ExamQuestion from '../../components/ExamQuestion/ExamQuestion';
 
 import {
   getStudent,
@@ -11,23 +12,29 @@ import {
   submitStudentExam,
 } from '../../../shared/services/studentService';
 
-import classes from './DoExam.module.css';
-
-const DoExam = (props) => {
+const StudentExam = (props) => {
+  const { isReview } = props;
   const history = useHistory();
   let { studentId, examId } = useParams();
+
   const [exam, setExam] = useState({});
   const [student, setStudent] = useState({});
   const [showModal, setShowModal] = useState(false);
-  const [questionIndex, setQuestionIndex] = useState(0);
+  const [questionIndex, setQuestionIndex] = useState(isReview ? 0 : -1);
+
   const answers = useRef([]);
+
   useEffect(() => {
-    getStudent(studentId, examId).then((res) => {
-      setStudent(res.data);
-      const correctExam = res.data.exams.find((ex) => ex.exam._id === examId)
-        .exam;
-      setExam(correctExam);
-    });
+    getStudent(studentId, examId)
+      .catch((error) => toast.error('something went wrong'))
+      .then((res) => {
+        setStudent(res.data);
+
+        const correctExam = res.data.exams.find((ex) => ex.exam._id === examId)
+          .exam;
+        correctExam.question = shuffle(correctExam.question);
+        setExam(correctExam);
+      });
   }, [studentId, examId, questionIndex]);
 
   useEffect(() => {
@@ -41,29 +48,32 @@ const DoExam = (props) => {
   }, [questionIndex, exam.questions]);
 
   const nextQuestionHandler = () => {
-    saveStudentQuestion(
-      exam.questions[questionIndex]._id,
-      studentId,
-      examId,
-      answers.current
-    ).then(() => {
-      if (questionIndex + 1 === exam.questions.length) {
-        setShowModal(true);
-      } else {
-        setQuestionIndex((prevState) => prevState + 1);
-      }
-    });
+    if (questionIndex >= 0) {
+      saveStudentQuestion(
+        exam.questions[questionIndex]._id,
+        studentId,
+        examId,
+        answers.current
+      )
+        .catch((error) => toast.error('something went wrong'))
+        .then(() => {
+          if (questionIndex + 1 === exam.questions.length) {
+            setShowModal(true);
+          } else {
+            setQuestionIndex((prevState) => prevState + 1);
+          }
+        });
+    } else setQuestionIndex((prevState) => prevState + 1);
   };
-
   const prevQuestionHandler = () => {
-    saveStudentQuestion(
-      exam.questions[questionIndex]._id,
-      studentId,
-      examId,
-      answers.current
-    ).then((res) => {
-      setQuestionIndex((prevState) => prevState - 1);
-    });
+    if (questionIndex >= 0)
+      saveStudentQuestion(
+        exam.questions[questionIndex]._id,
+        studentId,
+        examId,
+        answers.current
+      ).catch((error) => toast.error('something went wrong'));
+    setQuestionIndex((prevState) => prevState - 1);
   };
 
   const answerSelectedHandler = (answer) => {
@@ -75,14 +85,16 @@ const DoExam = (props) => {
           ? answers.current.filter((ans) => ans._id !== answer._id)
           : [...answers.current, answer];
   };
+
   const findAnsweredQuestions = () => {
-    if (student.exams) {
+    if (questionIndex >= 0 && student.exams) {
       let rightExam = student.exams.find(
         (studentExam) => studentExam.exam._id === examId
       );
-      return rightExam.answeredQuestions.find(
-        (aq) => aq.question === exam.questions[questionIndex]._id
+      let ret = rightExam.answeredQuestions.find(
+        (aq) => aq.question._id === exam.questions[questionIndex]._id
       );
+      return ret;
     }
   };
 
@@ -102,20 +114,23 @@ const DoExam = (props) => {
   };
   return (
     <>
-      {props.review ? null : <h3>Question #{questionIndex + 1}</h3>}
-      {exam.questions && (
-        <ExamQuestion
-          review={props.review}
-          selectedAnswers={findAnsweredQuestions()}
-          answerSelected={answerSelectedHandler}
-          question={exam.questions[questionIndex]}
-        />
+      {questionIndex >= 0 ? (
+        exam.questions && (
+          <ExamQuestion
+            review={isReview}
+            selectedAnswers={findAnsweredQuestions()}
+            answerSelected={answerSelectedHandler}
+            question={exam.questions[questionIndex]}
+          />
+        )
+      ) : (
+        <h3>{exam.header}</h3>
       )}
       <button
-        disabled={questionIndex <= 0}
+        disabled={questionIndex <= -1}
         className='btn btn-info'
         onClick={
-          props.review
+          isReview
             ? () => setQuestionIndex((prev) => prev - 1)
             : prevQuestionHandler
         }
@@ -125,10 +140,18 @@ const DoExam = (props) => {
       <button
         className='btn btn-primary'
         onClick={
-          props.review
+          isReview
             ? () => setQuestionIndex((prev) => prev + 1)
             : nextQuestionHandler
         }
+        style={{
+          display:
+            exam.questions &&
+            questionIndex + 1 === exam.questions.length &&
+            isReview
+              ? 'none'
+              : 'inline-block',
+        }}
       >
         {exam.questions && questionIndex + 1 === exam.questions.length
           ? 'Submit The Test!'
@@ -138,6 +161,7 @@ const DoExam = (props) => {
         Question {questionIndex + 1} of{' '}
         {exam.questions && exam.questions.length}
       </h5>
+
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header>
           <Modal.Title>submit Test</Modal.Title>
@@ -158,5 +182,7 @@ const DoExam = (props) => {
     </>
   );
 };
-
-export default DoExam;
+StudentExam.propTypes = {
+  review: PropTypes.bool,
+};
+export default StudentExam;

@@ -37,7 +37,6 @@ router.post('/', async (req, res) => {
       path: 'exam'
     }
   })
-  console.log('student.exams', student.exams)
   const studentExam = student.exams.filter((exInstance) => exInstance.exam._id == examId);
   if (studentExam.length < 1) {
     const exam = await ExamInstance.create({
@@ -159,7 +158,6 @@ async function saveAnswersAndGetStudExam(student, examId, questionId, answers) {
     exam: examId,
     student: student._id,
   }).populate('answeredQuestions.question');
-  // const studentExam = student.exams.find((ex) => ex.exam == examId);
   const answeredQuestion = exam.answeredQuestions.find(
     (aq) => aq.question._id == questionId
   );

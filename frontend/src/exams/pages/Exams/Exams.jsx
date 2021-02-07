@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
-import { getExams, deleteExam } from '../../../shared/services/examService';
-import classes from './Exams.module.css';
-import * as _ from 'lodash';
-import SearchBar from '../../../shared/components/UIElements/SearchBar';
+import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
+
+import { getExams, deleteExam } from '../../../shared/services/examService';
+import SearchBar from '../../../shared/components/UIElements/SearchBar';
+
+import * as _ from 'lodash';
+import classes from './Exams.module.css';
 const columns = [
   { field: '_id', label: 'ID', order: true },
   { field: 'name', label: 'Exam Name', order: true },
@@ -18,22 +21,22 @@ const Exams = (props) => {
   const history = useHistory();
   useEffect(() => {
     getExams(props.fieldOfStudy)
+      .catch((error) => toast.error('something went wrong'))
       .then((res) => {
-        console.log('res :>> ', res);
         setExams(res.data);
         allExams.current = res.data;
       })
-      .catch((error) => {
-        console.log('error!', error);
-      });
-  }, []);
+      .catch((error) => {});
+  }, [props.fieldOfStudy]);
   const editExamHandler = (exam) => {
     history.push(`/exams/edit/${exam._id}`);
   };
   const deleteExamHandler = (exam) => {
     deleteExam(exam._id)
-      .then((res) => console.log(res))
-      .catch((error) => console.log(error));
+      .then((res) => toast.success('exam deleted'))
+      .catch((error) =>
+        toast.success('something went wrong exam wasnt deleted')
+      );
     setExams((prevExams) => prevExams.filter((ex) => ex._id !== exam._id));
   };
   const copyLinkHandler = (exam) => {
@@ -113,4 +116,7 @@ const Exams = (props) => {
   );
 };
 
+Exams.propTypes = {
+  fieldOfStudy: PropTypes.object.isRequired,
+};
 export default Exams;
